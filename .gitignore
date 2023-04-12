@@ -8,6 +8,6 @@
 *.out
 *.sh
 *_wb
-*test*
+# *test*
 tmp_files
 minishell
