@@ -6,7 +6,7 @@
 #    By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/12 16:06:02 by yeongo            #+#    #+#              #
-#    Updated: 2023/04/12 16:43:02 by yeongo           ###   ########.fr        #
+#    Updated: 2023/04/12 19:30:37 by yeongo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,6 +41,7 @@ SRC_FILES			:=	$(addsuffix .c,			\
 							tokenize_space		\
 							tokenize_pipe		\
 							tokenize_utils		\
+							tokenize_special	\
 							util				\
 	 						debug				\
 	 						main				\
