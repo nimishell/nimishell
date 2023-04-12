@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 19:54:53 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/11 15:15:39 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/12 17:33:24 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,18 +40,19 @@ void	sub_pipeline(t_token *token)
 	if (!split || split[0] == NULL)
 		return ;
 	str = ft_strdup(split[0]);
+	printf("pipe : %p\n", str);
 	if (!str)
 	{
-		ft_free_array((void *)split);
+		ft_free_char_arr(split);
 		return ;
 	}
-	free (token->str);
+	free(token->str);
 	token->str = str;
 	ret = token;
 	while (split[++i] && ret)
 		ret = add_token(&token, i, T_CHUNK, split[i]);
 	i = 0;
-	ft_free_array((void *)split);
+	ft_free_char_arr(split);
 	return ;
 }
 

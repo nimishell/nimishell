@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:56:15 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/11 20:42:14 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/12 18:10:25 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ void		sep_pipeline(t_token *token);
 void		sub_pipeline(t_token *token);
 
 void		tokenize_special(t_token *token);
-void		tokenize_io_redirection(t_token *token);
-char		**split_str_io(char *str);
+void		split_str_io(t_token *token, char *str);
+void		tokenize_io(t_token *token, char *s, int idx, int flag);
 
 int			parse(t_cmd *cmd, char *rd_line);
 t_token		*tokenize(char *rd_line);
@@ -82,7 +82,7 @@ t_token		*add_token(t_token **tokens, int idx, int type, char *str);
 t_token		*add_back_token(t_token **tokens, int idx, t_token *new);
 
 void		*ft_free(void *p1, void *p2, void *p3, void *p4);
-void		*ft_free_array(void **p);
+void		*ft_free_char_arr(char **p);
 void		ft_free_token(t_token *token);
 
 #endif

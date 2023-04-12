@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 16:24:57 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/11 20:57:48 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/12 18:11:37 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,53 +14,72 @@
 
 void	tokenize_special(t_token *token)
 {
-	t_token	*next;
+	// t_token	*next;
 	t_token	*head;
 
 	head = token;
 	while (token)
 	{
 		if (token->type == T_CHUNK)
-			tokenize_io_redirection(token);
+			split_str_io(token, token->str);
 		token = token->next;
 	}
 }
 
-char	**split_str_io(char *str)
+void	split_str_io(t_token *token, char *str)
 {
-	char	**ret;
-	char	**iter;
-	char	*s;
-	int		size;
 	int		flag;
+	int		i;
 
-	size = 1;
-	while (*str != '<' || *str != '>')
-		str++;
+	i = 0;
+	while (str[i] && str[i] != '<' && str[i] != '>')
+		i++;
+	if (!str[i])
+		return ;
 	flag = 0;
-	while (*str)
+	while (str[i] == '<' || str[i] == '>')
 	{
-		if (*str == '<' || *str == '>')
+		if (str[i] == '<')
 		{
-			size++;
-			flag = 1;
+			if (str[i + 1] == '<' && flag == 0)
+				flag = 1;
+			tokenize_io(token, ft_strdup("<"), i, flag);
+			break ;
 		}
-		else if (flag)
+		else if (str[i] == '>')
 		{
-			size++;
-			flag = 0;
+			if (str[i + 1] == '>' && flag == 0)
+				flag = 1;
+			tokenize_io(token, ft_strdup(">"), i, flag);
+			break ;
 		}
-		str++;
 	}
-	ret = malloc(sizeof(char *) * size + 1);
-	if (!ret)
-		return (NULL);
-	iter = ret;
-	while (--size)
+
+
+}
+
+void	tokenize_io(t_token *token, char *s, int idx, int flag)
+{
+	char	*tmp;
+
+	if (flag == 0)
 	{
-		s = 
-		*(iter++) = s;
+		add_token(&token, 2, T_CHUNK, ft_substr(token->str, idx + 1, \
+			ft_strlen(token->str) - idx));
+		add_token(&token, 1, T_IO_L, ft_strdup(s));
+		tmp = ft_substr(token->str, 0, idx);
+		free(token->str);
+		token->str = ft_strdup(tmp);
+		free(tmp);
 	}
-	*iter = NULL;
-	return (ret);
+	else
+	{
+		add_token(&token, 2, T_CHUNK, ft_substr(token->str, idx + 2, \
+			ft_strlen(token->str) - idx));
+		add_token(&token, 1, T_IO_LL, ft_strdup(s));
+		tmp = ft_substr(token->str, 0, idx);
+		free(token->str);
+		token->str = ft_strdup(tmp);
+		free(tmp);
+	}
 }

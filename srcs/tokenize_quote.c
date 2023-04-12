@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 16:33:28 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/11 15:15:07 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/12 16:10:40 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,13 @@ char	**seperate_array_quote(char *str, int start, int end)
 		return (NULL);
 	ret[0] = ft_substr(str, 0, start);
 	if (!ret[0])
-		return (ft_free_array((void *)ret));
+		return (ft_free_char_arr((void *)ret));
 	ret[1] = ft_substr(str, start + 1, end - start - 1);
 	if (!ret[1])
-		return (ft_free_array((void *)ret));
+		return (ft_free_char_arr((void *)ret));
 	ret[2] = ft_substr(str, end + 1, ft_strlen(str));
 	if (!ret[2])
-		return (ft_free_array((void *)ret));
+		return (ft_free_char_arr((void *)ret));
 	ret[3] = NULL;
 	return (ret);
 }
@@ -98,7 +98,7 @@ void	tokenize_quote(t_token *token)
 				add_token(&token, 1, T_ARGV, split[1]);
 				free(token->str);
 				token->str = ft_strdup(split[0]);
-				ft_free_array((void *)split);
+				ft_free_char_arr((void *)split);
 				token = token->next;
 			}
 		}

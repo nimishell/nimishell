@@ -6,14 +6,14 @@
 #    By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/11 20:55:17 by wbae              #+#    #+#              #
-#    Updated: 2023/04/11 20:56:36 by wbae             ###   ########.fr        #
+#    Updated: 2023/04/12 16:36:42 by wbae             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I${HOME}/.brew/opt/readline/include #-fsanitize=address -g3
+CFLAGS = -Wall -Wextra -Werror -I${HOME}/.brew/opt/readline/include -fsanitize=address -g3
 
 RDLINE_LIB = -lreadline -L${HOME}/.brew/opt/readline/lib
 RELINE_INC = -I${HOME}/.brew/opt/readline/include
@@ -26,6 +26,7 @@ SRCS = $(addprefix srcs/, main.c \
 	tokenize_quote.c \
 	tokenize_space.c \
 	tokenize_pipe.c \
+	tokenize_special.c \
 	tokenize_utils.c \
 	util.c \
 	debug.c)

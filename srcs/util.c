@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 16:30:42 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/11 18:12:54 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/12 16:24:44 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	*ft_free(void *p1, void *p2, void *p3, void *p4)
 	return (NULL);
 }
 
-void	*ft_free_array(void **p)
+void	*ft_free_char_arr(char **p)
 {
 	int	i;
 
