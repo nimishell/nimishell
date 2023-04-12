@@ -5,6 +5,7 @@
 *.json
 *.o
 *.a
+*.out
 *.sh
 *_wb
 *test*
