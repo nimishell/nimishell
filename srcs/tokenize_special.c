@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 16:24:57 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/12 18:11:37 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/12 18:52:22 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,6 @@ void	split_str_io(t_token *token, char *str)
 			break ;
 		}
 	}
-
-
 }
 
 void	tokenize_io(t_token *token, char *s, int idx, int flag)
@@ -74,6 +72,7 @@ void	tokenize_io(t_token *token, char *s, int idx, int flag)
 	}
 	else
 	{
+		s = ft_strjoin(s, s);
 		add_token(&token, 2, T_CHUNK, ft_substr(token->str, idx + 2, \
 			ft_strlen(token->str) - idx));
 		add_token(&token, 1, T_IO_LL, ft_strdup(s));
