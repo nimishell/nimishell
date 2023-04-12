@@ -6,11 +6,12 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 16:10:57 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/11 16:00:08 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/12 20:09:40 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "parsing.h"
 
 t_token	*make_new_token(void)
 {

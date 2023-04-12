@@ -6,11 +6,12 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 21:32:19 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/12 16:12:42 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/12 20:08:17 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "parsing.h"
 
 t_token	*tokenize(char *rd_line)
 {

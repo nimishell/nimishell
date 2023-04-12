@@ -6,11 +6,12 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:33:23 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/11 20:57:15 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/12 20:10:24 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "parsing.h"
 
 static int	is_space(char *line)
 {
@@ -62,9 +63,9 @@ int	main(int ac, char *av[], char *envp[])
 		}
 	}
 	tcsetattr(STDOUT_FILENO, TCSANOW, &terminal);
-	ft_putstr_fd("\033[1A", STDOUT);
-	ft_putstr_fd("\033[11C", STDOUT);
-	ft_putstr_fd("exit\n", STDOUT);
+	ft_putstr_fd("\033[1A", STDOUT_FILENO);
+	ft_putstr_fd("\033[11C", STDOUT_FILENO);
+	ft_putstr_fd("exit\n", STDOUT_FILENO);
 	// atexit(f);
 	return (0);
 }

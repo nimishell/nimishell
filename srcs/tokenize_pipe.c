@@ -6,11 +6,12 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 19:54:53 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/12 17:33:24 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/12 20:10:40 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "parsing.h"
 
 void	tokenize_pipe(t_token *token)
 {
@@ -40,7 +41,6 @@ void	sub_pipeline(t_token *token)
 	if (!split || split[0] == NULL)
 		return ;
 	str = ft_strdup(split[0]);
-	printf("pipe : %p\n", str);
 	if (!str)
 	{
 		ft_free_char_arr(split);

@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:56:15 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/12 18:50:05 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/12 20:03:29 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,21 +25,7 @@
 # include <readline/history.h>
 # include "../libft/libft.h"
 # include "structure.h"
-
 # include "debug.h" //DO NOT SUBMIT!!!
-
-# define STDIN		0
-# define STDOUT		1
-# define STDERR		2
-# define SYNTAX		4
-# define T_CHUNK	11
-# define T_ARGV		22
-# define T_SPACE	33
-# define T_PIPE		44
-# define T_IO_R		51
-# define T_IO_RR	52
-# define T_IO_L		53
-# define T_IO_LL	54
 
 t_env		*g_env;
 
@@ -57,29 +43,6 @@ void		copy_env(char *env[]);
 char		*copy_key(char *env);
 char		*copy_value(char *envp);
 void		making_env(char *envp);
-
-int			check_quote(char *line);
-char		**split_quote(char *str);
-char		**seperate_array_quote(char *str, int start, int end);
-void		tokenize_quote(t_token *ret);
-
-void		tokenize_space(t_token *tokens);
-void		split_space(t_token *token);
-
-void		tokenize_pipe(t_token *token);
-void		sep_pipeline(t_token *token);
-void		sub_pipeline(t_token *token);
-
-void		tokenize_special(t_token *token);
-void		split_str_io(t_token *token, char *str);
-void		tokenize_io(t_token *token, char *s, int idx, int flag);
-
-int			parse(t_cmd *cmd, char *rd_line);
-t_token		*tokenize(char *rd_line);
-
-t_token		*make_new_token(void);
-t_token		*add_token(t_token **tokens, int idx, int type, char *str);
-t_token		*add_back_token(t_token **tokens, int idx, t_token *new);
 
 void		*ft_free(void *p1, void *p2, void *p3, void *p4);
 void		*ft_free_char_arr(char **p);

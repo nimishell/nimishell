@@ -6,11 +6,12 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 16:30:42 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/12 16:24:44 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/12 20:09:43 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "parsing.h"
 
 void	*ft_free(void *p1, void *p2, void *p3, void *p4)
 {

@@ -6,11 +6,12 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 16:33:28 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/12 16:10:40 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/12 20:09:30 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "parsing.h"
 
 int	check_quote(char *line)
 {

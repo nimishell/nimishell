@@ -6,12 +6,28 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:45:47 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/12 18:50:13 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/12 20:08:53 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTURE_H
 # define STRUCTURE_H
+
+enum e_token_type
+{
+	T_CHUNK = 11,
+	T_ARGV = 22,
+	T_SPACE = 33,
+	T_PIPE = 44
+};
+
+enum e_io_type
+{
+	T_IO_R = 51,
+	T_IO_RR,
+	T_IO_L,
+	T_IO_LL
+};
 
 typedef struct s_token
 {
