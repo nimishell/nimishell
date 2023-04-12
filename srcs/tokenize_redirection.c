@@ -1,36 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenize_special.c                                 :+:      :+:    :+:   */
+/*   tokenize_redirection.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 16:24:57 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/12 20:09:33 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/12 20:38:52 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parsing.h"
 
-void	tokenize_special(t_token *token)
+void	tokenize_redirection(t_token *token)
 {
-	// t_token	*next;
 	t_token	*head;
 
 	head = token;
 	while (token)
 	{
 		if (token->type == T_CHUNK)
-			split_str_io(token, token->str);
+			before_split_io(token, token->str);
 		token = token->next;
+	}
+	while (head)
+	{
+		if (head->type == T_RED)
+			change_type_red(head);
+		head = head->next;
 	}
 }
 
-void	split_str_io(t_token *token, char *str)
+void	before_split_io(t_token *token, char *str)
 {
-	int		flag;
-	int		i;
+	int	flag;
+	int	i;
 
 	i = 0;
 	while (str[i] && str[i] != '<' && str[i] != '>')
@@ -38,26 +43,21 @@ void	split_str_io(t_token *token, char *str)
 	if (!str[i])
 		return ;
 	flag = 0;
-	while (str[i] == '<' || str[i] == '>')
+	if (str[i] == '<')
 	{
-		if (str[i] == '<')
-		{
-			if (str[i + 1] == '<' && flag == 0)
-				flag = 1;
-			tokenize_io(token, ft_strdup("<"), i, flag);
-			break ;
-		}
-		else if (str[i] == '>')
-		{
-			if (str[i + 1] == '>' && flag == 0)
-				flag = 1;
-			tokenize_io(token, ft_strdup(">"), i, flag);
-			break ;
-		}
+		if (str[i + 1] == '<' && flag == 0)
+			flag = 1;
+		split_io(token, ft_strdup("<"), i, flag);
+	}
+	else if (str[i] == '>')
+	{
+		if (str[i + 1] == '>' && flag == 0)
+			flag = 1;
+		split_io(token, ft_strdup(">"), i, flag);
 	}
 }
 
-void	tokenize_io(t_token *token, char *s, int idx, int flag)
+void	split_io(t_token *token, char *s, int idx, int flag)
 {
 	char	*tmp;
 
@@ -65,7 +65,7 @@ void	tokenize_io(t_token *token, char *s, int idx, int flag)
 	{
 		add_token(&token, 2, T_CHUNK, ft_substr(token->str, idx + 1, \
 			ft_strlen(token->str) - idx));
-		add_token(&token, 1, T_IO_L, ft_strdup(s));
+		add_token(&token, 1, T_RED, ft_strdup(s));
 		tmp = ft_substr(token->str, 0, idx);
 		free(token->str);
 		token->str = ft_strdup(tmp);
@@ -76,10 +76,34 @@ void	tokenize_io(t_token *token, char *s, int idx, int flag)
 		s = ft_strjoin(s, s);
 		add_token(&token, 2, T_CHUNK, ft_substr(token->str, idx + 2, \
 			ft_strlen(token->str) - idx));
-		add_token(&token, 1, T_IO_LL, ft_strdup(s));
+		add_token(&token, 1, T_RED, ft_strdup(s));
 		tmp = ft_substr(token->str, 0, idx);
 		free(token->str);
 		token->str = ft_strdup(tmp);
 		free(tmp);
+	}
+}
+
+void	change_type_red(t_token *token)
+{
+	if (*(token->str) == '<')
+	{
+		if (ft_strncmp(token->str, "<<", 2))
+		{
+			token->type = T_IO_LL;
+			return ;
+		}
+		token->type = T_IO_L;
+		return ;
+	}
+	else
+	{
+		if (ft_strncmp(token->str, ">>", 2))
+		{
+			token->type = T_IO_RR;
+			return ;
+		}
+		token->type = T_IO_R;
+		return ;
 	}
 }

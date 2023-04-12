@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+         #
+#    By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/12 16:06:02 by yeongo            #+#    #+#              #
-#    Updated: 2023/04/12 19:30:37 by yeongo           ###   ########.fr        #
+#    Updated: 2023/04/12 20:29:59 by wbae             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,7 @@ SRC_FILES			:=	$(addsuffix .c,			\
 							tokenize_space		\
 							tokenize_pipe		\
 							tokenize_utils		\
-							tokenize_special	\
+							tokenize_redirection\
 							util				\
 	 						debug				\
 	 						main				\

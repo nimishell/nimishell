@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 19:58:07 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/12 20:03:27 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/12 20:36:18 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,10 @@ void		tokenize_pipe(t_token *token);
 void		sep_pipeline(t_token *token);
 void		sub_pipeline(t_token *token);
 
-void		tokenize_special(t_token *token);
-void		split_str_io(t_token *token, char *str);
-void		tokenize_io(t_token *token, char *s, int idx, int flag);
+void		tokenize_redirection(t_token *token);
+void		before_split_io(t_token *token, char *str);
+void		split_io(t_token *token, char *s, int idx, int flag);
+void		change_type_red(t_token *token);
 
 int			parse(t_cmd *cmd, char *rd_line);
 t_token		*tokenize(char *rd_line);
