@@ -1,0 +1,10 @@
+.DS_Store
+.vscode
+.cache
+.obj
+*.json
+*.o
+*.a
+*.sh
+*_wb
+minishell
