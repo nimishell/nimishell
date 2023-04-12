@@ -6,7 +6,7 @@
 #    By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/12 16:06:02 by yeongo            #+#    #+#              #
-#    Updated: 2023/04/12 20:29:59 by wbae             ###   ########.fr        #
+#    Updated: 2023/04/12 21:35:48 by yeongo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,24 +32,25 @@ CPPFLAGS			:=	-I$(HEADER) -I$(LIBFT_HEADER) -I$(LIBRDLINE_HEADER)
 MJFLAGS				 =	-MJ $@.part.json
 RM					:=	rm -rf
 
-SRC_FILES			:=	$(addsuffix .c,			\
-							signal				\
-							error				\
-							envp 				\
-							parse 				\
-							tokenize_quote		\
-							tokenize_space		\
-							tokenize_pipe		\
-							tokenize_utils		\
-							tokenize_redirection\
-							util				\
-	 						debug				\
-	 						main				\
+SRC_FILES			:=	$(addsuffix .c,				\
+							signal					\
+							error					\
+							envp 					\
+							parse 					\
+							tokenize_quote			\
+							tokenize_space			\
+							tokenize_pipe			\
+							tokenize_utils			\
+							tokenize_redirection	\
+							util					\
+	 						debug					\
+	 						main					\
 						)
 OBJ_FILES			:=	$(SRC_FILES:.c=.o)
-JSON_FILES			:=	compile_commands.json
+JSON_FILES			:=	compile_commands
 SRC					:=	$(addprefix $(SRC_DIR), $(SRC_FILES))
 OBJ					:=	$(addprefix $(OBJ_DIR), $(OBJ_FILES))
+JSON				:=	$(addsuffix .json,		$(JSON_FILES))
 
 SRC_FOLDER			:=	$(SRC_DIR)
 OBJ_FOLDER			:=	$(OBJ_DIR)
@@ -76,7 +77,7 @@ $(OBJ_FOLDER)	:
 $(NAME)	:	$(OBJS)
 	@make -s -C $(LIBFT_DIR) all
 	@$(CC) $(CFLAGS) $(LDFLAGS) $(DBFLAGS) -o $@ $^
-	@(printf [ && find . -name "*.part.json" | xargs cat && printf ]) > $(JSON_FILES);
+	@(printf [ && find . -name "*.part.json" | xargs cat && printf ]) > $(JSON);
 	@echo "\033[01;32m         SUCCESS!        \033[0m"
 
 $(OBJ_FOLDER)%.o	:	$(SRC_FOLDER)%.c
@@ -92,11 +93,13 @@ debug	:
 
 .PHONY	:	clean
 clean	:
+	@make -s -C libft clean
 	@$(RM) $(OBJ_DIR) $(CACHE_DIR)
 	@echo "\033[91m      REMOVE OBJECT      \033[0m"
 
 .PHONY	:	fclean
 fclean	:	clean
+	@make -s -C libft fclean
 	@$(RM) $(NAME)
 	@echo "\033[91m       FCLEAN DONE       \033[0m"
 

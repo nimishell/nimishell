@@ -7,4 +7,6 @@
 *.a
 *.sh
 *_wb
+*test*
+tmp_files
 minishell

@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 19:42:07 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/12 17:55:59 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/12 20:21:54 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,11 @@ int	ft_echo(t_token *token)
 
 	is_option = 0;
 	token = token->next;
-	if (token != NULL && ft_strncmp(token->str, "-n", 3) == 0)
+	if (token != NULL
+		&& ft_strncmp(token->str, "-n", 3) == 0)
 	{
 		is_option = 1;
 		token = token->next;
-	}
-	if (token == NULL)
-	{
-		return (1);
 	}
 	while (token != NULL)
 	{
