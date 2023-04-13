@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 19:58:07 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/12 20:36:18 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/13 16:18:22 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,14 @@ void		before_split_io(t_token *token, char *str);
 void		split_io(t_token *token, char *s, int idx, int flag);
 void		change_type_red(t_token *token);
 
+void		after_split_chunk(t_token *token);
+
 int			parse(t_cmd *cmd, char *rd_line);
 t_token		*tokenize(char *rd_line);
 
 t_token		*make_new_token(void);
 t_token		*add_token(t_token **tokens, int idx, int type, char *str);
 t_token		*add_back_token(t_token **tokens, int idx, t_token *new);
+void		remove_one_token(t_token *prev, t_token *target);
 
 #endif
