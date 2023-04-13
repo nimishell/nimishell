@@ -6,26 +6,36 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 16:00:31 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/13 16:18:29 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/13 21:15:44 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parsing.h"
 
-void	after_split_chunk(t_token *token)
+void	remove_null(t_token **lst)
 {
-	t_token *next;
+	t_token	*rm;
+	t_token	*cur;
 
-	next = token->next;
-	// if (!ft_strncmp(token->str, " ", 1))
-	// {
-
-	// }
-	while (next)
+	cur = *lst;
+	while (cur && cur->next)
 	{
-		if (!ft_strncmp(next->str, " ", 1))
-			remove_one_token(token, next);
-		next = token->next;
+		if (cur->next->str[0] == '\0')
+		{
+			rm = cur->next;
+			cur->next = cur->next->next;
+			free(rm->str);
+			free(rm);
+		}
+		cur = cur->next;
+	}
+	cur = *lst;
+	if (cur && cur->str[0] == '\0')
+	{
+		*lst = cur->next;
+		free(cur->str);
+		free(cur);
 	}
 }
+

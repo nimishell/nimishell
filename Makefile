@@ -6,7 +6,7 @@
 #    By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/12 16:06:02 by yeongo            #+#    #+#              #
-#    Updated: 2023/04/13 15:35:24 by yeongo           ###   ########.fr        #
+#    Updated: 2023/04/13 17:32:59 by wbae             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,6 +42,7 @@ SRC_FILES			:=	$(addsuffix .c,				\
 							tokenize_pipe			\
 							tokenize_utils			\
 							tokenize_redirection	\
+							after_split_chunk		\
 							util					\
 	 						debug					\
 	 						main					\

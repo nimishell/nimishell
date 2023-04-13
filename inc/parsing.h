@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 19:58:07 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/13 16:18:22 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/13 20:01:51 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,17 @@ char		**seperate_array_quote(char *str, int start, int end);
 void		tokenize_quote(t_token *ret);
 
 void		tokenize_space(t_token *tokens);
-void		split_space(t_token *token);
+void		split_space(t_token *token, char *str);
 
 void		tokenize_pipe(t_token *token);
-void		sep_pipeline(t_token *token);
-void		sub_pipeline(t_token *token);
+void		split_pipe(t_token *token, char *str);
 
 void		tokenize_redirection(t_token *token);
 void		before_split_io(t_token *token, char *str);
 void		split_io(t_token *token, char *s, int idx, int flag);
 void		change_type_red(t_token *token);
 
-void		after_split_chunk(t_token *token);
+void		remove_null(t_token **lst);
 
 int			parse(t_cmd *cmd, char *rd_line);
 t_token		*tokenize(char *rd_line);
@@ -40,6 +39,5 @@ t_token		*tokenize(char *rd_line);
 t_token		*make_new_token(void);
 t_token		*add_token(t_token **tokens, int idx, int type, char *str);
 t_token		*add_back_token(t_token **tokens, int idx, t_token *new);
-void		remove_one_token(t_token *prev, t_token *target);
 
 #endif
