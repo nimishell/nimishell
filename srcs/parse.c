@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 21:32:19 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/12 20:29:22 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/13 21:05:10 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,12 @@ t_token	*tokenize(char *rd_line)
 	if (!token)
 		return (NULL);
 	token->type = T_CHUNK;
-	token->str = rd_line;
+	token->str = ft_strtrim(rd_line, " ");
 	tokenize_quote(token);
 	tokenize_space(token);
 	tokenize_pipe(token);
 	tokenize_redirection(token);
+	remove_null(&token);
 	return (token);
 }
 
@@ -42,7 +43,6 @@ int	parse(t_cmd *cmd, char *rd_line)
 		return (0);
 	}
 	token = tokenize(rd_line);
-	token->rd_line = rd_line;
 	debug_print_tokens(token);
 	ft_free_token(token);
 	return (1);
