@@ -6,7 +6,7 @@
 #    By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/12 16:06:02 by yeongo            #+#    #+#              #
-#    Updated: 2023/04/12 21:35:48 by yeongo           ###   ########.fr        #
+#    Updated: 2023/04/13 15:35:24 by yeongo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ OBJ_DIR				:=	./.obj/
 CACHE_DIR			:=	./.cache/
 
 LIBFT_DIR			:=	./libft/
-LIBFT_HEADER		:=	./libft/
+LIBFT_HEADER		:=	./libft/inc/
 LIBFT				:=	$(LIBFT_DIR)libft.a
 LIBRDLINE_DIR		:=	${HOME}/.brew/opt/readline/lib/
 LIBRDLINE_HEADER	:=	${HOME}/.brew/opt/readline/include/
