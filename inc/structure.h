@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:45:47 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/13 16:05:23 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/13 16:42:11 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,10 @@ struct s_cmd
 	t_token	*token;
 	int		size;
 	int		type;
-	int		infile;
-	int		outfile;
+	int		infile_fd;
+	char	*infile;
+	int		outfile_fd;
+	char	*outfile;
 	char	syntax;
 	t_cmd	*next;
 	t_cmd	*prev;
