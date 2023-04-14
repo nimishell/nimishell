@@ -6,7 +6,7 @@
 #    By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/12 16:06:02 by yeongo            #+#    #+#              #
-#    Updated: 2023/04/13 17:32:59 by wbae             ###   ########.fr        #
+#    Updated: 2023/04/14 18:53:19 by wbae             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,8 +37,7 @@ SRC_FILES			:=	$(addsuffix .c,				\
 							error					\
 							envp 					\
 							parse 					\
-							tokenize_quote			\
-							tokenize_space			\
+							tokenize_quote_space	\
 							tokenize_pipe			\
 							tokenize_utils			\
 							tokenize_redirection	\
