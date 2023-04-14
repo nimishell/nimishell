@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 19:42:07 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/12 22:49:12 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/14 19:57:42 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include "minishell.h"
 #include <sys/param.h>
 #include <unistd.h>
+
+extern char	**environ;
 
 int	ft_cd(t_token *token)
 {
@@ -49,7 +51,19 @@ int	ft_echo(t_token *token)
 	return (0);
 }
 
-int	ft_env(t_token *token);
+int	ft_env(t_token *token)
+{
+	int	index_env;
+
+	index_env = 0;
+	while (environ[index_env])
+	{
+		ft_putstr_fd(environ[index_env], STDOUT_FILENO);
+		index_env++;
+	}
+	return (1);
+}
+
 int	ft_unset(t_token *token);
 
 int	ft_pwd(t_token *token)

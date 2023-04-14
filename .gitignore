@@ -5,8 +5,8 @@
 *.json
 *.o
 *.a
-*.out
-*.sh
+srcs/*.out
+srcs/*.sh
 *_wb
 # *test*
 tmp_files
