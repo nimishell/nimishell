@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structure.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: wbae <wbae@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:45:47 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/13 21:57:25 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/16 21:40:32 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ typedef struct s_env		t_env;
 struct s_token
 {
 	char	*str;
-	char	*rd_line;
 	int		type;
 	t_token	*next;
 };
@@ -57,18 +56,25 @@ struct s_env
 enum e_token_type
 {
 	T_CHUNK = 11,
-	T_ARGV = 22,
-	T_PIPE = 33,
-	T_SPACE = 44,
-	T_RED = 50
+	T_ECHUNK = 22,
+	T_ARGV = 33,
+	T_PIPE = 44,
+	T_SPACE = 55,
+	T_REDIR = 60
 };
 
 enum e_io_type
 {
-	T_IO_R = 51,
+	T_IO_R = 61,
 	T_IO_RR,
 	T_IO_L,
 	T_IO_LL
+};
+
+enum e_result
+{
+	FAIL,
+	SUCCESS
 };
 
 #endif

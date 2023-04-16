@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   after_split_chunk.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: wbae <wbae@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 16:00:31 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/14 17:42:17 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/16 21:56:24 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,3 +39,47 @@ void	remove_empty_token(t_token **lst)
 	}
 }
 
+
+void	translate_dollar(t_token *token, t_env *g_env)
+{
+	t_env	*head;
+	int		i;
+	char	*target;
+	char	*prev;
+
+	head = g_env;
+	while (token)
+	{
+		i = 0;
+		while (token->type == T_ECHUNK && token->str[i])
+		{
+			if (token->str[i] == '$')
+			{
+				target = ft_substr(token->str, i + 1, ft_strlen(token->str) - i);
+				printf("target : %s\n", target);
+				prev = ft_substr(token->str, 0, i);
+				g_env = head;
+				while (g_env)
+				{
+					if (!ft_strncmp(target, g_env->key, ft_strlen(target)))
+					{
+						printf("trans : %s\n", g_env->value);
+						free(token->str);
+						if (!prev)
+							token->str = ft_strdup(g_env->value);
+						else
+							token->str = ft_strjoin(prev, g_env->value);
+					}
+					else
+					{
+						free(token->str);
+						token->str = ft_strdup(prev);
+					}
+					g_env = g_env->next;
+				}
+			}
+			i++;
+		}
+		token = token->next;
+	}
+}

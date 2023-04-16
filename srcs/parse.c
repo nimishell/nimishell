@@ -3,47 +3,47 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: wbae <wbae@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 21:32:19 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/14 17:56:06 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/16 21:49:58 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parsing.h"
 
-t_token	*tokenize(char *rd_line)
+int	tokenize(t_token *token, char *rd_line)
 {
-	t_token	*token;
-
-	token = make_new_token();
-	if (!token)
-		return (NULL);
-	token->type = T_CHUNK;
-	token->str = ft_strtrim(rd_line, " ");
-	tokenize_quote(token);
-	tokenize_space(token);
-	// tokenize_pipe(token);
-	// tokenize_redirection(token);
+	rd_line = ft_strtrim(rd_line, " ");
+	if (rd_line == NULL)
+		return (FAIL);
+	if (ft_split_token(&token, rd_line) == FAIL)
+	{
+		token_clear(&token);
+		return (FAIL);
+	}
 	remove_empty_token(&token);
-	return (token);
+	translate_dollar(token, g_env);
+	debug_print_tokens(token);
+	return (SUCCESS);
 }
 
 int	parse(t_cmd *cmd, char *rd_line)
 {
 	t_token	*token;
+	int		flag;
 
 	cmd->size = 1;
 	cmd->syntax = 0;
 	cmd->token = NULL;
-	if (!check_quote(rd_line))
+	token = NULL;
+	flag = tokenize(token, rd_line);
+	if (!flag)
 	{
 		syntax_error("syntax error", 1, 0);
 		return (0);
 	}
-	token = tokenize(rd_line);
-	debug_print_tokens(token);
 	ft_free_token(token);
 	return (1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   util.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: wbae <wbae@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 16:30:42 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/14 17:27:07 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/16 20:26:36 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,24 +56,24 @@ void	ft_free_token(t_token *tok)
 	}
 }
 
-char	*ft_strsep(char **str, const char *target)
-{
-	char	*ptr;
+//char	*ft_strsep(char **str, const char *target)
+//{
+//	char	*ptr;
 
-	ptr = *str;
-	if (ptr == NULL)
-		return (NULL);
+//	ptr = *str;
+//	if (ptr == NULL)
+//		return (NULL);
 
-	while (**str)
-	{
-		if (ft_strchr(*str, (int)target) != NULL)
-		{
-			**str = 0x00;
-			(*str)++;
-			return (ptr);
-		}
-		(*str)++;
-	}
-	*str = NULL;
-	return (ptr);
-}
+//	while (**str)
+//	{
+//		if (ft_strchr(*str, (int)target) != NULL)
+//		{
+//			**str = 0x00;
+//			(*str)++;
+//			return (ptr);
+//		}
+//		(*str)++;
+//	}
+//	*str = NULL;
+//	return (ptr);
+//}

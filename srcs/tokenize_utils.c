@@ -3,81 +3,46 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: wbae <wbae@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 16:10:57 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/13 21:04:43 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/16 21:49:10 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parsing.h"
 
-t_token	*make_new_token(void)
-{
-	t_token	*new;
 
-	new = malloc(sizeof(t_token));
-	if (!new)
-		return (NULL);
-	new->rd_line = NULL;
-	new->str = NULL;
-	new->type = 0;
-	new->next = NULL;
-	return (new);
+void	token_clear(t_token **token)
+{
+	t_token	*remove_token;
+
+	if (*token == NULL)
+		return ;
+	while (*token != NULL)
+	{
+		remove_token = *token;
+		*token = (*token)->next;
+		free(remove_token->str);
+		free(remove_token);
+	}
 }
 
-t_token	*add_token(t_token **tokens, int idx, int type, char *str)
+
+void	token_add_back(t_token **lst, t_token *new)
 {
-	t_token	*new;
+	t_token	*cur;
 
-	if (!tokens)
-		return (NULL);
-	new = make_new_token();
-	if (!new)
-		return (NULL);
-	new->type = type;
-	new->str = ft_strdup(str);
-	if (!new->str)
+	if (new == NULL)
+		return ;
+	if (*lst == NULL)
 	{
-		free(new);
-		return (NULL);
+		*lst = new;
+		return ;
 	}
-	if (!*tokens || idx == 0)
-	{
-		new->next = (*tokens);
-		(*tokens) = new;
-		return (new);
-	}
-	add_back_token(tokens, idx, new);
-	return (new);
-}
-
-t_token	*add_back_token(t_token **tokens, int idx, t_token *new)
-{
-	t_token	*prev;
-
-	prev = (*tokens);
-	while (prev->next != NULL && --idx > 0)
-		prev = prev->next;
-	new->next = prev->next;
-	prev->next = new;
-	return (NULL);
-}
-
-void	remove_token_array(t_token *tokens)
-{
-	t_token	*next;
-
-	next = tokens;
-	while (next)
-	{
-		if (next->str)
-			free(next->str);
-		if (next->rd_line)
-			free(next->rd_line);
-		tokens = next;
-		next = next->next;
-		free (tokens);
-	}
+	cur = *lst;
+	while (cur->next != NULL)
+		cur = cur->next;
+	cur->next = new;
 }
