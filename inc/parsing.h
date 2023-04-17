@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wbae <wbae@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 19:58:07 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/16 21:46:16 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/17 16:51:42 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,9 @@ int			split_str(t_token **token, char **rd_line, t_token *new);
 int			ft_split_token(t_token **token_head, char *rd_line);
 
 void		remove_empty_token(t_token **lst);
-void		translate_dollar(t_token *token, t_env *g_env);
+void		treat_dollar(t_token *token);
+char		*translate_dollar(t_env *head, char **str);
+char		**split_dollar(char *str);
 
 int			parse(t_cmd *cmd, char *rd_line);
 int			tokenize(t_token *token, char *rd_line);

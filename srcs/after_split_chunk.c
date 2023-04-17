@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   after_split_chunk.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wbae <wbae@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 16:00:31 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/16 21:56:24 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/17 16:51:53 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,47 +39,64 @@ void	remove_empty_token(t_token **lst)
 	}
 }
 
-
-void	translate_dollar(t_token *token, t_env *g_env)
+void	treat_dollar(t_token *token)
 {
+	char	**split;
 	t_env	*head;
-	int		i;
-	char	*target;
-	char	*prev;
 
-	head = g_env;
 	while (token)
 	{
-		i = 0;
-		while (token->type == T_ECHUNK && token->str[i])
+		while (token->type == T_ECHUNK && ft_strchr(token->str, '$'))
 		{
-			if (token->str[i] == '$')
-			{
-				target = ft_substr(token->str, i + 1, ft_strlen(token->str) - i);
-				printf("target : %s\n", target);
-				prev = ft_substr(token->str, 0, i);
-				g_env = head;
-				while (g_env)
-				{
-					if (!ft_strncmp(target, g_env->key, ft_strlen(target)))
-					{
-						printf("trans : %s\n", g_env->value);
-						free(token->str);
-						if (!prev)
-							token->str = ft_strdup(g_env->value);
-						else
-							token->str = ft_strjoin(prev, g_env->value);
-					}
-					else
-					{
-						free(token->str);
-						token->str = ft_strdup(prev);
-					}
-					g_env = g_env->next;
-				}
-			}
-			i++;
+			split = split_dollar(token->str);
+			head = g_env;
+			split[1] = translate_dollar(head, &split[1]);
+			free(token->str);
+			token->str = ft_strjoin(split[0], split[1]);
+			token->str = ft_strjoin(token->str, split[2]);
+			ft_free(split[0], split[1], split[2], NULL);
 		}
 		token = token->next;
 	}
+}
+
+char	**split_dollar(char *str)
+{
+	int		i;
+	int		j;
+	char	**split;
+
+	split = malloc(sizeof(char *) * 4);
+	i = 0;
+	while (str[i] && str[i] != '$')
+		i++;
+	j = i + 1;
+	while (str[j] && str[j] != '$')
+		j++;
+	split[0] = ft_substr(str, 0, i);
+	split[1] = ft_substr(str, i + 1, j - i - 1);
+	split[2] = ft_substr(str, j, ft_strlen(str) - j);
+	split[3] = 0;
+	return (split);
+}
+
+char	*translate_dollar(t_env *head, char **str)
+{
+	while (head)
+	{
+		if (!ft_strncmp(*str, head->key, ft_strlen(*str)))
+		{
+			printf("trans : %s\n", head->value);
+			free(*str);
+			*str = ft_strdup(head->value);
+			break ;
+		}
+		head = head->next;
+	}
+	if (!head)
+	{
+		free(*str);
+		*str = ft_strdup("");
+	}
+	return (*str);
 }

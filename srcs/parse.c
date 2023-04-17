@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wbae <wbae@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 21:32:19 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/16 21:49:58 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/17 16:53:19 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ int	tokenize(t_token *token, char *rd_line)
 		token_clear(&token);
 		return (FAIL);
 	}
+	treat_dollar(token);
 	remove_empty_token(&token);
-	translate_dollar(token, g_env);
 	debug_print_tokens(token);
 	return (SUCCESS);
 }

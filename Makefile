@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: wbae <wbae@student.42seoul.kr>             +#+  +:+       +#+         #
+#    By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/12 16:06:02 by yeongo            #+#    #+#              #
-#    Updated: 2023/04/16 21:42:13 by wbae             ###   ########.fr        #
+#    Updated: 2023/04/17 12:52:00 by wbae             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,8 +21,8 @@ CACHE_DIR			:=	./.cache/
 LIBFT_DIR			:=	./libft/
 LIBFT_HEADER		:=	./libft/inc/
 LIBFT				:=	$(LIBFT_DIR)libft.a
-LIBRDLINE_DIR		:=	/opt/homebrew/opt/readline/lib #${HOME}/.brew/opt/readline/lib/
-LIBRDLINE_HEADER	:=	/opt/homebrew/opt/readline/include #${HOME}/.brew/opt/readline/include/
+LIBRDLINE_DIR		:=	${HOME}/.brew/opt/readline/lib/  #/opt/homebrew/opt/readline/lib
+LIBRDLINE_HEADER	:=	${HOME}/.brew/opt/readline/include/ #/opt/homebrew/opt/readline/include
 LIBRDLINE			:=	$(LIBRDLINE_DIR)libreadline.a
 LDFLAGS				:=	-L$(LIBFT_DIR) -lft -L$(LIBRDLINE_DIR) -lreadline
 
