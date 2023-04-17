@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 14:37:37 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/17 20:45:47 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/17 20:54:14 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	print_cmd_error(char *str, char *cmd, int code)
 
 void	syntax_error(char *str, int exit_code, int flag)
 {
-	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd("minishell: syntax error", 2);
 	ft_putstr_fd(str, 2);
 	ft_putstr_fd("\n", 2);
 	if (!flag)
