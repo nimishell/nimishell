@@ -6,13 +6,15 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 19:42:07 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/14 19:57:42 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/17 20:00:05 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "minishell.h"
+#include <string.h>
 #include <sys/param.h>
+#include <sys/errno.h>
 #include <unistd.h>
 
 extern char	**environ;
@@ -25,7 +27,11 @@ int	ft_cd(t_token *token)
 		dir = "/Users/yeongo";
 	else
 		dir = token->next->str;
-	chdir(dir);
+	if (chdir(dir) == -1)
+	{
+		ft_perror(strerror(errno));
+		return (1);
+	}
 	return (0);
 }
 
@@ -43,7 +49,7 @@ int	ft_echo(t_token *token)
 	}
 	while (token != NULL)
 	{
-		ft_putstr_fd(token->str, 1);
+		ft_putstr_fd(token->str, STDOUT_FILENO);
 		token = token->next;
 	}
 	if (followd_new_line == 1)
@@ -55,6 +61,8 @@ int	ft_env(t_token *token)
 {
 	int	index_env;
 
+	if (token->next != NULL)
+		return (0);
 	index_env = 0;
 	while (environ[index_env])
 	{

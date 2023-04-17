@@ -6,18 +6,25 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 14:37:37 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/04 19:16:57 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/17 20:45:47 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <sys/errno.h>
 
-void	standard_error(int code)
+extern int errno;
+
+void	ft_perror(char *p_name, char *argument, int code)
 {
 	char	*str;
 
-	str = strerror(code);
+	str = strerror(errno);
 	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(p_name, 2);
+	ft_putstr_fd(": ", 2);
+	ft_putstr_fd(argument, 2);
+	ft_putstr_fd(": ", 2);
 	ft_putstr_fd(str, 2);
 	ft_putstr_fd("\n", 2);
 	exit(code);
