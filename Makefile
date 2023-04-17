@@ -6,7 +6,7 @@
 #    By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/12 16:06:02 by yeongo            #+#    #+#              #
-#    Updated: 2023/04/17 12:52:00 by wbae             ###   ########.fr        #
+#    Updated: 2023/04/17 20:18:16 by wbae             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ CACHE_DIR			:=	./.cache/
 LIBFT_DIR			:=	./libft/
 LIBFT_HEADER		:=	./libft/inc/
 LIBFT				:=	$(LIBFT_DIR)libft.a
-LIBRDLINE_DIR		:=	${HOME}/.brew/opt/readline/lib/  #/opt/homebrew/opt/readline/lib
+LIBRDLINE_DIR		:=	${HOME}/.brew/opt/readline/lib/ #/opt/homebrew/opt/readline/lib
 LIBRDLINE_HEADER	:=	${HOME}/.brew/opt/readline/include/ #/opt/homebrew/opt/readline/include
 LIBRDLINE			:=	$(LIBRDLINE_DIR)libreadline.a
 LDFLAGS				:=	-L$(LIBFT_DIR) -lft -L$(LIBRDLINE_DIR) -lreadline
@@ -35,11 +35,12 @@ RM					:=	rm -rf
 SRC_FILES			:=	$(addsuffix .c,				\
 							signal					\
 							error					\
-							envp 					\
-							parse 					\
-							ft_split_token			\
-							tokenize_utils			\
+							envp					\
+							parse					\
+							split_token				\
 							after_split_chunk		\
+							translate_dollar		\
+							tokenize_utils			\
 							util					\
 	 						debug					\
 	 						main					\
