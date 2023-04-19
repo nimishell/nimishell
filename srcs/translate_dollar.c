@@ -6,13 +6,21 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 19:53:08 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/17 20:06:11 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/19 20:56:49 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parsing.h"
 
+static int	is_meta(char c)
+{
+	if (c == '.' || c == '!' || c == '@' || c == '#' || c == '$' \
+		|| c == '^' || c == '[' || c == ']' || c == '{' || c == '}' \
+		|| c == ',')
+		return (1);
+	return (0);
+}
 
 void	treat_dollar(t_token *token)
 {
@@ -43,11 +51,13 @@ char	**split_dollar(char *str)
 
 	split = malloc(sizeof(char *) * 4);
 	i = 0;
-	while (str[i] && str[i] != '$')
+	while (str[i] && str[i] != '$' && !is_meta(str[i]))
 		i++;
 	j = i + 1;
-	while (str[j] && str[j] != '$')
+	while (str[j] && str[j] != '$' && !is_meta(str[j]))
 		j++;
+	if (i == j -1)
+
 	split[0] = ft_substr(str, 0, i);
 	split[1] = ft_substr(str, i + 1, j - i - 1);
 	split[2] = ft_substr(str, j, ft_strlen(str) - j);
@@ -59,7 +69,7 @@ char	*translate_dollar(t_env *head, char **str)
 {
 	while (head)
 	{
-		if (!ft_strncmp(*str, head->key, ft_strlen(*str)))
+		if (!ft_strncmp(*str, head->key, ft_strlen(head->key)))
 		{
 			printf("trans : %s\n", head->value);
 			free(*str);

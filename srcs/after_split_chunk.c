@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 16:00:31 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/17 20:29:43 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/19 18:09:06 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	check_special(t_token *token)
 				{
 					token->type = T_IO_RR;
 					free(token->str);
-					token->str = ft_strdup("<<");
+					token->str = ft_strdup(">>");
 				}
 			}
 			else
@@ -66,7 +66,6 @@ void	check_special(t_token *token)
 		token = token->next;
 	}
 }
-
 
 void	treat_heredoc(t_token *token)
 {
