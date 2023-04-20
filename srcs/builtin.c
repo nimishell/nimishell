@@ -6,63 +6,65 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 19:42:07 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/17 20:00:05 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/20 22:57:26 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "minishell.h"
-#include <string.h>
+#include "error.h"
 #include <sys/param.h>
 #include <sys/errno.h>
-#include <unistd.h>
 
 extern char	**environ;
 
-int	ft_cd(t_token *token)
+int	ft_cd(char *path, char **argv)
 {
 	char	*dir;
 
-	if (token->next == NULL)
+	if (argv[1] == NULL)
 		dir = "/Users/yeongo";
 	else
-		dir = token->next->str;
+		dir = argv[1];
 	if (chdir(dir) == -1)
 	{
-		ft_perror(strerror(errno));
-		return (1);
+		ft_perror(path, argv[1]);
+		return (0);
 	}
-	return (0);
+	return (1);
 }
 
-int	ft_echo(t_token *token)
+int	ft_echo(char *path, char **argv)
 {
 	int	followd_new_line;
+	int	index_argv;
 
+	(void)path;
 	followd_new_line = 1;
-	token = token->next;
-	if (token != NULL
-		&& ft_strncmp(token->str, "-n", 3) == 0)
+	index_argv = 1;
+	if (argv[index_argv] != NULL
+		&& ft_strncmp(argv[index_argv], "-n", 3) == 0)
 	{
 		followd_new_line = 0;
-		token = token->next;
+		index_argv++;
 	}
-	while (token != NULL)
+	while (argv[index_argv] != NULL)
 	{
-		ft_putstr_fd(token->str, STDOUT_FILENO);
-		token = token->next;
+		ft_putstr_fd(argv[index_argv], STDOUT_FILENO);
+		index_argv++;
 	}
 	if (followd_new_line == 1)
 		ft_putchar_fd('\n', 1);
-	return (0);
+	return (1);
 }
 
-int	ft_env(t_token *token)
+int	ft_env(char *path, char **argv)
 {
 	int	index_env;
 
-	if (token->next != NULL)
-		return (0);
+	// (void)path;
+	// if (argv[1] != NULL)
+	// 	return (0);
 	index_env = 0;
 	while (environ[index_env])
 	{
@@ -83,11 +85,11 @@ int	ft_pwd(t_token *token)
 	if (next_token != NULL)
 	{
 		ft_putstr_fd("pwd: too many arguments\n", 2);
-		return (1);
+		return (0);
 	}
 	getcwd(working_path, MAXPATHLEN);
 	ft_putstr_fd(working_path, 1);
-	return (0);
+	return (1);
 }
 
 int	ft_export(t_token *token);
@@ -114,6 +116,6 @@ int	is_builtin(t_token *token)
 	else if (ft_strncmp(str, "exit", 5) == 0)
 		result = ft_exit(token);
 	else
-		result = 1;
+		result = 0;
 	return (result);
 }
