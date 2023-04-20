@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 16:00:31 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/19 18:09:06 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/20 19:53:56 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,6 @@ void	treat_heredoc(t_token *token)
 				token = token->next;
 			if (!token)
 				return ;
-			// if (!token)
-			// 	syntax error.......
 			token->type = T_CHUNK;
 		}
 	}

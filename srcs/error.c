@@ -6,14 +6,14 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 14:37:37 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/17 20:54:14 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/20 21:03:16 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <sys/errno.h>
 
-extern int errno;
+extern int	errno;
 
 void	ft_perror(char *p_name, char *argument, int code)
 {

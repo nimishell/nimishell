@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 10:11:47 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/13 15:27:16 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/20 17:15:29 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ char	*ft_itoa(int n);
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 void	ft_striteri(char *s, void (*f)(unsigned int, char *));
 int		ft_atoi(const char *nbr);
+char	*ft_ultoa(unsigned long n);
 
 //bonus part//
 t_list	*ft_lstnew(void *content);

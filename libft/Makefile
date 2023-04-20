@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+         #
+#    By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/13 15:28:56 by yeongo            #+#    #+#              #
-#    Updated: 2023/04/13 15:31:26 by yeongo           ###   ########.fr        #
+#    Updated: 2023/04/20 17:15:06 by wbae             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,6 +73,7 @@ SRC_FILES		:=	$(addsuffix .c,				\
 						ft_lstmap				\
 						ft_lstnew				\
 						ft_lstsize				\
+						ft_ultoa				\
 					)
 OBJ_FILES		:=	$(SRC_FILES:.c=.o)
 JSON_FILES		:=	compile_commands
