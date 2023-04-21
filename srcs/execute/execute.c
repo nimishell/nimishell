@@ -6,7 +6,7 @@
 /*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 20:30:06 by yeongo            #+#    #+#             */
-/*   Updated: 2023/04/21 20:34:54 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/21 21:17:43 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,38 +15,59 @@
 
 extern char	**environ;
 
-static void	execve_absolute_path(char **command)
+static char	**get_path(void)
+{
+	int		index;
+	char	*path;
+	char	**result;
+
+	index = 0;
+	while (environ[index])
+	{
+		path = ft_strnstr(environ[index], "PATH=", 5);
+		if (path != NULL)
+			break ;
+		index++;
+	}
+	if (path == NULL)
+		return (NULL);
+	result = ft_split(path + 5, ':');
+	return (result);
+}
+
+static void	execute_absolute_path(char **command)
 {
 	execve(command[0], command, environ);
 	exit_with_perror("zsh", command[0], 127);
 }
 
-static void	execve_relative_path(char **command, char **path)
+static void	execute_relative_path(char **command, char **path)
 {
-	char	*command_tmp;
-	int		index;
+	int	index;
 
-	command_tmp = ft_strjoin("/", command[0]);
+	ft_strapp_front("/", &command[0]);
 	index = 0;
 	while (path[index])
 	{
-		ft_free_str(&(command[0]));
-		command[0] = ft_strjoin(path[index], command_tmp);
+		ft_strapp_front(path[index], &command[0]);
 		execve(command[0], command, environ);
 		index++;
 	}
-	ft_free_str(&command_tmp);
 }
 
-void	execve_command(char **command, char **path)
+void	execute_command(char **command)
 {
 	char	*command_org;
+	char	**path;
 
-	command_org = ft_strdup(command[0]);
+	path = get_path();
 	if (path == NULL || ft_strchr(command[0], '/'))
-		execve_absolute_path(command);
-	execve_relative_path(command, path);
+		execute_absolute_path(command);
+	command_org = ft_strdup(command[0]);
+	execute_relative_path(command, path);
 	ft_free_strings(&path);
 	ft_free_strings(&command);
-	exit_with_message("zsh", command_org, "Command not found", 127);
+	ft_error_message(command_org, NULL, "Command not found");
+	ft_free_str(&command_org);
+	exit(127);
 }
