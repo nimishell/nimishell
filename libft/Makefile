@@ -6,7 +6,7 @@
 #    By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/13 15:28:56 by yeongo            #+#    #+#              #
-#    Updated: 2023/04/21 19:23:01 by yeongo           ###   ########.fr        #
+#    Updated: 2023/04/21 20:39:42 by yeongo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,7 @@ SRC_FILES		:=	$(addsuffix .c,				\
 						ft_atoi					\
 						ft_bzero				\
 						ft_calloc				\
+						ft_free					\
 						ft_isalnum				\
 						ft_isalpha				\
 						ft_isascii				\

@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 10:11:47 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/21 19:22:40 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/21 20:38:11 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,9 @@ char	*ft_strnstr(const char *big, const char *small, size_t len);
 char	*ft_strrchr(const char *s, int c);
 int		ft_tolower(int c);
 int		ft_toupper(int c);
+void	ft_free_str(char **str);
+void	ft_free_strings(char ***strings);
+void	ft_free_void(void ***ptr, int index_max);
 
 //part 2//
 void	ft_putchar_fd(char c, int fd);

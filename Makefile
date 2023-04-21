@@ -6,7 +6,7 @@
 #    By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/12 16:06:02 by yeongo            #+#    #+#              #
-#    Updated: 2023/04/21 13:57:35 by yeongo           ###   ########.fr        #
+#    Updated: 2023/04/21 20:28:31 by yeongo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,8 @@ SRC_FILES			:=	$(addsuffix .c,				\
 	 						debug					\
 	 						main					\
 						)
-	 						# builtin/builtin			\
+	 						# builtin/				\
+	 						# excute/				\
 OBJ_FILES			:=	$(SRC_FILES:.c=.o)
 OBJ_BUILTIN_FILES	:=	$(SRC_FILES:.c=.o)
 JSON_FILES			:=	compile_commands
