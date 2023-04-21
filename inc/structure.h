@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:45:47 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/20 21:09:29 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/21 13:00:22 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,12 @@ enum e_io_type
 	T_IO_RR,
 	T_IO_L,
 	T_IO_LL
+};
+
+enum e_bool
+{
+	FALSE,
+	TRUE
 };
 
 enum e_result
