@@ -6,7 +6,7 @@
 /*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 13:58:05 by yeongo            #+#    #+#             */
-/*   Updated: 2023/04/21 19:26:31 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/22 14:32:43 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,12 @@ static int	find_option(char *str)
 	return (TRUE);
 }
 
-int	ft_echo(char *path, char **argv)
+int	ft_echo(char *command, char **argv)
 {
 	int	is_option;
 	int	index_argv;
 
-	(void)path;
+	(void)command;
 	is_option = FALSE;
 	index_argv = 1;
 	if (find_option(argv[index_argv]) == TRUE)
