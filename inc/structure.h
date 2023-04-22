@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:45:47 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/21 13:00:22 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/22 15:48:42 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ struct s_token
 struct s_cmd
 {
 	t_token	*token;
+	char	*str;
 	int		size;
 	int		type;
 	int		infile_fd;
