@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:56:15 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/13 15:35:06 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/22 14:15:21 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "libft.h"
+# include "error.h"
 # include "structure.h"
 # include "debug.h" //DO NOT SUBMIT!!!
 
@@ -33,11 +34,6 @@ void		main_init(int ac, char *av[], char *envp[]);
 
 void		set_sig(void);
 void		sig_handler(int signal);
-
-void		standard_error(int code);
-void		print_error(char *str, int code);
-void		cmd_error(char *str, int code);
-void		syntax_error(char *str, int exit_code, int flag);
 
 void		copy_env(char *env[]);
 char		*copy_key(char *env);

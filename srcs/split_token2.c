@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 20:55:15 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/20 21:03:34 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/22 14:13:05 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int	split_redir(t_token **token, char **rd_line, t_token *new, char rd)
 	int			line_length;
 
 	line_length = 0;
-	while (**rd_line == redir_char)
+	while (**rd_line == rd)
 	{
 		line_length++;
 		(*rd_line)++;

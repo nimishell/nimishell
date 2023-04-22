@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wbae <wbae@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:33:23 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/16 21:46:30 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/22 14:17:03 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	main_init(int ac, char *av[], char *envp[])
 
 	(void)av;
 	if (ac != 1)
-		print_error("Argument input error\n", 2);
+		exit_with_message(NULL, NULL, "Argument input error", 2);
 	tcgetattr(STDIN_FILENO, &term);
 	term.c_lflag &= ~(ECHOCTL);
 	tcsetattr(STDOUT_FILENO, TCSANOW, &term);

@@ -6,7 +6,7 @@
 #    By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/12 16:06:02 by yeongo            #+#    #+#              #
-#    Updated: 2023/04/21 20:28:31 by yeongo           ###   ########.fr        #
+#    Updated: 2023/04/22 14:13:46 by wbae             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,13 +42,10 @@ SRC_FILES			:=	$(addsuffix .c,				\
 							after_split_chunk		\
 							translate_dollar		\
 							tokenize_utils			\
-							join_token				\
 							util					\
 	 						debug					\
 	 						main					\
 						)
-	 						# builtin/				\
-	 						# excute/				\
 OBJ_FILES			:=	$(SRC_FILES:.c=.o)
 OBJ_BUILTIN_FILES	:=	$(SRC_FILES:.c=.o)
 JSON_FILES			:=	compile_commands

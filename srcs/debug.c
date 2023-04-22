@@ -1,4 +1,4 @@
-
+#include <stdio.h>
 #include "debug.h"
 
 void	debug_print_tokens(t_token *token)
