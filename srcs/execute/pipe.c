@@ -6,7 +6,7 @@
 /*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 15:08:22 by yeongo            #+#    #+#             */
-/*   Updated: 2023/04/22 21:56:26 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/22 23:05:33 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,61 @@
 #include "minishell.h"
 #include "execute.h"
 #include "open_file.h"
-#include "signal.h"
+#include "terminate.h"
 
-char	**token_to_cmd(t_token *token);
+int	token_size(t_token *token)
+{
+	t_token	*cur;
+	int		size;
+
+	cur = token;
+	size = 0;
+	while (cur != NULL)
+	{
+		size++;
+		cur = cur->next;
+	}
+	return (size);
+}
+
+char	**is_cd_follow_no_dir(t_token *token)
+{
+	char	**result;
+
+	result = ft_calloc(3, sizeof(char *));
+	if (result == NULL)
+		return (0);
+	result[0] = ft_strdup(token->str);
+	result[1] = ft_strdup("$HOME");
+	return (result);
+}
+
+char	**token_to_cmd(t_token *token)
+{
+	t_token	*cur;
+	int		m_size;
+	char	**result;
+	int		index;
+
+	if (ft_strncmp(token->str, "cd", 3) == 0 \
+		&& token->next == NULL)
+	{
+		result = is_cd_follow_no_dir(token);
+		return (result);
+	}
+	cur = token;
+	m_size = token_size(cur) + 1;
+			m_size++;
+	result = ft_calloc(m_size, sizeof(char *));
+	index = 0;
+	while (cur != NULL)
+	{
+		result[index] = ft_strdup(cur->str);
+		index++;
+		cur = cur->next;
+	}
+	return (result);
+}
 
 int	is_builtin(char *cmd)
 {
@@ -58,10 +110,9 @@ static void	child_process(t_cmd *cmd, int pipe_fd[2])
 	}
 	if (close(pipe_fd[WR]) == -1)
 		exit_with_errno(command[0], command[1], EXIT_FAILURE);
-	if (is_builtin(command[0]) == TRUE)
-		execute_builtin(command[0], command);
-	else
+	if (is_builtin(command[0]) == FALSE)
 		execute_command(command);
+	execute_builtin(command[0], command);
 }
 
 static void	wait_child_prcess(t_cmd *cmd, pid_t last_pid)
