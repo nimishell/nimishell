@@ -6,69 +6,78 @@
 /*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 15:08:22 by yeongo            #+#    #+#             */
-/*   Updated: 2023/04/22 15:14:21 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/22 21:56:26 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "minishell.h"
+#include "execute.h"
+#include "open_file.h"
+#include "signal.h"
 
-# define EXIT_SIGNAL 128
+char	**token_to_cmd(t_token *token);
 
-static void	child(t_fd *fd, t_argument *args, int index)
+int	is_builtin(char *cmd)
+{
+	const char	*builtin[7] = {
+		"echo", "cd", "pwd", "export", "unset", "env", "exit"};
+	int			index;
+
+	index = 0;
+	while (index < 7)
+	{
+		if (ft_strncmp(cmd, builtin[index], ft_strlen(builtin[index]) + 1))
+			return (TRUE);
+		index++;
+	}
+	return (FALSE);
+}
+
+static void	child_process(t_cmd *cmd, int pipe_fd[2])
 {
 	char	**command;
 
-	command = ft_split(args->vector[index], ' ');
-	if (close(fd->pipe[0]) == -1)
-		exit_with_perror("zsh", command[0], EXIT_FAILURE);
-	if (index == 2 + args->heredoc->is_heredoc)
-		open_infile(fd, args);
-	if (dup2(fd->infile, STDIN_FILENO) == -1)
-		exit_with_perror("zsh", command[0], EXIT_FAILURE);
-	if (close(fd->infile) == -1)
-		exit_with_perror("zsh", command[0], EXIT_FAILURE);
-	if (dup2(fd->pipe[1], STDOUT_FILENO) == -1)
-		exit_with_perror("zsh", command[0], EXIT_FAILURE);
-	if (close(fd->pipe[1]) == -1)
-		exit_with_perror("zsh", command[0], EXIT_FAILURE);
-	execve_command(command, args->env_path);
+	command = token_to_cmd(cmd->token);
+	if (close(pipe_fd[RD]) == -1)
+		exit_with_errno(command[0], command[1], EXIT_FAILURE);
+	if (cmd->file_fd->infile != NULL)
+		open_infile(cmd->file_fd, cmd->redir);
+	if (dup2(cmd->file_fd->infile_fd, STDIN_FILENO) == -1)
+		exit_with_errno(command[0], command[1], EXIT_FAILURE);
+	if (close(cmd->file_fd->infile_fd) == -1)
+		exit_with_errno(command[0], command[1], EXIT_FAILURE);
+	if (cmd->file_fd->outfile != NULL)
+		open_outfile(cmd->file_fd, cmd->redir);
+	if (dup2(cmd->file_fd->outfile_fd, STDOUT_FILENO) == -1)
+		exit_with_errno(command[0], command[1], EXIT_FAILURE);
+	if (cmd->file_fd->outfile != NULL)
+	{
+		if (close(cmd->file_fd->outfile_fd) == -1)
+			exit_with_errno(command[0], command[1], EXIT_FAILURE);
+	}
+	if (close(pipe_fd[WR]) == -1)
+		exit_with_errno(command[0], command[1], EXIT_FAILURE);
+	if (is_builtin(command[0]) == TRUE)
+		execute_builtin(command[0], command);
+	else
+		execute_command(command);
 }
 
-static void	child_last(t_fd *fd, t_argument *args, int index)
+static void	wait_child_prcess(t_cmd *cmd, pid_t last_pid)
 {
-	char	**command;
+	int		state;
+	pid_t	cur_pid;
+	int		result;
 
-	command = ft_split(args->vector[index], ' ');
-	if (close(fd->pipe[0]) == -1)
-		exit_with_perror("zsh", command[0], EXIT_FAILURE);
-	if (dup2(fd->infile, STDIN_FILENO) == -1)
-		exit_with_perror("zsh", command[0], EXIT_FAILURE);
-	if (close(fd->infile) == -1)
-		exit_with_perror("zsh", command[0], EXIT_FAILURE);
-	open_outfile(fd, args);
-	if (dup2(fd->outfile, STDOUT_FILENO) == -1)
-		exit_with_perror("zsh", command[0], EXIT_FAILURE);
-	if (close(fd->outfile) == -1)
-		exit_with_perror("zsh", command[0], EXIT_FAILURE);
-	if (close(fd->pipe[1]) == -1)
-		exit_with_perror("zsh", command[0], EXIT_FAILURE);
-	execve_command(command, args->env_path);
-}
-
-static void	wait_child_prcess(int count, pid_t last_pid)
-{
-	int	state;
-	int	cur_pid;
-	int	result;
-
-	while (count)
+	while (cmd != NULL)
 	{
 		cur_pid = wait(&state);
 		if (cur_pid == -1)
 			exit_with_errno(NULL, NULL, EXIT_FAILURE);
 		else if (cur_pid == last_pid)
 			result = state;
-		count--;
+		cmd = cmd->next;
 	}
 	if (WIFEXITED(result))
 		exit(WEXITSTATUS(result));
@@ -79,31 +88,25 @@ static void	wait_child_prcess(int count, pid_t last_pid)
 	}
 }
 
-void	execute_multi_process(t_argument *args, t_process *process, t_fd *fd)
+void	execute_multi_process(t_cmd *cmd, int pipe_fd[2])
 {
-	int	index;
+	t_cmd	*cur_cmd;
 
-	index = 1;
-	while (index <= process->child_count)
+	cur_cmd = cmd;
+	while (cur_cmd != NULL)
 	{
-		if (pipe(fd->pipe) == -1)
+		if (pipe(pipe_fd) == -1)
 			exit_with_errno(NULL, NULL, EXIT_FAILURE);
-		process->id = fork();
-		if (process->id < 0)
+		cur_cmd->pid = fork();
+		if (cur_cmd->pid < 0)
 			exit_with_errno(NULL, NULL, EXIT_FAILURE);
-		else if (process->id == 0)
-		{
-			if (index < process->child_count)
-				child(fd, args, index + 1 + args->heredoc->is_heredoc);
-			else
-				child_last(fd, args, index + 1 + args->heredoc->is_heredoc);
-		}
-		close(fd->pipe[1]);
-		if (index != 1)
-			close(fd->infile);
-		fd->infile = fd->pipe[0];
-		index++;
+		else if (cur_cmd->pid == 0)
+			child_process(cmd, pipe_fd);
+		close(pipe_fd[WR]);
+		close(cur_cmd->file_fd->infile_fd);
+		cur_cmd->file_fd->infile_fd = pipe_fd[RD];
+		cur_cmd = cur_cmd->next;
 	}
-	close(fd->pipe[0]);
-	wait_child_prcess(process->child_count, process->id);
+	close(pipe_fd[RD]);
+	wait_child_prcess(cmd, cur_cmd->pid);
 }

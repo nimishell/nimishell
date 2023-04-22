@@ -6,17 +6,24 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:45:47 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/22 15:48:42 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/22 20:54:30 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTURE_H
 # define STRUCTURE_H
 
+# include <sys/types.h>
+
+# define EXIT_SIGNAL 128
+
 typedef struct s_token		t_token;
 typedef struct s_cmd		t_cmd;
 typedef struct s_cmdlist	t_cmdlist;
 typedef struct s_env		t_env;
+// typedef struct s_redirect	t_redir;
+typedef struct s_process	t_process;
+typedef struct s_file_fd	t_file_fd;
 
 struct s_token
 {
@@ -27,17 +34,16 @@ struct s_token
 
 struct s_cmd
 {
-	t_token	*token;
-	char	*str;
-	int		size;
-	int		type;
-	int		infile_fd;
-	char	*infile;
-	int		outfile_fd;
-	char	*outfile;
-	char	syntax;
-	t_cmd	*next;
-	t_cmd	*prev;
+	t_token		*token;
+	char		*str;
+	int			size;
+	int			type;
+	char		syntax;
+	pid_t		pid;
+	int			redir[2];
+	t_file_fd	*file_fd;
+	t_cmd		*next;
+	t_cmd		*prev;
 };
 
 struct s_cmdlist
@@ -52,6 +58,25 @@ struct s_env
 	char	*value;
 	int		status;
 	t_env	*next;
+};
+//
+// struct s_redirect
+// {
+// 	int		is_heredoc;
+// 	char	*limiter;
+// };
+
+struct s_process
+{
+};
+
+struct s_file_fd
+{
+	int		pipe[2];
+	int		infile_fd;
+	int		outfile_fd;
+	char	*infile;
+	char	*outfile;
 };
 
 enum e_token_type
@@ -70,6 +95,18 @@ enum e_io_type
 	T_IO_RR,
 	T_IO_L,
 	T_IO_LL
+};
+
+enum e_pipe
+{
+	RD,
+	WR
+};
+
+enum e_redir
+{
+	INPUT,
+	OUTPUT
 };
 
 enum e_bool
