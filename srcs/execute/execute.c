@@ -6,7 +6,7 @@
 /*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 20:30:06 by yeongo            #+#    #+#             */
-/*   Updated: 2023/04/21 21:17:43 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/22 14:21:42 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static char	**get_path(void)
 static void	execute_absolute_path(char **command)
 {
 	execve(command[0], command, environ);
-	exit_with_perror("zsh", command[0], 127);
+	exit_with_errno("zsh", command[0], 127);
 }
 
 static void	execute_relative_path(char **command, char **path)
