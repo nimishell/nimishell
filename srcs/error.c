@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 14:37:37 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/21 18:48:17 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/22 15:22:46 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,8 @@ void	exit_with_message(char *cmd, char *arg, char *message, int status)
 void	syntax_error(char *message, int status, int flag)
 {
 	ft_putstr_fd("minishell: syntax error", STDERR_FILENO);
-	ft_putstr_fd(message, STDERR_FILENO);
+	if (message)
+		ft_putstr_fd(message, STDERR_FILENO);
 	ft_putstr_fd("\n", STDERR_FILENO);
 	if (!flag)
 		g_env->status = status;

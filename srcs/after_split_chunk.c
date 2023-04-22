@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 16:00:31 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/20 19:53:56 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/22 17:01:51 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,49 +39,36 @@ void	remove_empty_token(t_token **lst)
 	}
 }
 
+static void	treat_redir(t_token *token)
+{
+	if (token->str[0] == '>')
+	{
+		token->type = T_IO_R;
+		if (token->str[1] == '>')
+			token->type = T_IO_RR;
+	}
+	else if (token->str[0] == '<')
+	{
+		token->type = T_IO_L;
+		if (token->str[1] == '<')
+			token->type = T_IO_LL;
+	}
+}
+
 void	check_special(t_token *token)
 {
 	while (token)
 	{
 		if (token->type == T_REDIR)
-		{
-			if (token->str[0] == '>')
-			{
-				token->type = T_IO_R;
-				if (token->str[1] == '>')
-				{
-					token->type = T_IO_RR;
-					free(token->str);
-					token->str = ft_strdup(">>");
-				}
-			}
-			else
-				treat_heredoc(token);
-		}
+			treat_redir(token);
 		else if (token->type == T_PIPE)
 		{
-			free (token->str);
-			token->str = ft_strdup("|");
+			if (ft_strlen(token->str) != 1)
+			{
+				syntax_error(" near unexpected token '||'", 1, 0);
+				// ft_free_token(token);
+			}
 		}
 		token = token->next;
-	}
-}
-
-void	treat_heredoc(t_token *token)
-{
-	if (token->str[0] == '<')
-	{
-		token->type = T_IO_L;
-		if (token->str[1] == '<')
-		{
-			token->type = T_IO_LL;
-			free(token->str);
-			token->str = ft_strdup("<<");
-			while (token && token->type != T_ECHUNK)
-				token = token->next;
-			if (!token)
-				return ;
-			token->type = T_CHUNK;
-		}
 	}
 }

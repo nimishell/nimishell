@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:56:15 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/22 14:15:21 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/22 15:13:54 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,20 +28,20 @@
 # include "structure.h"
 # include "debug.h" //DO NOT SUBMIT!!!
 
-t_env		*g_env;
+t_env	*g_env;
 
-void		main_init(int ac, char *av[], char *envp[]);
+void	main_init(int ac, char *av[], char *envp[]);
 
-void		set_sig(void);
-void		sig_handler(int signal);
+void	set_sig(void);
+void	sig_handler(int signal);
 
-void		copy_env(char *env[]);
-char		*copy_key(char *env);
-char		*copy_value(char *envp);
-void		making_env(char *envp);
+void	copy_env(char *env[]);
+char	*copy_key(char *env);
+char	*copy_value(char *envp);
+void	making_env(char *envp);
 
-void		*ft_free(void *p1, void *p2, void *p3, void *p4);
-void		*ft_free_char_arr(char **p);
-void		ft_free_token(t_token *token);
+void	*ft_free(void *p1, void *p2, void *p3, void *p4);
+void	*ft_free_char_arr(char **p);
+void	ft_free_token(t_token *token);
 
 #endif

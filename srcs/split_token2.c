@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 20:55:15 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/22 14:13:05 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/22 15:01:08 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,12 @@ int	split_redir(t_token **token, char **rd_line, t_token *new, char rd)
 	{
 		line_length++;
 		(*rd_line)++;
+		if (**rd_line == rd)
+		{
+			line_length++;
+			(*rd_line)++;
+			break ;
+		}
 	}
 	new->str = ft_substr(line_start, 0, line_length);
 	if (new->str == NULL)
