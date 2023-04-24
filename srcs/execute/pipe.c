@@ -6,7 +6,7 @@
 /*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 15:08:22 by yeongo            #+#    #+#             */
-/*   Updated: 2023/04/24 15:44:30 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/24 15:56:24 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,8 @@ static void	child_process(t_cmd *cmd, int pipe_fd[2])
 		exit_with_errno(command[0], command[1], EXIT_FAILURE);
 	if (cmd->file_fd->infile != NULL)
 		open_infile(cmd->file_fd, cmd->redir);
-	if (dup2(cmd->file_fd->infile_fd, STDIN_FILENO) == -1)
-		exit_with_errno(command[0], command[1], EXIT_FAILURE);
-	if (close(cmd->file_fd->infile_fd) == -1)
+	if (dup2(cmd->file_fd->infile_fd, STDIN_FILENO) == -1 \
+		&& close(cmd->file_fd->infile_fd) == -1)
 		exit_with_errno(command[0], command[1], EXIT_FAILURE);
 	if (cmd->file_fd->outfile != NULL)
 		open_outfile(cmd->file_fd, cmd->redir);
@@ -55,6 +54,7 @@ static void	child_process(t_cmd *cmd, int pipe_fd[2])
 	if (cmd->file_fd->outfile != NULL \
 		&& close(cmd->file_fd->outfile_fd) == -1)
 		exit_with_errno(command[0], command[1], EXIT_FAILURE);
+	// free cmd;
 	if (close(pipe_fd[WR]) == -1)
 		exit_with_errno(command[0], command[1], EXIT_FAILURE);
 	if (is_builtin(command[0]) == FALSE)

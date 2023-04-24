@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:56:15 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/24 14:30:24 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/24 16:03:52 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,6 @@ char	*get_value(char *key);
 
 void	*ft_free(void *p1, void *p2, void *p3, void *p4);
 void	*ft_free_char_arr(char **p);
-void	ft_free_token(t_token *token);
+void	ft_free_token(t_token **token);
 
 #endif

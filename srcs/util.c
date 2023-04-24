@@ -6,12 +6,11 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 16:30:42 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/17 19:09:34 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/24 16:03:15 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "parsing.h"
 
 void	*ft_free(void *p1, void *p2, void *p3, void *p4)
 {
@@ -41,12 +40,12 @@ void	*ft_free_char_arr(char **p)
 	return (NULL);
 }
 
-void	ft_free_token(t_token *tok)
+void	ft_free_token(t_token **token)
 {
 	t_token	*cur;
 	t_token	*next;
 
-	cur = tok;
+	cur = *token;
 	while (cur)
 	{
 		next = cur->next;
@@ -54,6 +53,7 @@ void	ft_free_token(t_token *tok)
 		free(cur);
 		cur = next;
 	}
+	*token = NULL;
 }
 
 //char	*ft_strsep(char **str, const char *target)
