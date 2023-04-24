@@ -6,7 +6,7 @@
 /*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 15:08:22 by yeongo            #+#    #+#             */
-/*   Updated: 2023/04/24 15:56:24 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/24 22:42:57 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,13 @@ static int	is_builtin(char *command)
 	return (FALSE);
 }
 
+void	free_cmd(t_cmd **cmd)
+{
+	free((*cmd)->file);
+	free(*cmd);
+	*cmd = NULL;
+}
+
 static void	child_process(t_cmd *cmd, int pipe_fd[2])
 {
 	char	**command;
@@ -42,19 +49,19 @@ static void	child_process(t_cmd *cmd, int pipe_fd[2])
 		exit_with_errno(NULL, NULL, EXIT_FAILURE);
 	if (close(pipe_fd[RD]) == -1)
 		exit_with_errno(command[0], command[1], EXIT_FAILURE);
-	if (cmd->file_fd->infile != NULL)
-		open_infile(cmd->file_fd, cmd->redir);
-	if (dup2(cmd->file_fd->infile_fd, STDIN_FILENO) == -1 \
-		&& close(cmd->file_fd->infile_fd) == -1)
+	if (cmd->file->infile != NULL)
+		open_infile(cmd->file, cmd->redir);
+	if (dup2(cmd->file->infile_fd, STDIN_FILENO) == -1 \
+		&& close(cmd->file->infile_fd) == -1)
 		exit_with_errno(command[0], command[1], EXIT_FAILURE);
-	if (cmd->file_fd->outfile != NULL)
-		open_outfile(cmd->file_fd, cmd->redir);
-	if (dup2(cmd->file_fd->outfile_fd, STDOUT_FILENO) == -1)
+	if (cmd->file->outfile != NULL)
+		open_outfile(cmd->file, cmd->redir);
+	if (dup2(cmd->file->outfile_fd, STDOUT_FILENO) == -1)
 		exit_with_errno(command[0], command[1], EXIT_FAILURE);
-	if (cmd->file_fd->outfile != NULL \
-		&& close(cmd->file_fd->outfile_fd) == -1)
+	if (cmd->file->outfile != NULL \
+		&& close(cmd->file->outfile_fd) == -1)
 		exit_with_errno(command[0], command[1], EXIT_FAILURE);
-	// free cmd;
+	free_cmd(&cmd);
 	if (close(pipe_fd[WR]) == -1)
 		exit_with_errno(command[0], command[1], EXIT_FAILURE);
 	if (is_builtin(command[0]) == FALSE)
@@ -86,9 +93,10 @@ static void	wait_child_prcess(t_cmd *cmd, pid_t last_pid)
 	}
 }
 
-void	execute_multi_process(t_cmd *cmd, int pipe_fd[2])
+void	execute_multi_process(t_cmd *cmd)
 {
 	t_cmd	*cur;
+	int		pipe_fd[2];
 
 	cur = cmd;
 	while (cur != NULL)
@@ -101,8 +109,8 @@ void	execute_multi_process(t_cmd *cmd, int pipe_fd[2])
 		else if (cur->pid == 0)
 			child_process(cmd, pipe_fd);
 		close(pipe_fd[WR]);
-		close(cur->file_fd->infile_fd);
-		cur->file_fd->infile_fd = pipe_fd[RD];
+		close(cur->file->infile_fd);
+		cur->file->infile_fd = pipe_fd[RD];
 		cur = cur->next;
 	}
 	close(pipe_fd[RD]);

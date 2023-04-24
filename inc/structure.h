@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:45:47 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/24 20:04:04 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/24 22:29:26 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,15 @@
 
 # include <sys/types.h>
 
+# define MINISHELL "\033[0;32mMINISHELL$\033[0m "
 # define EXIT_SIGNAL 128
 
 typedef struct s_token		t_token;
 typedef struct s_cmd		t_cmd;
-typedef struct s_cmdlist	t_cmdlist;
+// typedef struct s_cmdlist	t_cmdlist;
 typedef struct s_env		t_env;
 typedef struct s_process	t_process;
-typedef struct s_file_fd	t_file_fd;
+typedef struct s_file		t_file;
 
 struct s_token
 {
@@ -33,22 +34,22 @@ struct s_token
 
 struct s_cmd
 {
-	t_token		*token;
-	int			size;
-	int			type;
-	char		syntax;
-	pid_t		pid;
-	int			redir[2];
-	t_file_fd	*file_fd;
-	t_cmd		*next;
-	t_cmd		*prev;
+	t_token	*token;
+	int		size;
+	int		type;
+	char	syntax;
+	pid_t	pid;
+	int		redir[2];
+	t_file	*file;
+	t_cmd	*next;
+	t_cmd	*prev;
 };
-
-struct s_cmdlist
-{
-	t_cmd	*cmd_list;
-	t_cmd	*cmd_list_tail;
-};
+//
+// struct s_cmdlist
+// {
+// 	t_cmd	*cmd_list;
+// 	t_cmd	*cmd_list_tail;
+// };
 
 struct s_env
 {
@@ -57,14 +58,13 @@ struct s_env
 	int		status;
 	t_env	*next;
 };
+//
+// struct s_process
+// {
+// };
 
-struct s_process
+struct s_file
 {
-};
-
-struct s_file_fd
-{
-	int		pipe[2];
 	int		infile_fd;
 	int		outfile_fd;
 	char	*infile;

@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:33:23 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/22 14:17:03 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/24 20:42:37 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ int	main(int ac, char *av[], char *envp[])
 	main_init(ac, av, envp);
 	while (1)
 	{
-		line = readline("\033[0;32mMINISHELL$\033[0m ");
+		// line = readline("\033[0;32mMINISHELL$\033[0m ");
+		line = readline(MINISHELL);
 		if (!line)
 			break ;
 		if (*line != '\0' && !is_space(line))

@@ -6,12 +6,11 @@
 /*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 15:21:38 by yeongo            #+#    #+#             */
-/*   Updated: 2023/04/24 16:01:42 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/24 22:34:15 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "parsing.h"
 
 static char	**is_cd_follow_no_dir(t_token *token)
 {
@@ -21,7 +20,7 @@ static char	**is_cd_follow_no_dir(t_token *token)
 	if (result == NULL)
 		return (NULL);
 	result[0] = ft_strdup(token->str);
-	result[1] = get_value("$HOME");
+	result[1] = get_value("HOME");
 	return (result);
 }
 
@@ -78,6 +77,6 @@ char	**token_to_command(t_token *token)
 		result = tmp_name(token);
 	if (result == NULL)
 		return (NULL);
-	token_clear(&token);
+	ft_free_token(&token);
 	return (result);
 }
