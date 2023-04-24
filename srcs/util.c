@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 16:30:42 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/24 16:03:15 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/24 20:12:17 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,18 +42,17 @@ void	*ft_free_char_arr(char **p)
 
 void	ft_free_token(t_token **token)
 {
-	t_token	*cur;
-	t_token	*next;
+	t_token	*remove_token;
 
-	cur = *token;
-	while (cur)
+	if (*token == NULL)
+		return ;
+	while (*token != NULL)
 	{
-		next = cur->next;
-		free(cur->str);
-		free(cur);
-		cur = next;
+		remove_token = *token;
+		*token = (*token)->next;
+		free(remove_token->str);
+		free(remove_token);
 	}
-	*token = NULL;
 }
 
 //char	*ft_strsep(char **str, const char *target)
