@@ -6,10 +6,11 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 20:33:04 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/20 20:09:09 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/24 14:32:00 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "minishell.h"
 
 char	*copy_key(char *envp)
@@ -32,7 +33,7 @@ char	*copy_value(char *envp)
 	i = 0;
 	while (envp[i] != '=')
 		i++;
-	val = ft_strdup(envp + i + 1);
+	val = ft_strdup(&envp[i + 1]);
 	return (val);
 }
 
@@ -64,4 +65,18 @@ void	copy_env(char *envp[])
 	i = 0;
 	while (envp[++i])
 		making_env(envp[i]);
+}
+
+char	*get_value(char *key)
+{
+	t_env	*cur;
+
+	cur = g_env;
+	while (cur != NULL)
+	{
+		if (ft_strncmp(cur->key, key, ft_strlen(key) + 1))
+			return (ft_strdup(cur->value));
+		cur = cur->next;
+	}
+	return (NULL);
 }

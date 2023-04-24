@@ -1,19 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute.h                                          :+:      :+:    :+:   */
+/*   pipe.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/22 15:48:28 by yeongo            #+#    #+#             */
-/*   Updated: 2023/04/24 13:32:53 by yeongo           ###   ########.fr       */
+/*   Created: 2023/04/24 15:23:25 by yeongo            #+#    #+#             */
+/*   Updated: 2023/04/24 15:44:30 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXECUTE_H
-# define EXECUTE_H
+#ifndef PIPE_H
+# define PIPE_H
 
-int		execute_builtin(char *command, char **argument);
-void	execute_command(char *command, char **argument);
+# include "minishell.h"
+
+char	**token_to_command(t_token *token);
+void	execute_multi_process(t_cmd *cmd, int pipe_fd[2]);
 
 #endif

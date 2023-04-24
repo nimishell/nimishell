@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 19:58:07 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/22 16:42:22 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/24 15:44:30 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	**split_dollar(char *str);
 
 int		parse(t_cmd *cmd, char *rd_line);
 t_token	*tokenize(t_token *token, char *rd_line);
-void	token_to_cmd(t_token *token, t_cmd *cmd);
+void	token_to_command(t_token *token, t_cmd *cmd);
 int		classify_token(t_token *token);
 
 void	token_clear(t_token **token);

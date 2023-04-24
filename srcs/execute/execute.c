@@ -6,7 +6,7 @@
 /*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 20:30:06 by yeongo            #+#    #+#             */
-/*   Updated: 2023/04/22 14:21:42 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/24 14:01:04 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,19 +55,21 @@ static void	execute_relative_path(char **command, char **path)
 	}
 }
 
-void	execute_command(char **command)
+static void	free_and_exit(char *command, char ***argument, char ***path)
 {
-	char	*command_org;
+	ft_free_strings(path);
+	ft_free_strings(argument);
+	ft_error_message(command, NULL, "Command not found");
+	exit(127);
+}
+
+void	execute_command(char *command, char **argument)
+{
 	char	**path;
 
 	path = get_path();
-	if (path == NULL || ft_strchr(command[0], '/'))
-		execute_absolute_path(command);
-	command_org = ft_strdup(command[0]);
-	execute_relative_path(command, path);
-	ft_free_strings(&path);
-	ft_free_strings(&command);
-	ft_error_message(command_org, NULL, "Command not found");
-	ft_free_str(&command_org);
-	exit(127);
+	if (path == NULL || ft_strchr(argument[0], '/'))
+		execute_absolute_path(argument);
+	execute_relative_path(argument, path);
+	free_and_exit(command, &argument, &path);
 }

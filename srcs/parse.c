@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 21:32:19 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/22 16:08:19 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/24 15:44:30 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	parse(t_cmd *cmd, char *rd_line)
 		syntax_error(NULL, 1, 0);
 		return (0);
 	}
-	token_to_cmd(token, cmd);
+	token_to_command(token, cmd);
 	ft_free_token(token);
 	return (1);
 }
