@@ -6,14 +6,14 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 16:00:31 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/22 17:01:51 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/25 14:14:12 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parsing.h"
 
-void	remove_empty_token(t_token **lst)
+void	remove_empty_space(t_token **lst)
 {
 	t_token	*rm;
 	t_token	*cur;
@@ -21,7 +21,7 @@ void	remove_empty_token(t_token **lst)
 	cur = *lst;
 	while (cur && cur->next)
 	{
-		if (cur->next->str[0] == '\0')
+		if (cur->next->str[0] == '\0' || cur->next->type == T_SPACE)
 		{
 			rm = cur->next;
 			cur->next = cur->next->next;
@@ -55,7 +55,7 @@ static void	treat_redir(t_token *token)
 	}
 }
 
-void	check_special(t_token *token)
+int	check_special(t_token *token)
 {
 	while (token)
 	{
@@ -65,10 +65,12 @@ void	check_special(t_token *token)
 		{
 			if (ft_strlen(token->str) != 1)
 			{
-				syntax_error(" near unexpected token '||'", 1, 0);
-				// ft_free_token(token);
+				syntax_error(" near unexpected token `||'", 1, 0);
+				ft_free_token(&token);
+				return (FAIL);
 			}
 		}
 		token = token->next;
 	}
+	return (SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:45:47 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/24 22:29:26 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/25 14:23:55 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ struct s_cmd
 // 	t_cmd	*cmd_list_tail;
 // };
 
+
 struct s_env
 {
 	char	*key;
@@ -76,8 +77,8 @@ enum e_token_type
 	T_CHUNK = 11,
 	T_ECHUNK = 22,
 	T_ARGV = 33,
-	T_PIPE = 44,
-	T_SPACE = 55,
+	T_SPACE = 44,
+	T_PIPE = 55,
 	T_REDIR = 60
 };
 

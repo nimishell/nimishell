@@ -6,33 +6,68 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 19:23:50 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/22 16:56:33 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/25 17:34:21 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parsing.h"
 
-void	token_to_cmd(t_token *token, t_cmd *cmd)
+static t_token	*detach_token(t_token **token, int size)
 {
-	t_cmd	*tmp;
-	int i = 0;
+	t_token	*head;
+	t_token	*end_token;
 
-	while (token)
+	head = *token;
+	while (--size)
+		(*token) = (*token)->next;
+	end_token = *token;
+	if ((*token)->next != NULL)
 	{
-		cmd->token = token;
-		cmd->str = ft_strdup(token->str);
-		if (token->type == T_CHUNK)
-			cmd->syntax = 1;
-		cmd->size++;
-		printf("cmd [%d] %s\n", ++i, cmd->str);
-		if (token->next)
-		{
-			tmp = ft_calloc(1, sizeof(t_cmd));
-			cmd->next = tmp;
-			tmp->prev = cmd;
-			cmd = cmd->next;
-		}
+		(*token) = (*token)->next->next;
+		free (end_token->next->str);
+		free (end_token->next);
+		end_token->next = NULL;
+	}
+	else
+		*token = (*token)->next;
+	return (head);
+}
+
+static int	get_cmd_size(t_token *token)
+{
+	int		size;
+
+	size = 0;
+	while (token && token->type != T_PIPE)
+	{
+		size++;
 		token = token->next;
 	}
+	return (size);
 }
+
+int	token_into_cmd(t_cmd **cmd, t_token *token)
+{
+	t_cmd	*tmp;
+	int		cnt;
+	int		i;
+
+	cnt = 0;
+	// (*cmd) = NULL;
+	while (token)
+	{
+		i = 0;
+		tmp = ft_calloc(1, sizeof(t_cmd));
+		if (!tmp)
+			return (FAIL);
+		tmp->size = get_cmd_size(token);
+		cmd_add_back(cmd, tmp);
+		tmp->token = detach_token(&token, tmp->size);
+
+	}
+	return (SUCCESS);
+}
+
+
+// if (cmd->token == NULL || (cur->next != NULL || cur->next->next == NULL || cur->next->next->type == T_PIPE))
