@@ -6,7 +6,7 @@
 #    By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/12 16:06:02 by yeongo            #+#    #+#              #
-#    Updated: 2023/04/22 15:51:53 by wbae             ###   ########.fr        #
+#    Updated: 2023/04/25 13:32:24 by yeongo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,6 @@ SRC_FILES			:=	$(addsuffix .c,				\
 	 						main					\
 						)
 OBJ_FILES			:=	$(SRC_FILES:.c=.o)
-OBJ_BUILTIN_FILES	:=	$(SRC_FILES:.c=.o)
 JSON_FILES			:=	compile_commands
 SRC					:=	$(addprefix $(SRC_DIR), $(SRC_FILES))
 OBJ					:=	$(addprefix $(OBJ_DIR), $(OBJ_FILES))
