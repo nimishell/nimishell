@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:33:23 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/25 17:34:16 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/25 21:15:50 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,18 +51,18 @@ int	main(int ac, char *av[], char *envp[])
 
 	tcgetattr(STDIN_FILENO, &terminal);
 	main_init(ac, av, envp);
-	cmd = NULL;
 	while (1)
 	{
-		// line = readline("\033[0;32mMINISHELL$\033[0m ");
 		line = readline(MINISHELL);
 		if (!line)
 			break ;
 		if (*line != '\0' && !is_space(line))
 		{
+			cmd = NULL;
 			add_history(line);
 			parse(&cmd, line);
 		}
+		free (line);
 	}
 	tcsetattr(STDOUT_FILENO, TCSANOW, &terminal);
 	ft_putstr_fd("\033[1A", STDOUT_FILENO);

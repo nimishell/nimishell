@@ -6,17 +6,15 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 21:32:19 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/25 17:26:27 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/25 20:59:02 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parsing.h"
 
-t_token	*tokenize(char *rd_line)
+t_token	*tokenize(t_token *token, char *rd_line)
 {
-	t_token	*token;
-
 	rd_line = ft_strtrim(rd_line, " ");
 	if (rd_line == NULL)
 		return (NULL);
@@ -32,10 +30,11 @@ int	parse(t_cmd **cmd, char *rd_line)
 {
 	t_token	*token;
 
-	token = tokenize(rd_line);
+	token = NULL;
+	token = tokenize(token, rd_line);
 	if (!token)
 	{
-		syntax_error(NULL, 1, 0);
+		ft_syntax_error("\'", 1, 0);
 		return (FAIL);
 	}
 	treat_dollar(token);
@@ -45,10 +44,11 @@ int	parse(t_cmd **cmd, char *rd_line)
 	debug_print_tokens(token);
 	if (!token_into_cmd(cmd, token))
 	{
+		printf("asefasef");
 		ft_free_token(&token);
 		return (FAIL);
 	}
 	debug_print_cmd(*cmd);
-	// ft_free_token(&token);
+	ft_free_token(&token);
 	return (SUCCESS);
 }
