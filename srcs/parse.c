@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 21:32:19 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/24 15:44:30 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/25 20:59:02 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,29 +20,35 @@ t_token	*tokenize(t_token *token, char *rd_line)
 		return (NULL);
 	if (ft_split_token(&token, rd_line) == FAIL)
 	{
-		token_clear(&token);
+		ft_free_token(&token);
 		return (NULL);
 	}
-	treat_dollar(token);
-	remove_empty_token(&token);
-	check_special(token);
-	debug_print_tokens(token);
 	return (token);
 }
 
-int	parse(t_cmd *cmd, char *rd_line)
+int	parse(t_cmd **cmd, char *rd_line)
 {
 	t_token	*token;
 
-	cmd = ft_calloc(1, sizeof(t_cmd));
 	token = NULL;
 	token = tokenize(token, rd_line);
 	if (!token)
 	{
-		syntax_error(NULL, 1, 0);
-		return (0);
+		ft_syntax_error("\'", 1, 0);
+		return (FAIL);
 	}
-	token_to_command(token, cmd);
-	ft_free_token(token);
-	return (1);
+	treat_dollar(token);
+	remove_empty_space(&token);
+	if (!check_special(token))
+		return (FAIL);
+	debug_print_tokens(token);
+	if (!token_into_cmd(cmd, token))
+	{
+		printf("asefasef");
+		ft_free_token(&token);
+		return (FAIL);
+	}
+	debug_print_cmd(*cmd);
+	ft_free_token(&token);
+	return (SUCCESS);
 }
