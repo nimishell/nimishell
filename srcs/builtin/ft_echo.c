@@ -6,7 +6,7 @@
 /*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 13:58:05 by yeongo            #+#    #+#             */
-/*   Updated: 2023/04/22 14:32:43 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/26 02:18:15 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,21 +34,26 @@ static int	find_option(char *str)
 	return (TRUE);
 }
 
-int	ft_echo(char *command, char **argv)
+int	ft_echo(char **argv)
 {
 	int	is_option;
+	int	first_argv;
 	int	index_argv;
 
-	(void)command;
 	is_option = FALSE;
 	index_argv = 1;
-	if (find_option(argv[index_argv]) == TRUE)
+	while (find_option(argv[index_argv]) == TRUE)
 	{
 		is_option = TRUE;
 		index_argv++;
 	}
+	first_argv = 1;
 	while (argv[index_argv] != NULL)
 	{
+		if (first_argv == 0)
+			ft_putchar_fd(' ', STDOUT_FILENO);
+		else
+			first_argv = 0;
 		ft_putstr_fd(argv[index_argv], STDOUT_FILENO);
 		index_argv++;
 	}

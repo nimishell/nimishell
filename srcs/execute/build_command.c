@@ -6,7 +6,7 @@
 /*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 15:21:38 by yeongo            #+#    #+#             */
-/*   Updated: 2023/04/24 22:34:15 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/26 01:27:36 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static char	**is_cd_follow_no_dir(t_token *token)
 	if (result == NULL)
 		return (NULL);
 	result[0] = ft_strdup(token->str);
-	result[1] = get_value("HOME");
+	result[1] = ft_strdup(get_value("HOME"));
 	return (result);
 }
 
