@@ -6,7 +6,7 @@
 /*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 16:06:26 by yeongo            #+#    #+#             */
-/*   Updated: 2023/04/22 14:32:50 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/26 02:18:39 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,11 @@ static int	is_digit_array(char *str)
 	return (TRUE);
 }
 
-int	ft_exit(char *command, char **argv)
+int	ft_exit(char **argv)
 {
 	char	status;
 
-	(void)command;
-	ft_putstr_fd("exit\n", STDOUT_FILENO);
+	ft_putendl_fd("exit", STDOUT_FILENO);
 	if (argv[1] == NULL)
 		exit(g_env->status);
 	if (is_digit_array(argv[1]) == FALSE)

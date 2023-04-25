@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 15:09:28 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/06 17:25:01 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/26 01:28:49 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ char	*ft_strdup(const char *src)
 	size_t		size;
 	char		*arr;
 
+	if (src == NULL)
+		return (NULL);
 	size = 0;
 	while (src[size])
 		size++;

@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:45:47 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/24 22:29:26 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/26 00:07:40 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 
 typedef struct s_token		t_token;
 typedef struct s_cmd		t_cmd;
-// typedef struct s_cmdlist	t_cmdlist;
 typedef struct s_env		t_env;
 typedef struct s_process	t_process;
 typedef struct s_file		t_file;
@@ -44,24 +43,15 @@ struct s_cmd
 	t_cmd	*next;
 	t_cmd	*prev;
 };
-//
-// struct s_cmdlist
-// {
-// 	t_cmd	*cmd_list;
-// 	t_cmd	*cmd_list_tail;
-// };
 
 struct s_env
 {
 	char	*key;
 	char	*value;
+	int		is_value;
 	int		status;
 	t_env	*next;
 };
-//
-// struct s_process
-// {
-// };
 
 struct s_file
 {
