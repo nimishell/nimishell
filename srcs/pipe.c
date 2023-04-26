@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 15:08:22 by yeongo            #+#    #+#             */
-/*   Updated: 2023/04/26 17:09:55 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/26 19:42:09 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "pipe.h"
 #include "open_file.h"
 #include "terminate.h"
+#include <sys/errno.h>
 
 static int	is_builtin(char *command)
 {
@@ -61,7 +62,7 @@ static void	child_process(t_cmd *cmd, int pipe_fd[2])
 	if (cmd->file->outfile != NULL \
 		&& close(cmd->file->outfile_fd) == -1)
 		exit_with_errno(command[0], command[1], EXIT_FAILURE);
-	free_cmd(&cmd);
+	// free_cmd(&cmd);
 	if (close(pipe_fd[WR]) == -1)
 		exit_with_errno(command[0], command[1], EXIT_FAILURE);
 	if (is_builtin(command[0]) == FALSE)
@@ -111,11 +112,16 @@ void	execute_multi_process(t_cmd *cmd)
 		if (cur->pid < 0)
 			exit_with_errno(NULL, NULL, EXIT_FAILURE);
 		else if (cur->pid == 0)
-			child_process(cmd, pipe_fd);
+			child_process(cur, pipe_fd);
 		close(pipe_fd[WR]);
 		close(cur->file->infile_fd);
 		cur->file->infile_fd = pipe_fd[RD];
+		if (!cur->next)
+			break ;
 		cur = cur->next;
+		// {
+		// 	printf("%d\n", errno);
+		// }
 	}
 	close(pipe_fd[RD]);
 	wait_child_process(cmd, cur->pid);

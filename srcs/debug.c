@@ -3,7 +3,7 @@
 
 void	debug_print_tokens(t_token *token)
 {
-	printf("================tokens================\n[ ");
+	printf("\n================tokens================\n[ ");
 	while (token)
 	{
 		printf("{%s} (%d)", token->str, token->type);
@@ -12,7 +12,7 @@ void	debug_print_tokens(t_token *token)
 			break ;
 		printf(", ");
 	}
-	printf(" ]\n");
+	printf(" ]\n\n");
 }
 
 void	debug_print_cmd(t_cmd *cmd)
@@ -31,7 +31,7 @@ void	debug_print_cmd(t_cmd *cmd)
 			cur = cur->next;
 		}
 		printf("input : %s, %d\n", cmd->file->infile, cmd->file->infile_fd);
-		printf("output : %s, %d\n", cmd->file->outfile, cmd->file->outfile_fd);
+		printf("output : %s, %d\n\n", cmd->file->outfile, cmd->file->outfile_fd);
 		cmd = cmd->next;
 	}
 }
