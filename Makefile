@@ -6,7 +6,7 @@
 #    By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/12 16:06:02 by yeongo            #+#    #+#              #
-#    Updated: 2023/04/26 19:15:25 by wbae             ###   ########.fr        #
+#    Updated: 2023/04/26 21:17:58 by wbae             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -112,7 +112,6 @@ clean	:
 
 .PHONY	:	fclean
 fclean	:	clean
-	@make -s -C libft fclean
 	@$(RM) $(NAME)
 	@echo "\033[91m       FCLEAN DONE       \033[0m"
 

@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 19:53:08 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/26 17:15:30 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/26 19:59:18 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	treat_dollar(t_token *token)
 		{
 			head = g_env;
 			split = split_dollar(token->str);
-			if (ft_strchr(token->str, '$') + 1)
+			if ((*(strchr(token->str, '$') + 1) != '\0'))
 				split[1] = translate_dollar(head, &split[1]);
 			else
 			{
