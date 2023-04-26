@@ -6,30 +6,33 @@
 /*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 14:02:45 by yeongo            #+#    #+#             */
-/*   Updated: 2023/04/26 02:22:51 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/26 17:04:56 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "error.h"
+#include "minishell.h"
+#include "builtin.h"
 #include <sys/param.h>
 
 int	ft_cd(char **argv)
 {
 	char	*dir;
 	char	old_dir[MAXPATHLEN];
+	char	*old_pwd_key;
+	char	*pwd_key;
 
 	getcwd(old_dir, MAXPATHLEN);
-	if (argv[1] == NULL)
-		dir = "/Users/yeongo";
-	else
-		dir = argv[1];
+	dir = ft_strdup(argv[1]);
 	if (chdir(dir) == -1)
 	{
 		ft_perror("cd", argv[1]);
-		return (0);
+		exit(1);
 	}
-	return (1);
+	old_pwd_key = ft_strdup("OLDPWD");
+	pwd_key = ft_strdup("PWD");
+	export_variable(&old_pwd_key, old_dir);
+	export_variable(&pwd_key, dir);
+	exit(0);
 }
 
 int	ft_pwd(char **argv)
@@ -39,9 +42,9 @@ int	ft_pwd(char **argv)
 	if (argv[1] != NULL)
 	{
 		exit_with_message("pwd", NULL, "too many arguments", 1);
-		return (0);
+		exit(1);
 	}
 	getcwd(working_path, MAXPATHLEN);
 	ft_putstr_fd(working_path, STDOUT_FILENO);
-	return (1);
+	exit(0);
 }

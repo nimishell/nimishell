@@ -6,11 +6,13 @@
 /*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 01:54:29 by yeongo            #+#    #+#             */
-/*   Updated: 2023/04/26 02:47:31 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/26 17:06:03 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "minishell.h"
+#include <stdlib.h>
 
 static int	show_export(void)
 {
@@ -29,30 +31,55 @@ static int	show_export(void)
 		}
 		cur = cur->next;
 	}
-	return (1);
+	return (0);
 }
 
 static void	change_value(t_env *cur, char *new_value)
 {
-	free(cur->value);
+	if (cur->value != NULL)
+		free(cur->value);
 	cur->value = new_value;
 }
 
-int	export_variable(char *key, char *value)
+static int	add_env_value(char *key, char *value)
+{
+	t_env	*cur;
+
+	cur = g_env;
+	while (cur != NULL && cur->next != NULL)
+		cur = cur->next;
+	cur->next = ft_calloc(1, sizeof(t_env));
+	if (cur->next == NULL)
+		return (0);
+	cur->next->key = key;
+	cur->next->value = value;
+	if (cur->next->value != NULL)
+		cur->next->is_value = 1;
+	return (1);
+}
+
+int	export_variable(char **key, char *value)
 {
 	t_env	*cur;
 
 	cur = g_env;
 	while (cur)
 	{
-		if (ft_strncmp(cur->key, key, ft_strlen(key) + 1) == 0)
+		if (ft_strncmp(cur->key, *key, ft_strlen(*key) + 1) == 0)
 			break ;
 		cur = cur->next;
 	}
-	if (cur != NULL && value != NULL)
-		change_value(cur, value);
+	if (cur != NULL)
+	{
+		ft_free_str(key);
+		if (value != NULL)
+			change_value(cur, value);
+	}
 	else
-		return (0);
+	{
+		if (add_env_value(*key, value))
+			return (0);
+	}
 	return (1);
 }
 
@@ -64,7 +91,7 @@ int	ft_export(char **argv)
 	char	*value;
 
 	if (argv[1] == NULL)
-		return (show_export());
+		exit(show_export());
 	index_argv = 1;
 	while (argv[index_argv])
 	{
@@ -78,9 +105,8 @@ int	ft_export(char **argv)
 					ft_strlen(argv[index_argv] + key_len) - 1);
 		else
 			value = NULL;
-		if (export_variable(key, value) == 0)
-			making_env(argv[index_argv]);
+		export_variable(&key, value);
 		index_argv++;
 	}
-	return (1);
+	exit(0);
 }

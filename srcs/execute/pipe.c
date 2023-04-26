@@ -6,7 +6,7 @@
 /*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 15:08:22 by yeongo            #+#    #+#             */
-/*   Updated: 2023/04/26 03:41:59 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/26 17:09:55 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static void	child_process(t_cmd *cmd, int pipe_fd[2])
 	execute_builtin(command[0], command);
 }
 
-static void	wait_child_process(t_cmd *cmd, pid_t last_pid)
+static int	wait_child_process(t_cmd *cmd, pid_t last_pid)
 {
 	int		state;
 	pid_t	cur_pid;
@@ -85,12 +85,16 @@ static void	wait_child_process(t_cmd *cmd, pid_t last_pid)
 		cmd = cmd->next;
 	}
 	if (WIFEXITED(result))
-		exit(WEXITSTATUS(result));
+		return (WEXITSTATUS(result));
 	if (WIFSIGNALED(result))
 	{
 		print_terminate_code(result);
-		exit(WTERMSIG(result) + EXIT_SIGNAL);
+		return (WTERMSIG(result) + EXIT_SIGNAL);
 	}
+	// if (WIFSTOPPED(result))
+	else
+		return (WSTOPSIG(result));
+	// return (0);
 }
 
 void	execute_multi_process(t_cmd *cmd)
