@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 16:30:42 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/25 11:07:39 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/26 15:30:06 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ void	ft_free_token(t_token **token)
 	{
 		remove_token = *token;
 		*token = (*token)->next;
-		free(remove_token->str);
+		if (remove_token->str)
+			free(remove_token->str);
 		free(remove_token);
 	}
 }

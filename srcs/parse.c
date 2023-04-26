@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 21:32:19 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/25 20:59:02 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/26 15:30:59 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,12 @@ int	parse(t_cmd **cmd, char *rd_line)
 	debug_print_tokens(token);
 	if (!token_into_cmd(cmd, token))
 	{
-		printf("asefasef");
 		ft_free_token(&token);
 		return (FAIL);
 	}
+	check_cmd(*cmd);
 	debug_print_cmd(*cmd);
+	token = (*cmd)->token;
 	ft_free_token(&token);
 	return (SUCCESS);
 }
