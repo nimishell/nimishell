@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:45:47 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/26 03:44:37 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/26 16:09:13 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ struct s_cmd
 {
 	t_token	*token;
 	int		size;
-	int		type;
-	char	syntax;
+	// int		type;
+	// char	syntax;
 	pid_t	pid;
 	int		redir[2];
 	t_file	*file;
