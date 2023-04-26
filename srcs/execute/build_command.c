@@ -6,7 +6,7 @@
 /*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 15:21:38 by yeongo            #+#    #+#             */
-/*   Updated: 2023/04/26 01:27:36 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/26 16:27:27 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static int	token_size(t_token *token)
 	return (size);
 }
 
-static char	**tmp_name(t_token *token)
+static char	**convert_list_to_strings(t_token *token)
 {
 	t_token	*cur;
 	int		m_size;
@@ -74,7 +74,7 @@ char	**token_to_command(t_token *token)
 		&& token->next == NULL)
 		result = is_cd_follow_no_dir(token);
 	else
-		result = tmp_name(token);
+		result = convert_list_to_strings(token);
 	if (result == NULL)
 		return (NULL);
 	ft_free_token(&token);

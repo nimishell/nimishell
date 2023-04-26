@@ -6,7 +6,7 @@
 /*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 14:06:00 by yeongo            #+#    #+#             */
-/*   Updated: 2023/04/26 02:18:03 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/26 16:43:01 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,7 @@ int	ft_env(char **argv)
 	t_env	*cur;
 
 	if (argv[1] != NULL)
-	{
 		exit_with_message("env", NULL, "too many arguments", 1);
-		return (0);
-	}
 	cur = g_env;
 	while (cur)
 	{
@@ -36,7 +33,7 @@ int	ft_env(char **argv)
 		}
 		cur = cur->next;
 	}
-	return (1);
+	exit(0);
 }
 
 void	remove_node(t_env **remove)
@@ -65,7 +62,7 @@ int	ft_unset(char **argv)
 	{
 		cur = g_env;
 		if (ft_strncmp(cur->key, argv[index], ft_strlen(argv[index]) + 1) == 0)
-			return (remove_head(cur));
+			exit (remove_head(cur));
 		while (cur != NULL && cur->next != NULL)
 		{
 			if (ft_strncmp(cur->next->key, argv[index], \
@@ -80,5 +77,5 @@ int	ft_unset(char **argv)
 			cur->next = tmp;
 		}
 	}
-	return (1);
+	exit(0);
 }
