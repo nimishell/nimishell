@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 14:37:37 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/25 20:57:27 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/26 19:45:52 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	ft_perror(char *cmd, char *arg)
 {
 	char	*err_message;
 
+	printf("%d\n", errno);
 	err_message = strerror(errno);
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	if (cmd != NULL)

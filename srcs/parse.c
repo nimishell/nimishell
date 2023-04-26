@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 21:32:19 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/26 15:30:59 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/26 17:46:20 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,6 @@ int	parse(t_cmd **cmd, char *rd_line)
 	check_cmd(*cmd);
 	debug_print_cmd(*cmd);
 	token = (*cmd)->token;
-	ft_free_token(&token);
+	// ft_free_token(&token);
 	return (SUCCESS);
 }

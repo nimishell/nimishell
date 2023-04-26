@@ -6,7 +6,7 @@
 #    By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/12 16:06:02 by yeongo            #+#    #+#              #
-#    Updated: 2023/04/26 14:39:59 by wbae             ###   ########.fr        #
+#    Updated: 2023/04/26 19:15:25 by wbae             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ LDFLAGS				:=	-L$(LIBFT_DIR) -lft -L$(LIBRDLINE_DIR) -lreadline
 CC					:=	cc
 CFLAGS				:=	-Wall -Wextra -Werror
 CPPFLAGS			:=	-I$(HEADER) -I$(LIBFT_HEADER) -I$(LIBRDLINE_HEADER)
-MJFLAGS				 =	-MJ $@.part.json
+# MJFLAGS				 =	-MJ $@.part.json
 RM					:=	rm -rf
 
 SRC_FILES			:=	$(addsuffix .c,				\
@@ -45,8 +45,19 @@ SRC_FILES			:=	$(addsuffix .c,				\
 							cmd_utils				\
 							tokenize_utils			\
 							util					\
-	 						debug					\
-	 						main					\
+							debug					\
+							main					\
+							directory				\
+							environ					\
+							ft_echo					\
+							ft_exit					\
+							ft_export				\
+							build_command			\
+							execute_builtin			\
+							execute					\
+							open_file				\
+							pipe					\
+							terminate				\
 						)
 OBJ_FILES			:=	$(SRC_FILES:.c=.o)
 JSON_FILES			:=	compile_commands
@@ -79,7 +90,7 @@ $(OBJ_FOLDER)	:
 $(NAME)	:	$(OBJS)
 	@make -s -C $(LIBFT_DIR) all
 	@$(CC) $(CFLAGS) $(LDFLAGS) $(DBFLAGS) -o $@ $^
-	@(printf [ && find . -name "*.part.json" | xargs cat && printf ]) > $(JSON);
+	# @(printf [ && find . -name "*.part.json" | xargs cat && printf ]) > $(JSON);
 	@echo "\033[01;32m         SUCCESS!        \033[0m"
 
 $(OBJ_FOLDER)%.o	:	$(SRC_FOLDER)%.c
