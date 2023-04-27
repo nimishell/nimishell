@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 21:32:19 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/26 20:23:42 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/27 21:25:37 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,12 @@ int	parse(t_cmd **cmd, char *rd_line)
 	token = tokenize(token, rd_line);
 	if (!token)
 	{
-		ft_syntax_error("\'", 1, 0);
+		ft_syntax_error("\'");
 		return (FAIL);
 	}
 	treat_dollar(token);
 	remove_empty_space(&token);
-	if (!check_special(token))
+	if (!check_syntax(token))
 		return (FAIL);
 	debug_print_tokens(token);
 	if (!token_into_cmd(cmd, token))

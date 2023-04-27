@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 19:23:50 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/26 15:42:56 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/27 21:34:49 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ void	treat_input(t_cmd *cmd)
 		(cmd->token->type == T_IO_L || cmd->token->type == T_IO_LL))
 	{
 		cur = cmd->token;
+		cmd->redir[INPUT] = ft_strlen(cur->str);
 		cmd->file->infile = ft_strdup(cur->next->str);
 		cmd->file->infile_fd = -1;
 		cmd->token = cmd->token->next->next;
@@ -96,6 +97,7 @@ void	treat_input(t_cmd *cmd)
 	{
 		if (cur->next->type == T_IO_L || cur->next->type == T_IO_LL)
 		{
+			cmd->redir[INPUT] = ft_strlen(cur->str);
 			cmd->file->infile = ft_strdup(cur->next->next->str);
 			cmd->file->infile_fd = -1;
 			remove_single_token(&cur, cur->next->next);
@@ -113,6 +115,7 @@ void	treat_output(t_cmd *cmd)
 		(cmd->token->type == T_IO_R || cmd->token->type == T_IO_RR))
 	{
 		cur = cmd->token;
+		cmd->redir[OUTPUT] = ft_strlen(cur->str);
 		cmd->file->outfile = ft_strdup(cur->next->str);
 		cmd->file->outfile_fd = -1;
 		cmd->token = cmd->token->next->next;
@@ -124,6 +127,7 @@ void	treat_output(t_cmd *cmd)
 	{
 		if (cur->next->type == T_IO_R || cur->next->type == T_IO_RR)
 		{
+			cmd->redir[OUTPUT] = ft_strlen(cur->str);
 			cmd->file->outfile = ft_strdup(cur->next->next->str);
 			cmd->file->outfile_fd = -1;
 			remove_single_token(&cur, cur->next->next);
