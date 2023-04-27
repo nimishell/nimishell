@@ -6,7 +6,7 @@
 /*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 14:02:45 by yeongo            #+#    #+#             */
-/*   Updated: 2023/04/26 17:04:56 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/27 20:48:20 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,13 @@ int	ft_cd(char **argv)
 	if (chdir(dir) == -1)
 	{
 		ft_perror("cd", argv[1]);
-		exit(1);
+		return (1);
 	}
 	old_pwd_key = ft_strdup("OLDPWD");
 	pwd_key = ft_strdup("PWD");
 	export_variable(&old_pwd_key, old_dir);
 	export_variable(&pwd_key, dir);
-	exit(0);
+	return (0);
 }
 
 int	ft_pwd(char **argv)
@@ -42,9 +42,9 @@ int	ft_pwd(char **argv)
 	if (argv[1] != NULL)
 	{
 		exit_with_message("pwd", NULL, "too many arguments", 1);
-		exit(1);
+		return (1);
 	}
 	getcwd(working_path, MAXPATHLEN);
 	ft_putstr_fd(working_path, STDOUT_FILENO);
-	exit(0);
+	return (0);
 }

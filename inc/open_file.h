@@ -6,7 +6,7 @@
 /*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 21:44:27 by yeongo            #+#    #+#             */
-/*   Updated: 2023/04/24 22:59:16 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/27 20:41:40 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 
 # include "structure.h"
 
-void	open_infile(t_file *file, int redir[2]);
-void	open_outfile(t_file *file, int redir[2]);
+void	open_infile(t_cmd *cmd);
+void	open_outfile(t_cmd *cmd, int pipe_fd[2]);
+void	close_unused_fd(t_cmd *cmd, int pipe_fd[2]);
 
 #endif

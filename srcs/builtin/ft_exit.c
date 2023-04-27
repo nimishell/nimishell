@@ -6,7 +6,7 @@
 /*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 16:06:26 by yeongo            #+#    #+#             */
-/*   Updated: 2023/04/26 16:53:21 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/27 20:51:00 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,17 @@ int	ft_exit(char **argv)
 
 	ft_putendl_fd("exit", STDOUT_FILENO);
 	if (argv[1] == NULL)
-		exit(0);
+		return (0);
 	if (is_digit_array(argv[1]) == FALSE)
-		exit_with_message("exit", argv[1], "numeric argument required", 255);
+	{
+		ft_error_message("exit", argv[1], "numeric argument required");
+		return (255);
+	}
 	if (argv[2] != NULL)
 	{
 		ft_error_message("exit", argv[1], "too many arguments");
 		return (1);
 	}
 	status = ft_atoi(argv[1]) % 256;
-	exit(status);
+	return (status);
 }

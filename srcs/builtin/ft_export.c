@@ -6,7 +6,7 @@
 /*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 01:54:29 by yeongo            #+#    #+#             */
-/*   Updated: 2023/04/26 17:06:03 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/27 20:51:23 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int	ft_export(char **argv)
 	char	*value;
 
 	if (argv[1] == NULL)
-		exit(show_export());
+		return (show_export());
 	index_argv = 1;
 	while (argv[index_argv])
 	{
@@ -108,5 +108,5 @@ int	ft_export(char **argv)
 		export_variable(&key, value);
 		index_argv++;
 	}
-	exit(0);
+	return (0);
 }

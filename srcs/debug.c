@@ -30,8 +30,10 @@ void	debug_print_cmd(t_cmd *cmd)
 			printf("%s\n", cur->str);
 			cur = cur->next;
 		}
-		printf("input : %s, %d\n", cmd->file->infile, cmd->file->infile_fd);
-		printf("output : %s, %d\n\n", cmd->file->outfile, cmd->file->outfile_fd);
+		printf("input: %s, %d\n", cmd->file->infile, cmd->file->infile_fd);
+		printf("output: %s, %d\n\n", cmd->file->outfile, cmd->file->outfile_fd);
+		printf("redir_in: %d\n", cmd->redir[INPUT]);
+		printf("redir_out: %d\n\n", cmd->redir[OUTPUT]);
 		cmd = cmd->next;
 	}
 }

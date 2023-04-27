@@ -6,7 +6,7 @@
 /*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 21:42:06 by yeongo            #+#    #+#             */
-/*   Updated: 2023/04/24 22:59:30 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/27 21:14:35 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,29 +35,48 @@ int	get_heredoc(char *limiter)
 	return (pipe_heredoc[0]);
 }
 
-void	open_infile(t_file *file, int redir[2])
+void	open_infile(t_cmd *cmd)
 {
-	if (redir[INPUT] == 1)
+	if (cmd->redir[INPUT] == 1)
 	{
-		file->infile_fd = open(file->infile, O_RDONLY);
-		if (file->infile_fd == -1)
-			exit_with_errno("zsh", file->infile, EXIT_FAILURE);
+		cmd->file->infile_fd = open(cmd->file->infile, O_RDONLY);
+		if (cmd->file->infile_fd == -1)
+			exit_with_errno("zsh", cmd->file->infile, EXIT_FAILURE);
 	}
-	else
+	else if (cmd->redir[INPUT] == 2)
 	{
-		file->infile_fd = get_heredoc(file->infile);
-		ft_free_str(&(file->infile));
+		cmd->file->infile_fd = get_heredoc(cmd->file->infile);
+		ft_free_str(&(cmd->file->infile));
 	}
 }
 
-void	open_outfile(t_file *file, int redir[2])
+void	open_outfile(t_cmd *cmd, int pipe_fd[2])
 {
-	if (redir[OUTPUT] == 1)
-		file->outfile_fd = open(file->outfile, \
+	cmd->file->outfile_fd = pipe_fd[WR];
+	printf("hi 1\n");
+	if (cmd->redir[OUTPUT] == 1)
+		cmd->file->outfile_fd = open(cmd->file->outfile, \
 			O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else
-		file->outfile_fd = open(file->outfile, \
+		cmd->file->outfile_fd = open(cmd->file->outfile, \
 			O_WRONLY | O_APPEND | O_CREAT, 0644);
-	if (file->outfile_fd == -1)
-		exit_with_errno("zsh", file->outfile, EXIT_FAILURE);
+	printf("hi 2\n");
+	if (cmd->file->outfile_fd == -1)
+		exit_with_errno("zsh", cmd->file->outfile, EXIT_FAILURE);
+	printf("hi 3\n");
+}
+
+void	close_unused_fd(t_cmd *cmd, int pipe_fd[2])
+{
+	close(pipe_fd[RD]);
+	if (cmd->prev != NULL || cmd->file->infile_fd != -1)
+	{
+		dup2(cmd->file->infile_fd, STDIN_FILENO);
+		close(cmd->file->infile_fd);
+	}
+	if (cmd->next != NULL || cmd->file->outfile != NULL)
+		dup2(cmd->file->outfile_fd, STDOUT_FILENO);
+	if (cmd->file->outfile != NULL)
+		close(cmd->file->outfile_fd);
+	close(pipe_fd[WR]);
 }

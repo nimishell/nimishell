@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:33:23 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/26 20:46:05 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/27 20:55:28 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	main(int ac, char *av[], char *envp[])
 			add_history(line);
 			parse(&cmd, line);
 		}
-		// execute_multi_process(cmd);
+		execute_multi_process(cmd);
 		free (line);
 	}
 	tcsetattr(STDOUT_FILENO, TCSANOW, &terminal);
