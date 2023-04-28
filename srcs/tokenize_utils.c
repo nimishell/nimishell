@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 16:10:57 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/26 15:02:45 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/28 15:29:29 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	remove_single_token(t_token **lst, t_token *target)
 {
 	t_token	*prev;
 
-	if (*lst == NULL)
+	if (*lst == NULL || target == NULL)
 		return ;
 	if (*lst == target)
 		*lst = target->next;
@@ -67,4 +67,25 @@ void	remove_single_token(t_token **lst, t_token *target)
 	}
 	free(target->str);
 	free(target);
+}
+
+t_token	*detach_token(t_token **token, int size)
+{
+	t_token	*head;
+	t_token	*end_token;
+
+	head = *token;
+	while (--size)
+		(*token) = (*token)->next;
+	end_token = *token;
+	if ((*token)->next != NULL)
+	{
+		(*token) = (*token)->next->next;
+		free(end_token->next->str);
+		free(end_token->next);
+		end_token->next = NULL;
+	}
+	else
+		*token = (*token)->next;
+	return (head);
 }
