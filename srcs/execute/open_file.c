@@ -6,7 +6,7 @@
 /*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 21:42:06 by yeongo            #+#    #+#             */
-/*   Updated: 2023/04/29 17:35:10 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/29 18:09:27 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ int	get_heredoc(char *limiter)
 	if (pipe(pipe_heredoc) == -1)
 		exit_with_errno("zsh", "pipe", EXIT_FAILURE);
 	limiter_size = ft_strlen(limiter);
-	input_str = readline(MINISHELL);
+	input_str = readline(">");
 	while (input_str != NULL
 		&& ft_strncmp(input_str, limiter, limiter_size) != 0)
 	{
 		ft_putstr_fd(input_str, pipe_heredoc[1]);
 		free(input_str);
-		input_str = readline(MINISHELL);
+		input_str = readline(">");
 	}
 	if (input_str != NULL)
 		free(input_str);
