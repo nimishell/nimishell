@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 20:30:06 by yeongo            #+#    #+#             */
-/*   Updated: 2023/04/26 03:44:57 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/29 17:29:35 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ char	**make_env_arr(void)
 	return (result);
 }
 
-void	execute_command(char *command, char **argv)
+int	execute_command(char *command, char **argv)
 {
 	char	**path;
 	char	**envp;
@@ -97,5 +97,5 @@ void	execute_command(char *command, char **argv)
 	ft_free_strings(&argv);
 	ft_free_strings(&envp);
 	ft_error_message(command, NULL, "Command not found");
-	exit(127);
+	return (127);
 }
