@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 19:53:08 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/27 18:41:17 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/29 18:07:34 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,62 @@ static char	*join_split(char **split)
 	return (ret);
 }
 
+static char	*translate_dollar(t_env *head, char **str)
+{
+	int	target;
+
+	if (*str[0] == '?' || *str[0] == '$')
+	{
+		free(*str);
+		*str = ft_strdup(ft_itoa(head->status));
+		return (*str);
+	}
+	while (head)
+	{
+		target = env_maxlen(head->key, *str);
+		if (!ft_strncmp(*str, head->key, target))
+		{
+			free(*str);
+			*str = ft_strdup(head->value);
+			break ;
+		}
+		head = head->next;
+	}
+	if (!head)
+	{
+		free(*str);
+		*str = ft_strdup("");
+	}
+	return (*str);
+}
+
+static char	**split_dollar(char *str)
+{
+	int		i;
+	int		j;
+	char	**split;
+
+	split = malloc(sizeof(char *) * 4);
+	i = 0;
+	while (str[i] && str[i] != '$')
+		i++;
+	j = i + 1;
+	split[0] = ft_substr(str, 0, i);
+	if (str[j] == '$' || str[j] == '?')
+	{
+		split[1] = ft_strdup(&str[j]);
+		split[2] = ft_substr(str, i + 2, ft_strlen(str) - i);
+		split[3] = 0;
+		return (split);
+	}
+	while (str[j] && str[j] != '$' && (ft_isalnum(str[j]) || str[j] == '_'))
+		j++;
+	split[1] = ft_substr(str, i + 1, j - i - 1);
+	split[2] = ft_substr(str, j, ft_strlen(str) - j);
+	split[3] = 0;
+	return (split);
+}
+
 void	treat_dollar(t_token *token)
 {
 	char	**split;
@@ -69,60 +125,4 @@ void	treat_dollar(t_token *token)
 		}
 		token = token->next;
 	}
-}
-
-char	**split_dollar(char *str)
-{
-	int		i;
-	int		j;
-	char	**split;
-
-	split = malloc(sizeof(char *) * 4);
-	i = 0;
-	while (str[i] && str[i] != '$')
-		i++;
-	j = i + 1;
-	split[0] = ft_substr(str, 0, i);
-	if (str[j] == '$' || str[j] == '?')
-	{
-		split[1] = ft_strdup(&str[j]);
-		split[2] = ft_substr(str, i + 2, ft_strlen(str) - i);
-		split[3] = 0;
-		return (split);
-	}
-	while (str[j] && str[j] != '$' && (ft_isalnum(str[j]) || str[j] == '_'))
-		j++;
-	split[1] = ft_substr(str, i + 1, j - i - 1);
-	split[2] = ft_substr(str, j, ft_strlen(str) - j);
-	split[3] = 0;
-	return (split);
-}
-
-char	*translate_dollar(t_env *head, char **str)
-{
-	int	target;
-
-	if (*str[0] == '?' || *str[0] == '$')
-	{
-		free(*str);
-		*str = ft_strdup(ft_itoa(head->status));
-		return (*str);
-	}
-	while (head)
-	{
-		target = env_maxlen(head->key, *str);
-		if (!ft_strncmp(*str, head->key, target))
-		{
-			free(*str);
-			*str = ft_strdup(head->value);
-			break ;
-		}
-		head = head->next;
-	}
-	if (!head)
-	{
-		free(*str);
-		*str = ft_strdup("");
-	}
-	return (*str);
 }

@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:33:23 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/27 20:55:28 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/29 17:51:23 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	main_init(int ac, char *av[], char *envp[])
 
 	(void)av;
 	if (ac != 1)
-		exit_with_message(NULL, NULL, "Argument input error", 2);
+		exit_with_message(NULL, NULL, "Argument input error", STDERR_FILENO);
 	tcgetattr(STDIN_FILENO, &term);
 	term.c_lflag &= ~(ECHOCTL);
 	tcsetattr(STDOUT_FILENO, TCSANOW, &term);
@@ -67,8 +67,7 @@ int	main(int ac, char *av[], char *envp[])
 		free (line);
 	}
 	tcsetattr(STDOUT_FILENO, TCSANOW, &terminal);
-	ft_putstr_fd("\033[1A", STDOUT_FILENO);
-	ft_putstr_fd("\033[11C", STDOUT_FILENO);
+	ft_putstr_fd("\033[1A\033[10C", STDOUT_FILENO);
 	ft_putstr_fd("exit\n", STDOUT_FILENO);
 	// atexit(f);
 	return (0);

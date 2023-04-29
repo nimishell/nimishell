@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 14:37:37 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/26 19:54:03 by wbae             ###   ########.fr       */
+/*   Updated: 2023/04/27 21:16:57 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	exit_with_message(char *cmd, char *arg, char *message, int status)
 	exit(status);
 }
 
-void	ft_syntax_error(char *argv, int status, int flag)
+void	ft_syntax_error(char *argv)
 {
 	ft_putstr_fd("minishell: syntax error near unexpected token ", \
 		STDERR_FILENO);
@@ -75,8 +75,4 @@ void	ft_syntax_error(char *argv, int status, int flag)
 		ft_putchar_fd('\'', STDERR_FILENO);
 	}
 	ft_putstr_fd("\n", STDERR_FILENO);
-	if (!flag)
-		g_env->status = status;
-	if (flag)
-		exit(status);
 }
