@@ -6,16 +6,15 @@
 /*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 15:08:22 by yeongo            #+#    #+#             */
-/*   Updated: 2023/04/29 17:24:32 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/30 21:58:39 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "error.h"
-#include "minishell.h"
 #include "execute.h"
 #include "pipe.h"
 #include "open_file.h"
 #include "terminate.h"
+#include <stdio.h>
 
 static int	is_builtin(char *command)
 {
@@ -40,34 +39,18 @@ void	free_cmd(t_cmd **cmd)
 	*cmd = NULL;
 }
 
-// static void	child_process(t_cmd *cmd, int pipe_fd[2])
-static void	child_process(char **command)
+static void	child_process(t_cmd *cmd, int pipe_fd[2])
 {
-	// char	**command;
-	//
-	// command = token_to_command(cmd->token);
-	// if (command == NULL)
-	// 	exit_with_errno(NULL, NULL, EXIT_FAILURE);
-	// if (close(pipe_fd[RD]) == -1)
-	// 	exit_with_errno(command[0], command[1], EXIT_FAILURE);
-	// if (cmd->file->infile != NULL)
-	// 	open_infile(cmd->file, cmd->redir);
-	// if (dup2(cmd->file->infile_fd, STDIN_FILENO) == -1 \
-	// 	&& close(cmd->file->infile_fd) == -1)
-	// 	exit_with_errno(command[0], command[1], EXIT_FAILURE);
-	// if (cmd->file->outfile != NULL)
-	// 	open_outfile(cmd->file, cmd->redir);
-	// if (dup2(cmd->file->outfile_fd, STDOUT_FILENO) == -1)
-	// 	exit_with_errno(command[0], command[1], EXIT_FAILURE);
-	// if (cmd->file->outfile != NULL \
-	// 	&& close(cmd->file->outfile_fd) == -1)
-	// 	exit_with_errno(command[0], command[1], EXIT_FAILURE);
-	// free_cmd(&cmd);
-	// if (close(pipe_fd[WR]) == -1)
-	// 	exit_with_errno(command[0], command[1], EXIT_FAILURE);
-	if (is_builtin(command[0]) == FALSE)
+	char	**command;
+
+	command = token_to_command(cmd->token);
+	open_infile(cmd);
+	open_outfile(cmd, pipe_fd);
+	close_unused_fd(cmd, pipe_fd);
+	if (is_builtin(command[0]) == TRUE)
+		execute_builtin(command[0], command);
+	else
 		execute_command(command[0], command);
-	execute_builtin(command[0], command);
 }
 
 static int	wait_child_process(t_cmd *cmd, pid_t last_pid)
@@ -92,19 +75,46 @@ static int	wait_child_process(t_cmd *cmd, pid_t last_pid)
 		print_terminate_code(result);
 		return (WTERMSIG(result) + EXIT_SIGNAL);
 	}
-	// if (WIFSTOPPED(result))
 	else
 		return (WSTOPSIG(result));
-	// return (0);
 }
 
-void	execute_multi_process(t_cmd *cmd)
+int	has_heredoc(t_cmd *cmd)
+{
+	t_cmd	*cur;
+
+	cur = cmd;
+	while (cur != NULL)
+	{
+		if (cur->redir[INPUT] == 2)
+			return (TRUE);
+		cur = cur->next;
+	}
+	return (FALSE);
+}
+
+void	heredoc(t_cmd *cmd)
+{
+	t_cmd	*cur;
+
+	cur = cmd;
+	while (cur != NULL)
+	{
+		if (cur->redir[INPUT] == 2)
+			cur->file->infile_fd = get_heredoc(cur->file->infile);
+		ft_free_str(&(cur->file->infile));
+		cur = cur->next;
+	}
+}
+
+void	execute_multi_command(t_cmd *cmd)
 {
 	t_cmd	*cur;
 	int		pipe_fd[2];
-	char	**command;
 
 	cur = cmd;
+	if (has_heredoc(cur))
+		heredoc(cur);
 	while (cur != NULL)
 	{
 		if (pipe(pipe_fd) == -1)
@@ -113,15 +123,7 @@ void	execute_multi_process(t_cmd *cmd)
 		if (cur->pid < 0)
 			exit_with_errno(NULL, NULL, EXIT_FAILURE);
 		else if (cur->pid == 0)
-		{
-			command = token_to_command(cmd->token);
-			open_infile(cmd);
-			open_outfile(cmd, pipe_fd);
-			// printf("hi 1\n");
-			close_unused_fd(cmd, pipe_fd);
-			// printf("hi 2\n");
-			child_process(command);
-		}
+			child_process(cur, pipe_fd);
 		close(pipe_fd[WR]);
 		if (cmd->prev != NULL)
 			close(cmd->file->infile_fd);
@@ -133,25 +135,3 @@ void	execute_multi_process(t_cmd *cmd)
 	close(pipe_fd[RD]);
 	wait_child_process(cmd, cur->pid);
 }
-// {
-// 	t_cmd	*cur;
-// 	int		pipe_fd[2];
-//
-// 	cur = cmd;
-// 	while (cur != NULL)
-// 	{
-// 		if (pipe(pipe_fd) == -1)
-// 			exit_with_errno(NULL, NULL, EXIT_FAILURE);
-// 		cur->pid = fork();
-// 		if (cur->pid < 0)
-// 			exit_with_errno(NULL, NULL, EXIT_FAILURE);
-// 		else if (cur->pid == 0)
-// 			child_process(cmd, pipe_fd);
-// 		close(pipe_fd[WR]);
-// 		close(cur->file->infile_fd);
-// 		cur->file->infile_fd = pipe_fd[RD];
-// 		cur = cur->next;
-// 	}
-// 	close(pipe_fd[RD]);
-// 	wait_child_process(cmd, cur->pid);
-// }

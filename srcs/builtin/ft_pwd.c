@@ -1,21 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipe.h                                             :+:      :+:    :+:   */
+/*   ft_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/24 15:23:25 by yeongo            #+#    #+#             */
-/*   Updated: 2023/04/29 20:21:18 by yeongo           ###   ########.fr       */
+/*   Created: 2023/04/30 19:48:04 by yeongo            #+#    #+#             */
+/*   Updated: 2023/04/30 20:37:22 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPE_H
-# define PIPE_H
+#include "libft.h"
+#include "error.h"
+#include <sys/param.h>
 
-# include "minishell.h"
+int	ft_pwd(char **argv)
+{
+	char	working_path[MAXPATHLEN];
 
-char	**token_to_command(t_token *token);
-void	execute_multi_command(t_cmd *cmd);
-
-#endif
+	if (argv[1] != NULL)
+	{
+		exit_with_message("pwd", NULL, "too many arguments", 1);
+		return (1);
+	}
+	getcwd(working_path, MAXPATHLEN);
+	ft_putstr_fd(working_path, STDOUT_FILENO);
+	return (0);
+}

@@ -6,7 +6,7 @@
 #    By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/12 16:06:02 by yeongo            #+#    #+#              #
-#    Updated: 2023/04/29 17:43:35 by yeongo           ###   ########.fr        #
+#    Updated: 2023/04/30 19:51:05 by yeongo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,11 +58,13 @@ SRC_PARSE_FILES		:=	$(addsuffix .c,				\
 							main					\
 						)
 SRC_BUILTIN_FILES	:=	$(addsuffix .c,				\
-							directory				\
-							environ					\
+							ft_cd					\
 							ft_echo					\
+							ft_env					\
 							ft_exit					\
 							ft_export				\
+							ft_pwd					\
+							ft_unset				\
 						)
 SRC_EXECUTE_FILES	:=	$(addsuffix .c,				\
 							build_command			\

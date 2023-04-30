@@ -6,13 +6,15 @@
 /*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 01:54:29 by yeongo            #+#    #+#             */
-/*   Updated: 2023/04/27 20:51:23 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/30 20:39:46 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "minishell.h"
+#include "structure.h"
 #include <stdlib.h>
+
+extern t_env	*g_env;
 
 static int	show_export(void)
 {

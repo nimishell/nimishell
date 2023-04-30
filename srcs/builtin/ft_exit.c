@@ -6,11 +6,12 @@
 /*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 16:06:26 by yeongo            #+#    #+#             */
-/*   Updated: 2023/04/27 20:51:00 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/04/30 20:39:26 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
+#include "structure.h"
 #include "error.h"
 
 static int	is_digit_array(char *str)
