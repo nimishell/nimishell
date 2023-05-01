@@ -6,7 +6,7 @@
 /*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 21:42:06 by yeongo            #+#    #+#             */
-/*   Updated: 2023/04/30 20:58:56 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/02 02:37:21 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	open_outfile(t_cmd *cmd, int pipe_fd[2])
 void	close_unused_fd(t_cmd *cmd, int pipe_fd[2])
 {
 	close(pipe_fd[RD]);
-	if (cmd->prev != NULL || cmd->file->infile_fd != -1)
+	if (cmd->prev != NULL || cmd->file->infile != NULL)
 	{
 		dup2(cmd->file->infile_fd, STDIN_FILENO);
 		close(cmd->file->infile_fd);

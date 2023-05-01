@@ -6,32 +6,34 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 19:42:07 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/26 16:20:55 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/02 01:27:38 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "builtin.h"
+#include <stdio.h>
 
-int	execute_builtin(char *command, char **argv)
+int	execute_builtin(char **command)
 {
 	int	result;
 
-	if (ft_strncmp(command, "cd", 3) == 0)
-		result = ft_cd(argv);
-	else if (ft_strncmp(command, "echo", 5) == 0)
-		result = ft_echo(argv);
-	else if (ft_strncmp(command, "env", 4) == 0)
-		result = ft_env(argv);
-	else if (ft_strncmp(command, "unset", 6) == 0)
-		result = ft_unset(argv);
-	else if (ft_strncmp(command, "pwd", 4) == 0)
-		result = ft_pwd(argv);
-	else if (ft_strncmp(command, "export", 7) == 0)
-		result = ft_export(argv);
-	else if (ft_strncmp(command, "exit", 5) == 0)
-		result = ft_exit(argv);
+	printf("hi, builtin\n");
+	if (ft_strncmp(command[0], "cd", 3) == 0)
+		result = ft_cd(command);
+	else if (ft_strncmp(command[0], "echo", 5) == 0)
+		result = ft_echo(command);
+	else if (ft_strncmp(command[0], "env", 4) == 0)
+		result = ft_env(command);
+	else if (ft_strncmp(command[0], "unset", 6) == 0)
+		result = ft_unset(command);
+	else if (ft_strncmp(command[0], "pwd", 4) == 0)
+		result = ft_pwd(command);
+	else if (ft_strncmp(command[0], "export", 7) == 0)
+		result = ft_export(command);
+	else if (ft_strncmp(command[0], "exit", 5) == 0)
+		result = ft_exit(command);
 	else
-		result = 0;
-	return (result);
+		result = 1;
+	exit(result);
 }

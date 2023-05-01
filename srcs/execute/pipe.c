@@ -6,7 +6,7 @@
 /*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 15:08:22 by yeongo            #+#    #+#             */
-/*   Updated: 2023/04/30 21:58:39 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/02 02:57:01 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ static int	is_builtin(char *command)
 	index = 0;
 	while (index < 7)
 	{
-		if (ft_strncmp(command, builtin[index], ft_strlen(builtin[index]) + 1))
+		if (ft_strncmp(command, builtin[index], ft_strlen(builtin[index]) + 1) \
+			== 0)
 			return (TRUE);
 		index++;
 	}
@@ -48,9 +49,9 @@ static void	child_process(t_cmd *cmd, int pipe_fd[2])
 	open_outfile(cmd, pipe_fd);
 	close_unused_fd(cmd, pipe_fd);
 	if (is_builtin(command[0]) == TRUE)
-		execute_builtin(command[0], command);
+		execute_builtin(command);
 	else
-		execute_command(command[0], command);
+		execute_command(command);
 }
 
 static int	wait_child_process(t_cmd *cmd, pid_t last_pid)
@@ -63,7 +64,7 @@ static int	wait_child_process(t_cmd *cmd, pid_t last_pid)
 	{
 		cur_pid = wait(&state);
 		if (cur_pid == -1)
-			exit_with_errno(NULL, NULL, EXIT_FAILURE);
+			exit_with_errno("hi", "bye", EXIT_FAILURE);
 		else if (cur_pid == last_pid)
 			result = state;
 		cmd = cmd->next;

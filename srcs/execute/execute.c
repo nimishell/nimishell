@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 20:30:06 by yeongo            #+#    #+#             */
-/*   Updated: 2023/04/29 17:29:35 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/02 01:16:04 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,19 +41,37 @@ static void	execute_absolute_path(char **command, char **envp)
 	exit_with_errno("zsh", command[0], 127);
 }
 
+// 원래대로 돌려놔 다
+//
+// static void	execve_relative_path(char **command, char **path)
 static void	execute_relative_path(char **command, char **path, char **envp)
 {
-	int	index;
+	char	*command_tmp;
+	int		index;
 
-	ft_strapp_front("/", &command[0]);
+	command_tmp = ft_strjoin("/", command[0]);
 	index = 0;
 	while (path[index])
 	{
-		ft_strapp_front(path[index], &command[0]);
+		ft_free_str(&(command[0]));
+		command[0] = ft_strjoin(path[index], command_tmp);
 		execve(command[0], command, envp);
 		index++;
 	}
+	ft_free_str(&command_tmp);
 }
+// {
+// 	int	index;
+//
+// 	ft_strapp_front("/", &command[0]);
+// 	index = 0;
+// 	while (path[index])
+// 	{
+// 		ft_strapp_front(path[index], &command[0]);
+// 		execve(command[0], command, envp);
+// 		index++;
+// 	}
+// }
 
 char	**make_env_arr(void)
 {
@@ -83,19 +101,20 @@ char	**make_env_arr(void)
 	return (result);
 }
 
-int	execute_command(char *command, char **argv)
+void	execute_command(char **command)
 {
 	char	**path;
 	char	**envp;
+	char	*command_org;
 
 	path = get_path();
 	envp = make_env_arr();
-	if (path == NULL || ft_strchr(argv[0], '/'))
-		execute_absolute_path(argv, envp);
-	execute_relative_path(argv, path, envp);
+	command_org = ft_strdup(command[0]);
+	if (path == NULL || ft_strchr(command[0], '/'))
+		execute_absolute_path(command, envp);
+	execute_relative_path(command, path, envp);
 	ft_free_strings(&path);
-	ft_free_strings(&argv);
+	ft_free_strings(&command);
 	ft_free_strings(&envp);
-	ft_error_message(command, NULL, "Command not found");
-	return (127);
+	exit_with_message(command_org, NULL, "Command not found", 127);
 }

@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:33:23 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/29 20:21:18 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/02 03:30:46 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ void	f(void)
 	system("leaks minishell");
 }
 
+void	execute_single_command(t_cmd *cmd);
+
 int	main(int ac, char *av[], char *envp[])
 {
 	char			*line;
@@ -63,6 +65,9 @@ int	main(int ac, char *av[], char *envp[])
 			add_history(line);
 			parse(&cmd, line);
 		}
+		// if (cmd->prev == NULL && cmd->next == NULL)
+		// 	excute_single_command(cmd);
+		// else
 		execute_multi_command(cmd);
 		free (line);
 	}

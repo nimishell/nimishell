@@ -6,7 +6,7 @@
 /*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 19:48:04 by yeongo            #+#    #+#             */
-/*   Updated: 2023/04/30 20:37:22 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/02 01:28:13 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,6 @@ int	ft_pwd(char **argv)
 		return (1);
 	}
 	getcwd(working_path, MAXPATHLEN);
-	ft_putstr_fd(working_path, STDOUT_FILENO);
+	ft_putendl_fd(working_path, STDOUT_FILENO);
 	return (0);
 }
