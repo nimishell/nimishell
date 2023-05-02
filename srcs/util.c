@@ -6,13 +6,13 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 16:30:42 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/26 15:30:06 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/02 17:42:42 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	*ft_free(void *p1, void *p2, void *p3, void *p4)
+void	*ms_free(void *p1, void *p2, void *p3, void *p4)
 {
 	if (p1)
 		free(p1);
