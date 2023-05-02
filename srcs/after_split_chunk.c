@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 16:00:31 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/27 21:30:17 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/02 20:51:12 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	remove_empty_space(t_token **lst)
 }
 
 
-static int	check_pipe(t_token *token)
+static int	check_syntax_pipe(t_token *token)
 {
 	while (token)
 	{
@@ -57,7 +57,7 @@ static int	check_pipe(t_token *token)
 	return (SUCCESS);
 }
 
-static int	check_redir(t_token *token)
+static int	check_syntax_redir(t_token *token)
 {
 	if (token->str[0] == '>')
 	{
@@ -86,6 +86,11 @@ static int	check_redir(t_token *token)
 
 int	check_syntax(t_token *token)
 {
+	if (!token)
+	{
+		ft_syntax_error("\'");
+		return (FAIL);
+	}
 	if (token && token->type == T_PIPE)
 	{
 		ft_syntax_error(ft_substr(token->str, 0, 2));
@@ -95,12 +100,12 @@ int	check_syntax(t_token *token)
 	{
 		if (token->type == T_REDIR)
 		{
-			if (!check_redir(token))
+			if (!check_syntax_redir(token))
 				return (FAIL);
 		}
 		if (token->type >= T_PIPE)
 		{
-			if (!check_pipe(token))
+			if (!check_syntax_pipe(token))
 				return (FAIL);
 		}
 		token = token->next;
