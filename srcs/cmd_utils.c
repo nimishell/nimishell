@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 14:34:56 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/26 19:48:45 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/02 17:49:37 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,10 @@ t_cmd	*new_cmd(void)
 	ret = malloc(sizeof(t_cmd));
 	if (!ret)
 		return (NULL);
-	ret->file = malloc(sizeof(t_file));
-	if (!ret->file)
-		return (NULL);
-	ret->file->infile = NULL;
-	ret->file->outfile = NULL;
-	ret->file->infile_fd = STDIN_FILENO;
-	ret->file->outfile_fd = STDOUT_FILENO;
+	ret->redir = NULL;
+	ret->fd[0] = STDIN_FILENO;
+	ret->fd[1] = STDOUT_FILENO;
 	ret->next = NULL;
 	ret->prev = NULL;
-	ret->redir[0] = 0;
-	ret->redir[1] = 0;
 	return (ret);
 }

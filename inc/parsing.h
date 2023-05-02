@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 19:58:07 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/28 15:08:33 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/02 20:09:09 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,12 @@ int		parse(t_cmd **cmd, char *rd_line);
 t_token	*tokenize(t_token *token, char *rd_line);
 char	**token_to_command(t_token *token);
 int		token_into_cmd(t_cmd **cmd, t_token *token);
-void	check_cmd(t_cmd *cmd);
-void	treat_input(t_cmd *cmd);
-void	treat_output(t_cmd *cmd);
+void	treat_redir(t_cmd *cmd);
 
 void	token_add_back(t_token **lst, t_token *new);
 void	cmd_add_back(t_cmd **lst, t_cmd *new);
+void	redir_add_back(t_redir **lst, t_redir *new);
 void	remove_single_token(t_token **lst, t_token *target);
-t_token	*detach_token(t_token **token, int size);
 
 t_cmd	*new_cmd(void);
 

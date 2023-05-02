@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:33:23 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/02 03:30:46 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/02 20:32:51 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	main(int ac, char *av[], char *envp[])
 		// if (cmd->prev == NULL && cmd->next == NULL)
 		// 	excute_single_command(cmd);
 		// else
-		execute_multi_command(cmd);
+		// execute_multi_command(cmd);
 		free (line);
 	}
 	tcsetattr(STDOUT_FILENO, TCSANOW, &terminal);

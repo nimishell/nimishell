@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:45:47 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/26 19:54:15 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/02 18:59:05 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ typedef struct s_cmd		t_cmd;
 typedef struct s_env		t_env;
 typedef struct s_process	t_process;
 typedef struct s_file		t_file;
+typedef struct s_redir		t_redir;
 
 struct s_token
 {
@@ -34,12 +35,12 @@ struct s_token
 struct s_cmd
 {
 	t_token	*token;
-	int		size;
+	char	**argv;
 	// int		type;
 	// char	syntax;
+	int		fd[2];
 	pid_t	pid;
-	int		redir[2];
-	t_file	*file;
+	t_redir	*redir;
 	t_cmd	*next;
 	t_cmd	*prev;
 };
@@ -61,6 +62,13 @@ struct s_file
 	char	*outfile;
 };
 
+struct s_redir
+{
+	int		type;
+	char	*file;
+	t_redir	*next;
+};
+
 enum e_token_type
 {
 	T_CHUNK = 11,
@@ -79,16 +87,16 @@ enum e_io_type
 	T_IO_LL
 };
 
+enum e_file_io
+{
+	INPUT,
+	OUTPUT
+};
+
 enum e_pipe
 {
 	RD,
 	WR
-};
-
-enum e_redir
-{
-	INPUT,
-	OUTPUT
 };
 
 enum e_bool

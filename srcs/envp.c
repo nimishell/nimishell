@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 20:33:04 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/26 03:45:11 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/02 17:09:12 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ char	*get_value(char *key)
 	cur = g_env;
 	while (cur != NULL)
 	{
-		if (ft_strncmp(cur->key, key, ft_strlen(key) + 1))
+		if (ft_strncmp(cur->key, key, ft_strlen(key)))
 			return (cur->value);
 		cur = cur->next;
 	}
