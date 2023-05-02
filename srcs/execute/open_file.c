@@ -6,7 +6,7 @@
 /*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 21:42:06 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/02 10:49:21 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/02 21:39:25 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,40 +42,40 @@ int	get_heredoc(char *limiter)
 
 void	open_infile(t_cmd *cmd)
 {
-	if (cmd->redir[INPUT] == 1)
+	if (cmd->redir->type == T_IO_L)
 	{
-		cmd->file->infile_fd = open(cmd->file->infile, O_RDONLY);
-		if (cmd->file->infile_fd == -1)
-			exit_with_errno("zsh", cmd->file->infile, EXIT_FAILURE);
+		cmd->fd[INPUT] = open(cmd->redir->file, O_RDONLY);
+		if (cmd->fd[INPUT] == -1)
+			exit_with_errno("zsh", cmd->redir->file, EXIT_FAILURE);
 	}
 }
 
 void	open_outfile(t_cmd *cmd, int pipe_fd[2])
 {
-	cmd->file->outfile_fd = pipe_fd[WR];
-	if (cmd->redir[OUTPUT] == 1)
-		cmd->file->outfile_fd = open(cmd->file->outfile, \
+	cmd->fd[OUTPUT] = pipe_fd[WR];
+	if (cmd->redir->type == T_IO_R)
+		cmd->fd[OUTPUT] = open(cmd->redir->file, \
 			O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	else if (cmd->redir[OUTPUT] == 2)
-		cmd->file->outfile_fd = open(cmd->file->outfile, \
+	else if (cmd->redir->type == T_IO_RR)
+		cmd->fd[OUTPUT] = open(cmd->redir->file, \
 			O_WRONLY | O_APPEND | O_CREAT, 0644);
 	else
 		return ;
-	if (cmd->file->outfile_fd == -1)
-		exit_with_errno("zsh", cmd->file->outfile, EXIT_FAILURE);
+	if (cmd->fd[OUTPUT] == -1)
+		exit_with_errno("zsh", cmd->redir->file, EXIT_FAILURE);
 }
 
 void	close_unused_fd(t_cmd *cmd, int pipe_fd[2])
 {
 	close(pipe_fd[RD]);
-	if (!(cmd->prev == NULL && cmd->file->infile == NULL))
+	if (!(cmd->prev == NULL && infile == NULL))
 	{
-		dup2(cmd->file->infile_fd, STDIN_FILENO);
-		close(cmd->file->infile_fd);
+		dup2(cmd->fd[INPUT], STDIN_FILENO);
+		close(cmd->fd[INPUT]);
 	}
-	if (!(cmd->next == NULL && cmd->file->outfile == NULL))
-		dup2(cmd->file->outfile_fd, STDOUT_FILENO);
-	close(cmd->file->outfile_fd);
-	if (cmd->file->outfile != NULL)
+	if (!(cmd->next == NULL && outfile == NULL))
+		dup2(cmd->fd[OUTPUT], STDOUT_FILENO);
+	close(cmd->fd[OUTPUT]);
+	if (outfile != NULL)
 		close(pipe_fd[WR]);
 }

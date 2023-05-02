@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:45:47 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/02 18:59:05 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/02 21:27:50 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,7 @@ struct s_token
 
 struct s_cmd
 {
-	t_token	*token;
 	char	**argv;
-	// int		type;
-	// char	syntax;
 	int		fd[2];
 	pid_t	pid;
 	t_redir	*redir;
@@ -52,14 +49,6 @@ struct s_env
 	int		is_value;
 	int		status;
 	t_env	*next;
-};
-
-struct s_file
-{
-	int		infile_fd;
-	int		outfile_fd;
-	char	*infile;
-	char	*outfile;
 };
 
 struct s_redir

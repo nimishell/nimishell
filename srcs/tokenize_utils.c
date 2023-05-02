@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 16:10:57 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/02 17:35:38 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/02 21:06:03 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,4 +85,3 @@ void	remove_single_token(t_token **lst, t_token *target)
 	free(target->str);
 	free(target);
 }
-

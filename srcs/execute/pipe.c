@@ -6,7 +6,7 @@
 /*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 15:08:22 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/02 10:48:19 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/02 21:30:42 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,23 +35,20 @@ static int	is_builtin(char *command)
 
 void	free_cmd(t_cmd **cmd)
 {
-	free((*cmd)->file);
+	ft_free_strings(&((*cmd)->argv));
 	free(*cmd);
 	*cmd = NULL;
 }
 
 static void	child_process(t_cmd *cmd, int pipe_fd[2])
 {
-	char	**command;
-
-	command = token_to_command(cmd->token);
 	open_infile(cmd);
 	open_outfile(cmd, pipe_fd);
 	close_unused_fd(cmd, pipe_fd);
-	if (is_builtin(command[0]) == TRUE)
-		execute_builtin(command);
+	if (is_builtin(cmd->argv[0]) == TRUE)
+		execute_builtin(cmd->argv);
 	else
-		execute_command(command);
+		execute_command(cmd->argv);
 }
 
 static int	wait_child_process(t_cmd *cmd, pid_t last_pid)
@@ -82,12 +79,12 @@ static int	wait_child_process(t_cmd *cmd, pid_t last_pid)
 
 int	has_heredoc(t_cmd *cmd)
 {
-	t_cmd	*cur;
+	t_redir	*cur;
 
-	cur = cmd;
+	cur = cmd->redir;
 	while (cur != NULL)
 	{
-		if (cur->redir[INPUT] == 2)
+		if (cur->type == T_IO_LL)
 			return (TRUE);
 		cur = cur->next;
 	}
@@ -96,14 +93,18 @@ int	has_heredoc(t_cmd *cmd)
 
 void	heredoc(t_cmd *cmd)
 {
-	t_cmd	*cur;
+	t_redir	*cur;
 
-	cur = cmd;
+	cur = cmd->redir;
 	while (cur != NULL)
 	{
-		if (cur->redir[INPUT] == 2)
-			cur->file->infile_fd = get_heredoc(cur->file->infile);
-		ft_free_str(&(cur->file->infile));
+		if (cur->type == T_IO_LL)
+		{
+			if (cmd->fd[INPUT] != 0)
+				close(cmd->fd[INPUT]);
+			cmd->fd[INPUT] = get_heredoc(cur->file);
+			ft_free_str(&(cur->file));
+		}
 		cur = cur->next;
 	}
 }
@@ -127,12 +128,12 @@ void	execute_multi_command(t_cmd *cmd)
 		else if (cur->pid == 0)
 			child_process(cur, pipe_fd);
 		close(pipe_fd[WR]);
-		if (!(cur->prev == NULL && cur->redir[INPUT] != 2))
-			close(cmd->file->infile_fd);
+		if (!(cur->prev == NULL && cur->redir->type != T_IO_LL))
+			close(cmd->fd[INPUT]);
 		if (cur->next == NULL)
 			break ;
 		cur = cur->next;
-		cur->file->infile_fd = pipe_fd[RD];
+		cur->fd[INPUT] = pipe_fd[RD];
 	}
 	close(pipe_fd[RD]);
 	wait_child_process(cmd, cur->pid);
