@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute.c                                          :+:      :+:    :+:   */
+/*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 20:30:06 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/02 01:16:04 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/02 08:53:03 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,6 @@ static void	execute_absolute_path(char **command, char **envp)
 	exit_with_errno("zsh", command[0], 127);
 }
 
-// 원래대로 돌려놔 다
-//
-// static void	execve_relative_path(char **command, char **path)
 static void	execute_relative_path(char **command, char **path, char **envp)
 {
 	char	*command_tmp;
@@ -60,18 +57,6 @@ static void	execute_relative_path(char **command, char **path, char **envp)
 	}
 	ft_free_str(&command_tmp);
 }
-// {
-// 	int	index;
-//
-// 	ft_strapp_front("/", &command[0]);
-// 	index = 0;
-// 	while (path[index])
-// 	{
-// 		ft_strapp_front(path[index], &command[0]);
-// 		execve(command[0], command, envp);
-// 		index++;
-// 	}
-// }
 
 char	**make_env_arr(void)
 {

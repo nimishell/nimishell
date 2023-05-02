@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 16:00:31 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/27 21:30:17 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/02 09:01:36 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ void	remove_empty_space(t_token **lst)
 		free(cur);
 	}
 }
-
 
 static int	check_pipe(t_token *token)
 {

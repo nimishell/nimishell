@@ -6,7 +6,7 @@
 /*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 21:42:06 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/02 02:37:21 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/02 10:49:21 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,14 @@ int	get_heredoc(char *limiter)
 		&& ft_strncmp(input_str, limiter, limiter_size) != 0)
 	{
 		// expand_env_in_str(input_str);
-		ft_putstr_fd(input_str, pipe_heredoc[1]);
+		ft_putstr_fd(input_str, pipe_heredoc[WR]);
 		free(input_str);
 		input_str = readline("> ");
 	}
 	if (input_str != NULL)
 		free(input_str);
-	close(pipe_heredoc[1]);
-	return (pipe_heredoc[0]);
+	close(pipe_heredoc[WR]);
+	return (pipe_heredoc[RD]);
 }
 
 void	open_infile(t_cmd *cmd)
@@ -68,14 +68,14 @@ void	open_outfile(t_cmd *cmd, int pipe_fd[2])
 void	close_unused_fd(t_cmd *cmd, int pipe_fd[2])
 {
 	close(pipe_fd[RD]);
-	if (cmd->prev != NULL || cmd->file->infile != NULL)
+	if (!(cmd->prev == NULL && cmd->file->infile == NULL))
 	{
 		dup2(cmd->file->infile_fd, STDIN_FILENO);
 		close(cmd->file->infile_fd);
 	}
-	if (cmd->next != NULL || cmd->file->outfile != NULL)
+	if (!(cmd->next == NULL && cmd->file->outfile == NULL))
 		dup2(cmd->file->outfile_fd, STDOUT_FILENO);
+	close(cmd->file->outfile_fd);
 	if (cmd->file->outfile != NULL)
-		close(cmd->file->outfile_fd);
-	close(pipe_fd[WR]);
+		close(pipe_fd[WR]);
 }

@@ -6,7 +6,7 @@
 /*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 15:08:22 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/02 02:57:01 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/02 10:48:19 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,18 +120,19 @@ void	execute_multi_command(t_cmd *cmd)
 	{
 		if (pipe(pipe_fd) == -1)
 			exit_with_errno(NULL, NULL, EXIT_FAILURE);
+		printf("parent pipe[RD]: %d, pipe[WR]: %d\n", pipe_fd[RD], pipe_fd[WR]);
 		cur->pid = fork();
 		if (cur->pid < 0)
 			exit_with_errno(NULL, NULL, EXIT_FAILURE);
 		else if (cur->pid == 0)
 			child_process(cur, pipe_fd);
 		close(pipe_fd[WR]);
-		if (cmd->prev != NULL)
+		if (!(cur->prev == NULL && cur->redir[INPUT] != 2))
 			close(cmd->file->infile_fd);
-		cur->file->infile_fd = pipe_fd[RD];
 		if (cur->next == NULL)
 			break ;
 		cur = cur->next;
+		cur->file->infile_fd = pipe_fd[RD];
 	}
 	close(pipe_fd[RD]);
 	wait_child_process(cmd, cur->pid);
