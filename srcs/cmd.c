@@ -6,13 +6,25 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 19:23:50 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/02 20:30:15 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/03 13:48:19 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "minishell.h"
 #include "parsing.h"
+
+t_cmd	*new_cmd(void)
+{
+	t_cmd	*ret;
+
+	ret = ft_calloc(1, sizeof(t_cmd));
+	if (!ret)
+		return (NULL);
+	ret->fd[INPUT] = STDIN_FILENO;
+	ret->fd[OUTPUT] = STDOUT_FILENO;
+	return (ret);
+}
 
 static char	**is_cd_follow_no_dir(t_token *token)
 {

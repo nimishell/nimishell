@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:45:47 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/03 11:09:03 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/03 13:31:38 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,13 @@ enum e_result
 {
 	FAIL,
 	SUCCESS
+};
+
+enum e_signal
+{
+	DEFAULT,
+	IGNORE,
+	CUSTOM
 };
 
 #endif

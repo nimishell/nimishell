@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 14:36:18 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/27 21:02:25 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/03 13:34:35 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,18 @@ void	sig_handler(int signal)
 	}
 }
 
-void	set_sig(void)
+void	set_sig(int sig_int, int sig_quit)
 {
-	signal(SIGINT, sig_handler);
-	signal(SIGTERM, sig_handler);
-	signal(SIGQUIT, sig_handler);
+	if (sig_int == DEFAULT)
+		signal(SIGINT, SIG_DFL);
+	else if (sig_int == IGNORE)
+		signal(SIGINT, SIG_IGN);
+	else if (sig_int == CUSTOM)
+		signal(SIGINT, sig_handler);
+	if (sig_quit == DEFAULT)
+		signal(SIGQUIT, SIG_DFL);
+	else if (sig_quit == IGNORE)
+		signal(SIGQUIT, SIG_IGN);
+	else if (sig_quit == CUSTOM)
+		signal(SIGQUIT, sig_handler);
 }

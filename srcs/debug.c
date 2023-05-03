@@ -17,7 +17,8 @@ void	debug_print_tokens(t_token *token)
 
 void	debug_print_cmd(t_cmd *cmd)
 {
-	t_redir	*cur;
+	t_redir	*in;
+	t_redir	*out;
 	int cnt = 0;
 	int idx;
 
@@ -30,11 +31,20 @@ void	debug_print_cmd(t_cmd *cmd)
 			printf("%s\n", cmd->argv[idx]);
 			idx++;
 		}
-		cur = cmd->redir;
-		while (cur)
+		in = cmd->redir_in;
+		out = cmd->redir_out;
+		while (in || out)
 		{
-			printf("redir_type : %d\nredir_file : %s\n", cur->type, cur->file);
-			cur = cur->next;
+			if (in)
+			{
+				printf("in_type : %d\nfile : %s\n", in->type, in->file);
+				in = in->next;
+			}
+			if (out)
+			{
+				printf("out_type : %d\nfile : %s\n", out->type, out->file);
+				out = out->next;
+			}
 		}
 		// printf("input: %s, input_fd: %d\n", cmd->file->infile, cmd->file->infile_fd);
 		// printf("output: %s, output_fd %d\n\n", cmd->file->outfile, cmd->file->outfile_fd);

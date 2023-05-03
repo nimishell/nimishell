@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:33:23 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/02 20:32:51 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/03 13:34:18 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	main_init(int ac, char *av[], char *envp[])
 	tcgetattr(STDIN_FILENO, &term);
 	term.c_lflag &= ~(ECHOCTL);
 	tcsetattr(STDOUT_FILENO, TCSANOW, &term);
-	set_sig();
+	set_sig(CUSTOM, CUSTOM);
 	copy_env(envp);
 }
 

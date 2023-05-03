@@ -6,7 +6,7 @@
 #    By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/12 16:06:02 by yeongo            #+#    #+#              #
-#    Updated: 2023/05/02 21:03:08 by yeongo           ###   ########.fr        #
+#    Updated: 2023/05/03 14:24:58 by wbae             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +51,6 @@ SRC_PARSE_FILES		:=	$(addsuffix .c,				\
 							split_token2			\
 							after_split_chunk		\
 							translate_dollar		\
-							cmd_utils				\
 							treat_redir				\
 							tokenize_utils			\
 							util					\

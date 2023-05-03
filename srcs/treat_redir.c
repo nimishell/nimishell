@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 17:34:11 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/03 11:25:41 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/03 13:54:37 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,36 +58,31 @@ static void	shift_array(t_cmd *cmd, int tmp_idx)
 	cmd->argv[tmp_idx] = NULL;
 }
 
-static void	handle_io(t_cmd *cmd)
+void	treat_redir(t_cmd *cmd)
 {
 	int		idx;
 	t_redir	*new;
 
-	idx = 0;
-	while (cmd->argv[idx])
-	{
-		if (is_redir_in(cmd->argv[idx]))
-		{
-			new = init_redir_node(cmd->argv, idx);
-			redir_add_back(&cmd->redir_in, new);
-			shift_array(cmd, idx);
-		}
-		else if (is_redir_out(cmd->argv[idx]))
-		{
-			new = init_redir_node(cmd->argv, idx);
-			redir_add_back(&cmd->redir_out, new);
-			shift_array(cmd, idx);
-		}
-		else
-			idx++;
-	}
-}
-
-void	treat_redir(t_cmd *cmd)
-{
 	while (cmd)
 	{
-		handle_io(cmd);
+		idx = 0;
+		while (cmd->argv[idx])
+		{
+			if (is_redir_in(cmd->argv[idx]))
+			{
+				new = init_redir_node(cmd->argv, idx);
+				redir_add_back(&cmd->redir_in, new);
+				shift_array(cmd, idx);
+			}
+			else if (is_redir_out(cmd->argv[idx]))
+			{
+				new = init_redir_node(cmd->argv, idx);
+				redir_add_back(&cmd->redir_out, new);
+				shift_array(cmd, idx);
+			}
+			else
+				idx++;
+		}
 		cmd = cmd->next;
 	}
 }
