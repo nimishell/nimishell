@@ -6,28 +6,43 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 17:34:11 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/02 20:29:33 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/03 11:25:41 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parsing.h"
 #include "libft.h"
+#include "structure.h"
 
-static int	is_redir(char *argv)
+static int	is_redir_in(char *argv)
 {
-	int	len;
-
-	len = ft_strlen(argv);
-	if (!ft_strncmp(argv, "<", len))
+	if (!ft_strncmp(argv, "<", 2))
 		return (T_IO_L);
-	else if (!ft_strncmp(argv, "<<", len))
+	else if (!ft_strncmp(argv, "<<", 3))
 		return (T_IO_LL);
-	else if (!ft_strncmp(argv, ">", len))
+	return (0);
+}
+
+static int	is_redir_out(char *argv)
+{
+	if (!ft_strncmp(argv, ">", 2))
 		return (T_IO_R);
-	else if (!ft_strncmp(argv, ">>", len))
+	else if (!ft_strncmp(argv, ">>", 3))
 		return (T_IO_RR);
 	return (0);
+}
+
+static t_redir	*init_redir_node(char **argv, int index)
+{
+	t_redir	*new_node;
+
+	new_node = ft_calloc(1, sizeof(t_redir));
+	new_node->type |= (is_redir_in(argv[index]) \
+						| is_redir_out(argv[index]));
+	new_node->fd = -1;
+	new_node->file = ft_strdup(argv[index + 1]);
+	return (new_node);
 }
 
 static void	shift_array(t_cmd *cmd, int tmp_idx)
@@ -46,20 +61,22 @@ static void	shift_array(t_cmd *cmd, int tmp_idx)
 static void	handle_io(t_cmd *cmd)
 {
 	int		idx;
-	int		tmp_idx;
 	t_redir	*new;
 
 	idx = 0;
 	while (cmd->argv[idx])
 	{
-		if (is_redir(cmd->argv[idx]))
+		if (is_redir_in(cmd->argv[idx]))
 		{
-			new = ft_calloc(1, sizeof(t_redir));
-			new->type = is_redir(cmd->argv[idx]);
-			new->file = ft_strdup(cmd->argv[idx + 1]);
-			redir_add_back(&cmd->redir, new);
-			tmp_idx = idx;
-			shift_array(cmd, tmp_idx);
+			new = init_redir_node(cmd->argv, idx);
+			redir_add_back(&cmd->redir_in, new);
+			shift_array(cmd, idx);
+		}
+		else if (is_redir_out(cmd->argv[idx]))
+		{
+			new = init_redir_node(cmd->argv, idx);
+			redir_add_back(&cmd->redir_out, new);
+			shift_array(cmd, idx);
 		}
 		else
 			idx++;

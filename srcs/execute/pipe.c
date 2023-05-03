@@ -6,7 +6,7 @@
 /*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 15:08:22 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/02 21:30:42 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/03 11:37:09 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	has_heredoc(t_cmd *cmd)
 {
 	t_redir	*cur;
 
-	cur = cmd->redir;
+	cur = cmd->redir_in;
 	while (cur != NULL)
 	{
 		if (cur->type == T_IO_LL)
@@ -91,18 +91,16 @@ int	has_heredoc(t_cmd *cmd)
 	return (FALSE);
 }
 
-void	heredoc(t_cmd *cmd)
+void	execute_heredoc(t_cmd *cmd)
 {
 	t_redir	*cur;
 
-	cur = cmd->redir;
+	cur = cmd->redir_in;
 	while (cur != NULL)
 	{
 		if (cur->type == T_IO_LL)
 		{
-			if (cmd->fd[INPUT] != 0)
-				close(cmd->fd[INPUT]);
-			cmd->fd[INPUT] = get_heredoc(cur->file);
+			cur->fd = get_heredoc(cur->file);
 			ft_free_str(&(cur->file));
 		}
 		cur = cur->next;
@@ -116,7 +114,7 @@ void	execute_multi_command(t_cmd *cmd)
 
 	cur = cmd;
 	if (has_heredoc(cur))
-		heredoc(cur);
+		execute_heredoc(cur);
 	while (cur != NULL)
 	{
 		if (pipe(pipe_fd) == -1)
@@ -128,7 +126,7 @@ void	execute_multi_command(t_cmd *cmd)
 		else if (cur->pid == 0)
 			child_process(cur, pipe_fd);
 		close(pipe_fd[WR]);
-		if (!(cur->prev == NULL && cur->redir->type != T_IO_LL))
+		if (!(cur->prev == NULL && cur->redir_in->type != T_IO_LL))
 			close(cmd->fd[INPUT]);
 		if (cur->next == NULL)
 			break ;

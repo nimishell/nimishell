@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:45:47 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/02 21:27:50 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/03 11:09:03 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ struct s_cmd
 	char	**argv;
 	int		fd[2];
 	pid_t	pid;
-	t_redir	*redir;
+	t_redir	*redir_in;
+	t_redir	*redir_out;
 	t_cmd	*next;
 	t_cmd	*prev;
 };
@@ -54,6 +55,7 @@ struct s_env
 struct s_redir
 {
 	int		type;
+	int		fd;
 	char	*file;
 	t_redir	*next;
 };
