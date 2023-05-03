@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 15:08:22 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/03 16:50:20 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/03 18:53:57 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,8 @@ void	free_cmd(t_cmd **cmd)
 
 static void	child_process(t_cmd *cmd, int pipe_fd[2])
 {
-	if (cmd->redir_in)
-		open_infile(cmd);
-	if (cmd->redir_out)
-		open_outfile(cmd, pipe_fd);
+	open_infile(cmd);
+	open_outfile(cmd, pipe_fd);
 	close_unused_fd(cmd, pipe_fd);
 	set_sig(IGNORE, IGNORE);
 	if (cmd->argv[0])
