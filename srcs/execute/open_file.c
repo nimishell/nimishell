@@ -6,14 +6,59 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 21:42:06 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/03 18:59:42 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/03 20:47:13 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "minishell.h"
 #include <stdio.h>
+#include <string.h>
 
-// void	expand_env_in_str(char *str);
+static char	*expand_env(char *str, t_env *env, int position)
+{
+	size_t	len_str;
+	size_t	len_key;
+	size_t	len_val;
+	size_t	m_size;
+	char	*result;
+
+	len_str = ft_strlen(str);
+	len_key = ft_strlen(env->key);
+	len_val = ft_strlen(env->value);
+	m_size = len_str + len_val - len_key;
+	result = ft_calloc(m_size, sizeof(char));
+	if (result == NULL)
+		return (NULL);
+	ft_memmove(result, str, position);
+	ft_memmove(&result[position], env->value, len_val);
+	ft_memmove(&result[position + len_val], &str[position + len_key + 1], \
+			len_str - position - len_key - 1);
+	return (result);
+}
+
+void	expand_env_in_str(char **str)
+{
+	t_env	*cur;
+	int		position;
+
+	position = strcspn(*str, "$");
+	while ((*str)[position] != '\0')
+	{
+		cur = g_env;
+		while (cur != NULL)
+		{
+			if (ft_strnstr(&(*str)[position], cur->key, \
+				ft_strlen(&(*str)[position])))
+			{
+				*str = expand_env(*str, cur, position);
+				break ;
+			}
+			cur = cur->next;
+		}
+		position = strcspn(*str, "$");
+	}
+}
 
 int	get_heredoc(char *limiter)
 {
@@ -26,13 +71,17 @@ int	get_heredoc(char *limiter)
 	if (limiter != NULL)
 		limiter_size = ft_strlen(limiter);
 	input_str = readline("> ");
+	if (input_str != NULL)
+		ft_strapp_back(&input_str, "\n");
 	while (input_str != NULL
 		&& ft_strncmp(input_str, limiter, limiter_size) != 0)
 	{
-		// expand_env_in_str(input_str);
+		expand_env_in_str(&input_str);
 		ft_putstr_fd(input_str, pipe_heredoc[WR]);
 		free(input_str);
 		input_str = readline("> ");
+		if (input_str != NULL)
+			ft_strapp_back(&input_str, "\n");
 	}
 	if (input_str != NULL)
 		free(input_str);

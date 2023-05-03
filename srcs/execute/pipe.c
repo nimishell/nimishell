@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 15:08:22 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/03 18:53:57 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/03 21:25:34 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include "pipe.h"
 #include "open_file.h"
 #include "terminate.h"
-#include <stdio.h>
 
 static int	is_builtin(char *command)
 {
@@ -65,7 +64,10 @@ static int	wait_child_process(t_cmd *cmd, pid_t last_pid)
 	{
 		cur_pid = wait(&state);
 		if (cur_pid == -1)
-			exit_with_errno("hi", "bye", EXIT_FAILURE);
+		{
+			ft_perror("hi", "bye");
+			return (EXIT_FAILURE);
+		}
 		else if (cur_pid == last_pid)
 			result = state;
 		cmd = cmd->next;
@@ -111,6 +113,18 @@ void	execute_heredoc(t_cmd *cmd)
 	}
 }
 
+int	set_fds_before_new_cmd(t_cmd **cur, int pipe_fd[2])
+{
+	close(pipe_fd[WR]);
+	if (!((*cur)->prev == NULL && (*cur)->fd[INPUT] == STDIN_FILENO))
+		close((*cur)->fd[INPUT]);
+	if ((*cur)->next == NULL)
+		return (0);
+	*cur = (*cur)->next;
+	(*cur)->fd[INPUT] = pipe_fd[RD];
+	return (1);
+}
+
 void	execute_multi_command(t_cmd *cmd)
 {
 	t_cmd	*cur;
@@ -123,20 +137,15 @@ void	execute_multi_command(t_cmd *cmd)
 	{
 		if (pipe(pipe_fd) == -1)
 			exit_with_errno(NULL, NULL, EXIT_FAILURE);
-		printf("parent pipe[RD]: %d, pipe[WR]: %d\n", pipe_fd[RD], pipe_fd[WR]);
 		set_sig(DEFAULT, DEFAULT);
 		cur->pid = fork();
 		if (cur->pid < 0)
 			exit_with_errno(NULL, NULL, EXIT_FAILURE);
 		else if (cur->pid == 0)
 			child_process(cur, pipe_fd);
-		close(pipe_fd[WR]);
-		if (!(cur->prev == NULL && cur->redir_in && cur->redir_in->type != T_IO_LL))
-			close(cmd->fd[INPUT]);
-		if (cur->next == NULL)
-			break ;
-		cur = cur->next;
-		cur->fd[INPUT] = pipe_fd[RD];
+		else
+			if (set_fds_before_new_cmd(&cur, pipe_fd) == 0)
+				break ;
 	}
 	close(pipe_fd[RD]);
 	wait_child_process(cmd, cur->pid);
