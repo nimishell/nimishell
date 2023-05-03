@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   open_file.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 21:42:06 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/02 21:39:25 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/03 16:16:27 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,40 +42,52 @@ int	get_heredoc(char *limiter)
 
 void	open_infile(t_cmd *cmd)
 {
-	if (cmd->redir->type == T_IO_L)
+	t_redir	*in;
+
+	in = cmd->redir_in;
+	if (in->type == T_IO_L)
 	{
-		cmd->fd[INPUT] = open(cmd->redir->file, O_RDONLY);
+		cmd->fd[INPUT] = open(in->file, O_RDONLY);
 		if (cmd->fd[INPUT] == -1)
-			exit_with_errno("zsh", cmd->redir->file, EXIT_FAILURE);
+			exit_with_errno("zsh", in->file, EXIT_FAILURE);
 	}
 }
 
 void	open_outfile(t_cmd *cmd, int pipe_fd[2])
 {
+	t_redir	*out;
+
+	out = cmd->redir_out;
 	cmd->fd[OUTPUT] = pipe_fd[WR];
-	if (cmd->redir->type == T_IO_R)
-		cmd->fd[OUTPUT] = open(cmd->redir->file, \
+	if (out->type == T_IO_R)
+		cmd->fd[OUTPUT] = open(out->file, \
 			O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	else if (cmd->redir->type == T_IO_RR)
-		cmd->fd[OUTPUT] = open(cmd->redir->file, \
+	else if (out->type == T_IO_RR)
+		cmd->fd[OUTPUT] = open(out->file, \
 			O_WRONLY | O_APPEND | O_CREAT, 0644);
 	else
 		return ;
 	if (cmd->fd[OUTPUT] == -1)
-		exit_with_errno("zsh", cmd->redir->file, EXIT_FAILURE);
+		exit_with_errno("zsh", out->file, EXIT_FAILURE);
 }
 
 void	close_unused_fd(t_cmd *cmd, int pipe_fd[2])
 {
 	close(pipe_fd[RD]);
-	if (!(cmd->prev == NULL && infile == NULL))
+	if (cmd->redir_in)
 	{
-		dup2(cmd->fd[INPUT], STDIN_FILENO);
-		close(cmd->fd[INPUT]);
+		if (!(cmd->prev == NULL && cmd->redir_in->file == NULL))
+		{
+			dup2(cmd->fd[INPUT], STDIN_FILENO);
+			close(cmd->fd[INPUT]);
+		}
 	}
-	if (!(cmd->next == NULL && outfile == NULL))
-		dup2(cmd->fd[OUTPUT], STDOUT_FILENO);
-	close(cmd->fd[OUTPUT]);
-	if (outfile != NULL)
-		close(pipe_fd[WR]);
+	if (cmd->redir_out)
+	{
+		if (!(cmd->next == NULL && cmd->redir_out->file == NULL))
+			dup2(cmd->fd[OUTPUT], STDOUT_FILENO);
+		close(cmd->fd[OUTPUT]);
+		if (cmd->redir_out->file != NULL)
+			close(pipe_fd[WR]);
+	}
 }

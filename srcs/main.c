@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:33:23 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/03 13:34:18 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/03 17:41:07 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,15 +44,13 @@ void	f(void)
 	system("leaks minishell");
 }
 
-void	execute_single_command(t_cmd *cmd);
+// void	execute_single_command(t_cmd *cmd);
 
 int	main(int ac, char *av[], char *envp[])
 {
 	char			*line;
 	t_cmd			*cmd;
-	struct termios	terminal;
 
-	tcgetattr(STDIN_FILENO, &terminal);
 	main_init(ac, av, envp);
 	while (1)
 	{
@@ -63,17 +61,16 @@ int	main(int ac, char *av[], char *envp[])
 		{
 			cmd = NULL;
 			add_history(line);
-			parse(&cmd, line);
+			if (parse(&cmd, line))
+			{
+				// if (cmd->prev == NULL && cmd->next == NULL)
+				// 	excute_single_command(cmd);
+				// else
+					execute_multi_command(cmd);
+			}
 		}
-		// if (cmd->prev == NULL && cmd->next == NULL)
-		// 	excute_single_command(cmd);
-		// else
-		// execute_multi_command(cmd);
 		free (line);
 	}
-	tcsetattr(STDOUT_FILENO, TCSANOW, &terminal);
-	ft_putstr_fd("\033[1A\033[10C", STDOUT_FILENO);
-	ft_putstr_fd("exit\n", STDOUT_FILENO);
 	// atexit(f);
 	return (0);
 }

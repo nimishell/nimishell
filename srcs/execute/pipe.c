@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 15:08:22 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/03 11:37:09 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/03 16:50:20 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,19 @@ void	free_cmd(t_cmd **cmd)
 
 static void	child_process(t_cmd *cmd, int pipe_fd[2])
 {
-	open_infile(cmd);
-	open_outfile(cmd, pipe_fd);
+	if (cmd->redir_in)
+		open_infile(cmd);
+	if (cmd->redir_out)
+		open_outfile(cmd, pipe_fd);
 	close_unused_fd(cmd, pipe_fd);
-	if (is_builtin(cmd->argv[0]) == TRUE)
-		execute_builtin(cmd->argv);
-	else
-		execute_command(cmd->argv);
+	set_sig(IGNORE, IGNORE);
+	if (cmd->argv[0])
+	{
+		if (is_builtin(cmd->argv[0]) == TRUE)
+			execute_builtin(cmd->argv);
+		else
+			execute_command(cmd->argv);
+	}
 }
 
 static int	wait_child_process(t_cmd *cmd, pid_t last_pid)
@@ -120,13 +126,14 @@ void	execute_multi_command(t_cmd *cmd)
 		if (pipe(pipe_fd) == -1)
 			exit_with_errno(NULL, NULL, EXIT_FAILURE);
 		printf("parent pipe[RD]: %d, pipe[WR]: %d\n", pipe_fd[RD], pipe_fd[WR]);
+		set_sig(DEFAULT, DEFAULT);
 		cur->pid = fork();
 		if (cur->pid < 0)
 			exit_with_errno(NULL, NULL, EXIT_FAILURE);
 		else if (cur->pid == 0)
 			child_process(cur, pipe_fd);
 		close(pipe_fd[WR]);
-		if (!(cur->prev == NULL && cur->redir_in->type != T_IO_LL))
+		if (!(cur->prev == NULL && cur->redir_in && cur->redir_in->type != T_IO_LL))
 			close(cmd->fd[INPUT]);
 		if (cur->next == NULL)
 			break ;
