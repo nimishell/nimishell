@@ -6,28 +6,12 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 19:53:08 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/29 18:07:34 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/03 21:08:54 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parsing.h"
-
-static int	env_maxlen(const char *s1, const char *s2)
-{
-	int	len1;
-	int	len2;
-	int	i;
-
-	i = 0;
-	len1 = ft_strlen(s1);
-	while (s2[i] && (ft_isalnum(s2[i]) || s2[0] == '_'))
-		i++;
-	len2 = i;
-	if (len1 >= len2)
-		return (len1);
-	return (len2);
-}
 
 static char	*join_split(char **split)
 {
@@ -44,8 +28,6 @@ static char	*join_split(char **split)
 
 static char	*translate_dollar(t_env *head, char **str)
 {
-	int	target;
-
 	if (*str[0] == '?' || *str[0] == '$')
 	{
 		free(*str);
@@ -54,8 +36,7 @@ static char	*translate_dollar(t_env *head, char **str)
 	}
 	while (head)
 	{
-		target = env_maxlen(head->key, *str);
-		if (!ft_strncmp(*str, head->key, target))
+		if (!ft_strncmp(*str, head->key, ft_strlen(*str) + 1))
 		{
 			free(*str);
 			*str = ft_strdup(head->value);
