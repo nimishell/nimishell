@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 21:32:19 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/03 19:21:02 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/04 16:47:58 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ t_token	*tokenize(t_token *token, char *rd_line)
 		return (NULL);
 	if (ft_split_token(&token, rd_line) == FAIL)
 		return (NULL);
+	free(rd_line);
 	remove_empty_space(&token);
 	return (token);
 }

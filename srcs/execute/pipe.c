@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 15:08:22 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/03 21:25:34 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/04 16:47:01 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,13 @@ static int	wait_child_process(t_cmd *cmd, pid_t last_pid)
 	pid_t	cur_pid;
 	int		result;
 
+	result = 0;
 	while (cmd != NULL)
 	{
 		cur_pid = wait(&state);
 		if (cur_pid == -1)
 		{
-			ft_perror("hi", "bye");
+			// ft_perror("hi", "bye");
 			return (EXIT_FAILURE);
 		}
 		else if (cur_pid == last_pid)

@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 16:30:42 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/02 17:42:42 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/04 16:48:09 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,56 @@ void	ft_free_token(t_token **token)
 {
 	t_token	*remove_token;
 
-	if (*token == NULL)
+	if (!*token)
 		return ;
-	while (*token != NULL)
+	while (*token)
 	{
 		remove_token = *token;
 		*token = (*token)->next;
 		if (remove_token->str)
+		{
 			free(remove_token->str);
+			remove_token->str = NULL;
+		}
 		free(remove_token);
+	}
+}
+
+void	ft_free_cmd(t_cmd **cmd)
+{
+	t_cmd	*remove_cmd;
+
+	if (!*cmd)
+		return ;
+	while (*cmd)
+	{
+		remove_cmd = *cmd;
+		*cmd = (*cmd)->next;
+		if (remove_cmd->argv)
+			ft_free_char_arr(remove_cmd->argv);
+		if (remove_cmd->redir_in)
+			ft_free_redir(&remove_cmd->redir_in);
+		if (remove_cmd->redir_out)
+			ft_free_redir(&remove_cmd->redir_out);
+		free(remove_cmd);
+	}
+}
+
+void	ft_free_redir(t_redir **redir)
+{
+	t_redir	*remove_redir;
+
+	if (!*redir)
+		return ;
+	while (*redir)
+	{
+		remove_redir = *redir;
+		*redir = (*redir)->next;
+		if (remove_redir->file)
+		{
+			free(remove_redir->file);
+			remove_redir->file = NULL;
+		}
+		free(remove_redir);
 	}
 }

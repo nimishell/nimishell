@@ -52,4 +52,5 @@ void	debug_print_cmd(t_cmd *cmd)
 		// printf("redir_out: %d\n\n", cmd->redir[OUTPUT]);
 		cmd = cmd->next;
 	}
+	printf("\n\n======================output=======================\n");
 }

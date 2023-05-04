@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 20:30:06 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/03 15:46:37 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/04 15:50:53 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,5 +101,5 @@ void	execute_command(char **command)
 	ft_free_strings(&path);
 	ft_free_strings(&command);
 	ft_free_strings(&envp);
-	exit_with_message(command_org, NULL, "Command not found", 127);
+	exit_with_message(command_org, NULL, "command not found", 127);
 }

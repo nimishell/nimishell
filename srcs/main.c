@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:33:23 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/03 17:41:07 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/04 16:47:40 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	main_init(int ac, char *av[], char *envp[])
 	tcgetattr(STDIN_FILENO, &term);
 	term.c_lflag &= ~(ECHOCTL);
 	tcsetattr(STDOUT_FILENO, TCSANOW, &term);
-	set_sig(CUSTOM, CUSTOM);
 	copy_env(envp);
 }
 
@@ -54,6 +53,7 @@ int	main(int ac, char *av[], char *envp[])
 	main_init(ac, av, envp);
 	while (1)
 	{
+		set_sig(CUSTOM, CUSTOM);
 		line = readline(MINISHELL);
 		if (!line)
 			break ;
@@ -69,7 +69,8 @@ int	main(int ac, char *av[], char *envp[])
 					execute_multi_command(cmd);
 			}
 		}
-		free (line);
+		ft_free_cmd(&cmd);
+		free(line);
 	}
 	// atexit(f);
 	return (0);
