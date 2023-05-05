@@ -6,7 +6,7 @@
 #    By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/12 16:06:02 by yeongo            #+#    #+#              #
-#    Updated: 2023/05/03 14:24:58 by wbae             ###   ########.fr        #
+#    Updated: 2023/05/05 13:37:10 by yeongo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -70,6 +70,7 @@ SRC_EXECUTE_FILES	:=	$(addsuffix .c,				\
 							build_command			\
 							execute_command			\
 							execute_builtin			\
+							here_doc				\
 							open_file				\
 							pipe					\
 							terminate				\

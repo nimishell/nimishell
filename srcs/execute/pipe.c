@@ -6,14 +6,17 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 15:08:22 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/05 12:51:22 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/05 13:36:26 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "execute.h"
-#include "pipe.h"
+#include "here_doc.h"
+#include "minishell.h"
 #include "open_file.h"
 #include "terminate.h"
+#include "error.h"
 
 static int	is_builtin(char *command)
 {
@@ -30,13 +33,6 @@ static int	is_builtin(char *command)
 		index++;
 	}
 	return (FALSE);
-}
-
-void	free_cmd(t_cmd **cmd)
-{
-	ft_free_strings(&((*cmd)->argv));
-	free(*cmd);
-	*cmd = NULL;
 }
 
 static void	child_process(t_cmd *cmd, int pipe_fd[2])
@@ -82,33 +78,6 @@ static int	wait_child_process(t_cmd *cmd, pid_t last_pid)
 	}
 	else
 		return (WSTOPSIG(result));
-}
-
-int	has_heredoc(t_cmd *cmd)
-{
-	t_redir	*cur;
-
-	cur = cmd->redir_in;
-	while (cur != NULL)
-	{
-		if (cur->type == T_IO_LL)
-			return (TRUE);
-		cur = cur->next;
-	}
-	return (FALSE);
-}
-
-void	execute_heredoc(t_cmd *cmd)
-{
-	t_redir	*cur;
-
-	cur = cmd->redir_in;
-	while (cur != NULL)
-	{
-		if (cur->type == T_IO_LL)
-			cur->fd = get_heredoc(cur->file);
-		cur = cur->next;
-	}
 }
 
 int	set_fds_before_new_cmd(t_cmd **cur, int pipe_fd[2])
