@@ -6,7 +6,7 @@
 #    By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/12 16:06:02 by yeongo            #+#    #+#              #
-#    Updated: 2023/05/05 13:37:10 by yeongo           ###   ########.fr        #
+#    Updated: 2023/05/05 20:53:39 by yeongo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,8 +29,9 @@ LIBFT_DIR			:=	./libft/
 LIBFT_HEADER		:=	./libft/inc/
 LIBFT				:=	$(LIBFT_DIR)libft.a
 
-LIBRDLINE_DIR		:=	${HOME}/.brew/opt/readline/lib/ #/opt/homebrew/opt/readline/lib
-LIBRDLINE_HEADER	:=	${HOME}/.brew/opt/readline/include/ #/opt/homebrew/opt/readline/include
+BREW_PREFIX			:=	${HOME}/.brew/opt/readline/
+LIBRDLINE_DIR		:=	$(BREW_PREFIX)lib/
+LIBRDLINE_HEADER	:=	$(BREW_PREFIX)include/
 LIBRDLINE			:=	$(LIBRDLINE_DIR)libreadline.a
 
 LDFLAGS				:=	-L$(LIBFT_DIR) -lft -L$(LIBRDLINE_DIR) -lreadline
@@ -67,12 +68,12 @@ SRC_BUILTIN_FILES	:=	$(addsuffix .c,				\
 							ft_unset				\
 						)
 SRC_EXECUTE_FILES	:=	$(addsuffix .c,				\
-							build_command			\
-							execute_command			\
 							execute_builtin			\
-							here_doc				\
+							execute_command			\
+							execute_multi			\
+							execute_single			\
+							heredoc					\
 							open_file				\
-							pipe					\
 							terminate				\
 						)
 OBJ_PARSE_FILES		:=	$(SRC_PARSE_FILES:.c=.o)
@@ -84,23 +85,28 @@ SRC_PARSE			:=	$(addprefix $(SRC_PARSE_DIR), $(SRC_PARSE_FILES))
 SRC_BUILTIN			:=	$(addprefix $(SRC_BUILTIN_DIR), $(SRC_BUILTIN_FILES))
 SRC_EXECUTE			:=	$(addprefix $(SRC_EXECUTE_DIR), $(SRC_EXECUTE_FILES))
 
-OBJ_PARSE			:=	$(addprefix $(OBJ_PARSE_DIR), $(OBJ_PARSE_FILES))
+OBJ_PARSE			:=	$(addprefix $(OBJ_PARSE_DIR),	$(OBJ_PARSE_FILES))
 OBJ_BUILTIN			:=	$(addprefix $(OBJ_BUILTIN_DIR),	$(OBJ_BUILTIN_FILES))
 OBJ_EXECUTE			:=	$(addprefix $(OBJ_EXECUTE_DIR),	$(OBJ_EXECUTE_FILES))
-JSON				:=	$(addsuffix .json,		$(JSON_FILES))
+JSON				:=	$(addsuffix .json,				$(JSON_FILES))
 
 # SRC_FOLDER			:=	$(SRC_DIR)
-OBJ_FOLDER			:=	$(OBJ_DIR) $(OBJ_PARSE_DIR) $(OBJ_BUILTIN_DIR) $(OBJ_EXECUTE_DIR)
-OBJS				:=	$(OBJ_PARSE) $(OBJ_BUILTIN) $(OBJ_EXECUTE)
+OBJ_FOLDER			:=	$(OBJ_DIR) \
+						$(OBJ_PARSE_DIR) \
+						$(OBJ_BUILTIN_DIR) \
+						$(OBJ_EXECUTE_DIR)
+OBJS				:=	$(OBJ_PARSE) \
+						$(OBJ_BUILTIN) \
+						$(OBJ_EXECUTE)
 PRINT				:=	$(PROJECT_NAME)
 
-ifdef TEST
-		SRC				+=	$(addprefix $(SRC_DIR), $(addsuffix .c, debug))
-		OBJ				+=	$(addprefix $(OBJ_DIR), $(addsuffix .o, debug))
-		PRINT			:=	$(addsuffix _TEST, $(PRINT))
-else ifdef DEBUG
-		DBFLAGS			:=	-g -fsanitize=address
-		PRINT			:=	$(addsuffix _DEBUG, $(PRINT))
+ifdef		TEST
+		SRC			+=	$(addprefix $(SRC_DIR), $(addsuffix .c, debug))
+		OBJ			+=	$(addprefix $(OBJ_DIR), $(addsuffix .o, debug))
+		PRINT		:=	$(addsuffix _TEST, $(PRINT))
+else ifdef	DEBUG
+		DBFLAGS		:=	-g -fsanitize=address
+		PRINT		:=	$(addsuffix _DEBUG, $(PRINT))
 endif
 
 .PHONY	:	all

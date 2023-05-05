@@ -6,7 +6,7 @@
 /*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 14:02:45 by yeongo            #+#    #+#             */
-/*   Updated: 2023/04/30 20:35:17 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/05 20:46:31 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int	ft_cd(char **argv)
 {
 	char	*dir;
 	char	old_dir[MAXPATHLEN];
+	char	new_dir[MAXPATHLEN];
 	char	*old_pwd_key;
 	char	*pwd_key;
 
@@ -29,9 +30,10 @@ int	ft_cd(char **argv)
 		ft_perror("cd", argv[1]);
 		return (1);
 	}
+	getcwd(new_dir, MAXPATHLEN);
 	old_pwd_key = ft_strdup("OLDPWD");
 	pwd_key = ft_strdup("PWD");
 	export_variable(&old_pwd_key, old_dir);
-	export_variable(&pwd_key, dir);
+	export_variable(&pwd_key, new_dir);
 	return (0);
 }

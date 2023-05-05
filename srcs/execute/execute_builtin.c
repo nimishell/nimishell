@@ -6,19 +6,17 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 19:42:07 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/03 16:20:16 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/05 20:26:58 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "builtin.h"
-#include <stdio.h>
 
 int	execute_builtin(char **command)
 {
 	int	result;
 
-	printf("hi, builtin\n");
 	if (ft_strncmp(command[0], "cd", 3) == 0)
 		result = ft_cd(command);
 	else if (ft_strncmp(command[0], "echo", 5) == 0)
@@ -35,5 +33,5 @@ int	execute_builtin(char **command)
 		result = ft_exit(command);
 	else
 		result = 1;
-	exit(result);
+	return (result);
 }

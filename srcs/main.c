@@ -6,13 +6,12 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:33:23 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/04 16:47:40 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/05 20:19:12 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include "pipe.h"
 #include "parsing.h"
+#include "execute_process.h"
 
 static int	is_space(char *line)
 {
@@ -27,7 +26,7 @@ static int	is_space(char *line)
 
 void	main_init(int ac, char *av[], char *envp[])
 {
-	struct termios	term;
+	t_termios	term;
 
 	(void)av;
 	if (ac != 1)
@@ -42,8 +41,6 @@ void	f(void)
 {
 	system("leaks minishell");
 }
-
-// void	execute_single_command(t_cmd *cmd);
 
 int	main(int ac, char *av[], char *envp[])
 {
@@ -63,13 +60,13 @@ int	main(int ac, char *av[], char *envp[])
 			add_history(line);
 			if (parse(&cmd, line))
 			{
-				// if (cmd->prev == NULL && cmd->next == NULL)
-				// 	excute_single_command(cmd);
-				// else
-					execute_multi_command(cmd);
+				if (is_single_builtin(cmd))
+					execute_single_process(cmd);
+				else
+					execute_multi_process(cmd);
+				ft_free_cmd(&cmd);
 			}
 		}
-		ft_free_cmd(&cmd);
 		free(line);
 	}
 	// atexit(f);

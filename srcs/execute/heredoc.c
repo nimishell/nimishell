@@ -6,7 +6,7 @@
 /*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 13:25:35 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/05 13:33:26 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/05 20:21:52 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static void	expand_env_in_str(char **str)
 			}
 			cur = cur->next;
 		}
-		position = strcspn(*str, "$");
+		position = ft_strcspn(*str, "$");
 	}
 }
 

@@ -6,14 +6,14 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 21:42:06 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/05 13:30:22 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/05 20:20:56 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "minishell.h"
-#include <stdio.h>
-#include <string.h>
+#include "structure.h"
+#include "error.h"
+#include <sys/fcntl.h>
 
 void	remove_redir(t_redir **redir)
 {

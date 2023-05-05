@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:45:47 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/05 10:51:25 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/05 20:18:17 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # define MINISHELL "\033[0;32mMINISHELL$\033[0m "
 # define EXIT_SIGNAL 128
 
+typedef struct termios		t_termios;
 typedef struct s_token		t_token;
 typedef struct s_cmd		t_cmd;
 typedef struct s_env		t_env;

@@ -1,24 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipe.c                                             :+:      :+:    :+:   */
+/*   execute_multi.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 15:08:22 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/05 13:36:26 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/05 20:54:17 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "execute.h"
-#include "here_doc.h"
+#include "execute_command.h"
+#include "heredoc.h"
 #include "minishell.h"
 #include "open_file.h"
 #include "terminate.h"
 #include "error.h"
+#include <stdio.h>
+#include <unistd.h>
 
-static int	is_builtin(char *command)
+int	is_builtin(char *command)
 {
 	const char	*builtin[7] = {
 		"echo", "cd", "pwd", "export", "unset", "env", "exit"};
@@ -37,17 +39,21 @@ static int	is_builtin(char *command)
 
 static void	child_process(t_cmd *cmd, int pipe_fd[2])
 {
+	int	result;
+
 	open_infile(cmd);
 	open_outfile(cmd, pipe_fd);
 	close_unused_fd(cmd, pipe_fd);
 	set_sig(IGNORE, IGNORE);
-	if (cmd->argv[0])
+	if (cmd->argv[0] == NULL)
+		exit (0);
+	else if (is_builtin(cmd->argv[0]) == TRUE)
 	{
-		if (is_builtin(cmd->argv[0]) == TRUE)
-			execute_builtin(cmd->argv);
-		else
-			execute_command(cmd->argv);
+		result = execute_builtin(cmd->argv);
+		exit(result);
 	}
+	else
+		execute_command(cmd->argv);
 }
 
 static int	wait_child_process(t_cmd *cmd, pid_t last_pid)
@@ -56,13 +62,12 @@ static int	wait_child_process(t_cmd *cmd, pid_t last_pid)
 	pid_t	cur_pid;
 	int		result;
 
-	result = 0;
 	while (cmd != NULL)
 	{
 		cur_pid = wait(&state);
 		if (cur_pid == -1)
 		{
-			// ft_perror("hi", "bye");
+			ft_perror("hi", "bye");
 			return (EXIT_FAILURE);
 		}
 		else if (cur_pid == last_pid)
@@ -90,7 +95,7 @@ int	set_fds_before_new_cmd(t_cmd **cur, int pipe_fd[2])
 	return (1);
 }
 
-void	execute_multi_command(t_cmd *cmd)
+void	execute_multi_process(t_cmd *cmd)
 {
 	t_cmd	*cur;
 	int		pipe_fd[2];

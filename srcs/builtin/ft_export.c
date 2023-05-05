@@ -6,7 +6,7 @@
 /*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 01:54:29 by yeongo            #+#    #+#             */
-/*   Updated: 2023/04/30 20:39:46 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/05 20:48:51 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static void	change_value(t_env *cur, char *new_value)
 {
 	if (cur->value != NULL)
 		free(cur->value);
-	cur->value = new_value;
+	cur->value = ft_strdup(new_value);
 }
 
 static int	add_env_value(char *key, char *value)
@@ -53,8 +53,8 @@ static int	add_env_value(char *key, char *value)
 	cur->next = ft_calloc(1, sizeof(t_env));
 	if (cur->next == NULL)
 		return (0);
-	cur->next->key = key;
-	cur->next->value = value;
+	cur->next->key = ft_strdup(key);
+	cur->next->value = ft_strdup(value);
 	if (cur->next->value != NULL)
 		cur->next->is_value = 1;
 	return (1);
