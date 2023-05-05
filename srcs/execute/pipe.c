@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 15:08:22 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/04 16:47:01 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/05 12:51:22 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,10 +106,7 @@ void	execute_heredoc(t_cmd *cmd)
 	while (cur != NULL)
 	{
 		if (cur->type == T_IO_LL)
-		{
 			cur->fd = get_heredoc(cur->file);
-			ft_free_str(&(cur->file));
-		}
 		cur = cur->next;
 	}
 }
@@ -117,12 +114,10 @@ void	execute_heredoc(t_cmd *cmd)
 int	set_fds_before_new_cmd(t_cmd **cur, int pipe_fd[2])
 {
 	close(pipe_fd[WR]);
-	if (!((*cur)->prev == NULL && (*cur)->fd[INPUT] == STDIN_FILENO))
-		close((*cur)->fd[INPUT]);
 	if ((*cur)->next == NULL)
 		return (0);
 	*cur = (*cur)->next;
-	(*cur)->fd[INPUT] = pipe_fd[RD];
+	(*cur)->fds[INPUT] = pipe_fd[RD];
 	return (1);
 }
 
@@ -138,12 +133,14 @@ void	execute_multi_command(t_cmd *cmd)
 	{
 		if (pipe(pipe_fd) == -1)
 			exit_with_errno(NULL, NULL, EXIT_FAILURE);
-		set_sig(DEFAULT, DEFAULT);
 		cur->pid = fork();
 		if (cur->pid < 0)
 			exit_with_errno(NULL, NULL, EXIT_FAILURE);
 		else if (cur->pid == 0)
+		{
+			set_sig(DEFAULT, DEFAULT);
 			child_process(cur, pipe_fd);
+		}
 		else
 			if (set_fds_before_new_cmd(&cur, pipe_fd) == 0)
 				break ;

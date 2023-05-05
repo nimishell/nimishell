@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 21:42:06 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/04 13:19:15 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/05 13:21:31 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <stdio.h>
 #include <string.h>
 
-static char	*expand_env(char *str, t_env *env, int position)
+static char	*expand_env(char **str, t_env *env, int position)
 {
 	size_t	len_str;
 	size_t	len_key;
@@ -23,7 +23,7 @@ static char	*expand_env(char *str, t_env *env, int position)
 	size_t	m_size;
 	char	*result;
 
-	len_str = ft_strlen(str);
+	len_str = ft_strlen(*str);
 	len_key = ft_strlen(env->key);
 	len_val = ft_strlen(env->value);
 	m_size = len_str + len_val - len_key;
@@ -34,6 +34,7 @@ static char	*expand_env(char *str, t_env *env, int position)
 	ft_memmove(&result[position], env->value, len_val);
 	ft_memmove(&result[position + len_val], &str[position + len_key + 1], \
 			len_str - position - len_key - 1);
+	ft_free_str(str);
 	return (result);
 }
 
@@ -42,7 +43,7 @@ void	expand_env_in_str(char **str)
 	t_env	*cur;
 	int		position;
 
-	position = strcspn(*str, "$");
+	position = ft_strcspn(*str, "$");
 	while ((*str)[position] != '\0')
 	{
 		cur = g_env;
@@ -51,7 +52,7 @@ void	expand_env_in_str(char **str)
 			if (ft_strnstr(&(*str)[position], cur->key, \
 				ft_strlen(&(*str)[position])))
 			{
-				*str = expand_env(*str, cur, position);
+				*str = expand_env(str, cur, position);
 				break ;
 			}
 			cur = cur->next;
@@ -96,8 +97,9 @@ void	remove_redir(t_redir **redir)
 	cur = *redir;
 	while (cur != NULL)
 	{
-		if (cur->next != NULL)
+		if (cur->next != NULL && cur->fd != -1)
 			close(cur->fd);
+		ft_free_str(&cur->file);
 		*redir = cur->next;
 		free(cur);
 		cur = *redir;
@@ -123,7 +125,7 @@ void	open_infile(t_cmd *cmd)
 			break ;
 		cur = cur->next;
 	}
-	cmd->fd[INPUT] = cur->fd;
+	cmd->fds[INPUT] = cur->fd;
 	remove_redir(&cmd->redir_in);
 }
 
@@ -132,7 +134,7 @@ void	open_outfile(t_cmd *cmd, int pipe_fd[2])
 	t_redir	*cur;
 
 	if (cmd->next != NULL)
-		cmd->fd[OUTPUT] = pipe_fd[WR];
+		cmd->fds[OUTPUT] = pipe_fd[WR];
 	cur = cmd->redir_out;
 	if (cur == NULL)
 		return ;
@@ -142,29 +144,29 @@ void	open_outfile(t_cmd *cmd, int pipe_fd[2])
 			cur->fd = open(cur->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		else if (cur->type == T_IO_RR)
 			cur->fd = open(cur->file, O_WRONLY | O_APPEND | O_CREAT, 0644);
-		if (cmd->fd[OUTPUT] == -1)
+		if (cur->fd == -1)
 			exit_with_errno("zsh", cur->file, EXIT_FAILURE);
 		if (cur->next == NULL)
 			break ;
 		cur = cur->next;
 	}
-	cmd->fd[OUTPUT] = cur->fd;
+	cmd->fds[OUTPUT] = cur->fd;
 	remove_redir(&cmd->redir_out);
 }
 
 void	close_unused_fd(t_cmd *cmd, int pipe_fd[2])
 {
 	close(pipe_fd[RD]);
-	if (!(cmd->prev == NULL && cmd->fd[INPUT] == STDIN_FILENO))
+	if (!(cmd->prev == NULL && cmd->fds[INPUT] == STDIN_FILENO))
 	{
-		dup2(cmd->fd[INPUT], STDIN_FILENO);
-		close(cmd->fd[INPUT]);
+		dup2(cmd->fds[INPUT], STDIN_FILENO);
+		close(cmd->fds[INPUT]);
 	}
-	if (!(cmd->next == NULL && cmd->fd[OUTPUT] == STDOUT_FILENO))
+	if (!(cmd->next == NULL && cmd->fds[OUTPUT] == STDOUT_FILENO))
 	{
-		dup2(cmd->fd[OUTPUT], STDOUT_FILENO);
-		close(cmd->fd[OUTPUT]);
+		dup2(cmd->fds[OUTPUT], STDOUT_FILENO);
+		close(cmd->fds[OUTPUT]);
 	}
-	if (cmd->fd[OUTPUT] != pipe_fd[WR])
+	if (cmd->fds[OUTPUT] != pipe_fd[WR])
 		close(pipe_fd[WR]);
 }

@@ -6,7 +6,7 @@
 /*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 20:36:50 by yeongo            #+#    #+#             */
-/*   Updated: 2023/04/21 20:37:05 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/05 10:57:16 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,7 @@ void	ft_free_strings(char ***strings)
 		index = 0;
 		while ((*strings)[index] != NULL)
 		{
-			free((*strings)[index]);
-			(*strings)[index] = NULL;
+			ft_free_str(&(*strings)[index]);
 			index++;
 		}
 		free(*strings);

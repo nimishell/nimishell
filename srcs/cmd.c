@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 19:23:50 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/03 20:59:40 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/05 12:47:08 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ t_cmd	*new_cmd(void)
 	ret = ft_calloc(1, sizeof(t_cmd));
 	if (!ret)
 		return (NULL);
-	ret->fd[INPUT] = STDIN_FILENO;
-	ret->fd[OUTPUT] = STDOUT_FILENO;
+	ret->fds[INPUT] = STDIN_FILENO;
+	ret->fds[OUTPUT] = STDOUT_FILENO;
 	return (ret);
 }
 
@@ -82,7 +82,7 @@ int	token_into_cmd(t_cmd **cmd, t_token *token)
 
 	while (token)
 	{
-		tmp = ft_calloc(1, sizeof(t_cmd));
+		tmp = new_cmd();
 		if (!tmp)
 			return (FAIL);
 		size = get_cmd_size(token) + 1;

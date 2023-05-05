@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:45:47 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/03 13:31:38 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/05 10:51:25 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ struct s_token
 struct s_cmd
 {
 	char	**argv;
-	int		fd[2];
+	int		fds[2];
 	pid_t	pid;
 	t_redir	*redir_in;
 	t_redir	*redir_out;

@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 10:11:47 by wbae              #+#    #+#             */
-/*   Updated: 2023/04/21 21:10:31 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/05 13:21:52 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,5 +81,6 @@ int		ft_strapp_back(char **dst, const char *src);
 void	ft_free_str(char **str);
 void	ft_free_strings(char ***strings);
 void	ft_free_void(void ***ptr, int index_max);
+size_t	ft_strcspn(const char *str, const char *charset);
 
 #endif
