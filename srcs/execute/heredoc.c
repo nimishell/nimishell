@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   here_doc.c                                         :+:      :+:    :+:   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 13:25:35 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/05 20:21:52 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/06 11:43:39 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static void	expand_env_in_str(char **str)
 		while (cur != NULL)
 		{
 			if (ft_strnstr(&(*str)[position], cur->key, \
-				ft_strlen(&(*str)[position])))
+					ft_strlen(&(*str)[position])))
 			{
 				*str = expand_env(str, cur, position);
 				break ;
@@ -75,7 +75,7 @@ static void	expand_env_in_str(char **str)
 static int	get_heredoc(char *limiter)
 {
 	int		pipe_heredoc[2];
-	int		limiter_size;
+	size_t	limiter_size;
 	char	*input_str;
 
 	if (pipe(pipe_heredoc) == -1)

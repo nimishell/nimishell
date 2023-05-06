@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:33:23 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/05 20:19:12 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/05 21:40:06 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ void	f(void)
 
 int	main(int ac, char *av[], char *envp[])
 {
-	char			*line;
-	t_cmd			*cmd;
+	char	*line;
+	t_cmd	*cmd;
 
 	main_init(ac, av, envp);
 	while (1)
