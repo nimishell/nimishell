@@ -6,7 +6,7 @@
 /*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 13:25:35 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/06 11:43:39 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/06 12:26:30 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,16 +35,16 @@ static char	*expand_env(char **str, t_env *env, int position)
 	char	*result;
 
 	len_str = ft_strlen(*str);
-	len_key = ft_strlen(env->key);
+	len_key = ft_strlen(env->key) + 1;
 	len_val = ft_strlen(env->value);
 	m_size = len_str + len_val - len_key;
-	result = ft_calloc(m_size, sizeof(char));
+	result = ft_calloc(m_size + 1, sizeof(char));
 	if (result == NULL)
 		return (NULL);
-	ft_memmove(result, str, position);
+	ft_memmove(result, *str, position);
 	ft_memmove(&result[position], env->value, len_val);
-	ft_memmove(&result[position + len_val], &str[position + len_key + 1], \
-			len_str - position - len_key - 1);
+	ft_memmove(&result[position + len_val], &(*str)[position + len_key], \
+			len_str - position - len_key);
 	ft_free_str(str);
 	return (result);
 }
@@ -61,7 +61,7 @@ static void	expand_env_in_str(char **str)
 		while (cur != NULL)
 		{
 			if (ft_strnstr(&(*str)[position], cur->key, \
-					ft_strlen(&(*str)[position])))
+					ft_strlen(&(*str)[position])) != NULL)
 			{
 				*str = expand_env(str, cur, position);
 				break ;
