@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: wbae <wbae@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 14:36:18 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/03 13:34:35 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/07 15:50:34 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,18 @@ void	sig_handler(int signal)
 	}
 }
 
+void	heredoc_handler(int signal)
+{
+	if (signal == SIGINT)
+	{
+		rl_on_new_line();
+		rl_replace_line("", 1);
+		rl_redisplay();
+		ft_putendl_fd("", STDERR_FILENO);
+		exit(1);
+	}
+}
+
 void	set_sig(int sig_int, int sig_quit)
 {
 	if (sig_int == DEFAULT)
@@ -37,9 +49,9 @@ void	set_sig(int sig_int, int sig_quit)
 	else if (sig_int == CUSTOM)
 		signal(SIGINT, sig_handler);
 	if (sig_quit == DEFAULT)
-		signal(SIGQUIT, SIG_DFL);
+		signal(SIGTERM, SIG_DFL);
 	else if (sig_quit == IGNORE)
-		signal(SIGQUIT, SIG_IGN);
+		signal(SIGTERM, SIG_IGN);
 	else if (sig_quit == CUSTOM)
 		signal(SIGQUIT, sig_handler);
 }

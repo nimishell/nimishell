@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: wbae <wbae@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 19:23:50 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/05 12:47:08 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/07 18:39:17 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,8 @@ int	token_into_cmd(t_cmd **cmd, t_token *token)
 		tmp = new_cmd();
 		if (!tmp)
 			return (FAIL);
-		size = get_cmd_size(token) + 1;
+		tmp->size = get_cmd_size(token) + 1;
+		size = tmp->size;
 		if (ft_strncmp(token->str, "cd", 3) == 0 \
 			&& token->next == NULL)
 			tmp->argv = is_cd_follow_no_dir(token);
@@ -98,8 +99,7 @@ int	token_into_cmd(t_cmd **cmd, t_token *token)
 			token = token->next;
 		if (!token->next)
 			break ;
-		else
-			token = token->next;
+		token = token->next;
 	}
 	return (SUCCESS);
 }

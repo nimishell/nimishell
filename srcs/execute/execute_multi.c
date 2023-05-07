@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_multi.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: wbae <wbae@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 15:08:22 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/05 20:54:17 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/07 19:21:14 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,17 +107,17 @@ void	execute_multi_process(t_cmd *cmd)
 	{
 		if (pipe(pipe_fd) == -1)
 			exit_with_errno(NULL, NULL, EXIT_FAILURE);
+		set_sig(DEFAULT, DEFAULT);
 		cur->pid = fork();
 		if (cur->pid < 0)
 			exit_with_errno(NULL, NULL, EXIT_FAILURE);
 		else if (cur->pid == 0)
-		{
-			set_sig(DEFAULT, DEFAULT);
 			child_process(cur, pipe_fd);
-		}
 		else
+		{
 			if (set_fds_before_new_cmd(&cur, pipe_fd) == 0)
 				break ;
+		}
 	}
 	close(pipe_fd[RD]);
 	wait_child_process(cmd, cur->pid);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: wbae <wbae@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:56:15 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/04 13:47:51 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/07 15:50:04 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	main_init(int ac, char *av[], char *envp[]);
 
 void	set_sig(int sig_int, int sig_quit);
 void	sig_handler(int signal);
+void	heredoc_handler(int signal);
 
 void	copy_env(char *env[]);
 char	*copy_key(char *env);

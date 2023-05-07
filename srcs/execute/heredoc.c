@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: wbae <wbae@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 13:25:35 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/06 12:26:30 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/07 19:13:17 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,18 @@ static char	*expand_env(char **str, t_env *env, int position)
 	return (result);
 }
 
+static int get_cmp_size(char *input, int size)
+{
+	int	inlen;
+
+	inlen = ft_strlen(input) - 1;
+	printf("%d %d\n", inlen, size);
+	if (inlen >= size)
+		return (inlen);
+	else
+		return (size);
+}
+
 static void	expand_env_in_str(char **str)
 {
 	t_env	*cur;
@@ -85,8 +97,8 @@ static int	get_heredoc(char *limiter)
 	input_str = readline("> ");
 	if (input_str != NULL)
 		ft_strapp_back(&input_str, "\n");
-	while (input_str != NULL
-		&& ft_strncmp(input_str, limiter, limiter_size) != 0)
+	while (input_str != NULL && \
+		ft_strncmp(input_str, limiter, get_cmp_size(input_str, limiter_size)) != 0)
 	{
 		expand_env_in_str(&input_str);
 		ft_putstr_fd(input_str, pipe_heredoc[WR]);
