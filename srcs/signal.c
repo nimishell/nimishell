@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wbae <wbae@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 14:36:18 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/07 15:50:34 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/08 14:08:11 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	sig_handler(int signal)
+void	custom_handler(int signal)
 {
 	if (signal == SIGINT)
 	{
@@ -21,11 +21,13 @@ void	sig_handler(int signal)
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
-	if (signal == SIGQUIT)
-	{
-		rl_on_new_line();
-		rl_redisplay();
-	}
+}
+
+void	quit_handler(int signal)
+{
+	if (signal == SIGINT)
+		ft_putendl_fd("", STDERR_FILENO);
+	exit(EXIT_FAILURE);
 }
 
 void	heredoc_handler(int signal)
@@ -36,7 +38,6 @@ void	heredoc_handler(int signal)
 		rl_replace_line("", 1);
 		rl_redisplay();
 		ft_putendl_fd("", STDERR_FILENO);
-		exit(1);
 	}
 }
 
@@ -47,11 +48,11 @@ void	set_sig(int sig_int, int sig_quit)
 	else if (sig_int == IGNORE)
 		signal(SIGINT, SIG_IGN);
 	else if (sig_int == CUSTOM)
-		signal(SIGINT, sig_handler);
+		signal(SIGINT, custom_handler);
+	else if (sig_int == HEREDOC)
+		signal(SIGINT, heredoc_handler);
 	if (sig_quit == DEFAULT)
-		signal(SIGTERM, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 	else if (sig_quit == IGNORE)
-		signal(SIGTERM, SIG_IGN);
-	else if (sig_quit == CUSTOM)
-		signal(SIGQUIT, sig_handler);
+		signal(SIGQUIT, SIG_IGN);
 }

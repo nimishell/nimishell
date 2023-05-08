@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_multi.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wbae <wbae@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 15:08:22 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/07 19:21:14 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/08 14:06:53 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ static void	child_process(t_cmd *cmd, int pipe_fd[2])
 	open_infile(cmd);
 	open_outfile(cmd, pipe_fd);
 	close_unused_fd(cmd, pipe_fd);
-	set_sig(IGNORE, IGNORE);
 	if (cmd->argv[0] == NULL)
 		exit (0);
 	else if (is_builtin(cmd->argv[0]) == TRUE)
@@ -62,6 +61,7 @@ static int	wait_child_process(t_cmd *cmd, pid_t last_pid)
 	pid_t	cur_pid;
 	int		result;
 
+	set_sig(IGNORE, IGNORE);
 	while (cmd != NULL)
 	{
 		cur_pid = wait(&state);
@@ -107,8 +107,8 @@ void	execute_multi_process(t_cmd *cmd)
 	{
 		if (pipe(pipe_fd) == -1)
 			exit_with_errno(NULL, NULL, EXIT_FAILURE);
-		set_sig(DEFAULT, DEFAULT);
 		cur->pid = fork();
+		set_sig(DEFAULT, DEFAULT);
 		if (cur->pid < 0)
 			exit_with_errno(NULL, NULL, EXIT_FAILURE);
 		else if (cur->pid == 0)
@@ -120,5 +120,5 @@ void	execute_multi_process(t_cmd *cmd)
 		}
 	}
 	close(pipe_fd[RD]);
-	wait_child_process(cmd, cur->pid);
+	g_env->status = wait_child_process(cmd, cur->pid);
 }

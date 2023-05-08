@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 21:32:19 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/04 16:47:58 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/08 14:08:25 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ int	parse(t_cmd **cmd, char *rd_line)
 	token = tokenize(token, rd_line);
 	if (!check_syntax(token))
 	{
+		g_env->status = 258;
 		ft_free_token(&token);
 		return (FAIL);
 	}
