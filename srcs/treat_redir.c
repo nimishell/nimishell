@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   treat_redir.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wbae <wbae@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 17:34:11 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/07 18:38:50 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/08 20:50:46 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ static void	shift_array(t_cmd *cmd, int tmp_idx)
 		tmp_idx++;
 	}
 	cmd->argv[tmp_idx] = NULL;
-	cmd->size -= 2;
 }
 
 void	treat_redir(t_cmd *cmd)
@@ -84,8 +83,6 @@ void	treat_redir(t_cmd *cmd)
 			else
 				idx++;
 		}
-		if (cmd->size == 0)
-			free (cmd->argv);
 		cmd = cmd->next;
 	}
 }
