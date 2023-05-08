@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 13:25:35 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/08 16:49:54 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/08 17:29:59 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static void	expand_env_in_str(char **str)
 		while (cur != NULL)
 		{
 			if (ft_strnstr(&(*str)[position], cur->key, \
-					ft_strlen(&(*str)[position])) != NULL) // 수정 필요 !!!!
+					ft_strlen(&(*str)[position]) + 1) != NULL)
 			{
 				*str = ft_replace_str(str, cur->key, cur->value, position);
 				break ;
@@ -66,6 +66,7 @@ static int	get_heredoc(char *limiter)
 	size_t	limiter_size;
 	char	*input_str;
 
+	set_sig(IGNORE, IGNORE);
 	if (pipe(pipe_heredoc) == -1)
 		exit_with_errno("zsh", "pipe", EXIT_FAILURE);
 	limiter_size = ft_strlen(limiter);
