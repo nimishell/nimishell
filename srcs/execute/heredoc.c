@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 13:25:35 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/08 14:03:05 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/08 16:49:54 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,29 +24,6 @@ int	has_heredoc(t_cmd *cmd)
 		cur = cur->next;
 	}
 	return (FALSE);
-}
-
-static char	*expand_env(char **str, t_env *env, int position)
-{
-	size_t	len_str;
-	size_t	len_key;
-	size_t	len_val;
-	size_t	m_size;
-	char	*result;
-
-	len_str = ft_strlen(*str);
-	len_key = ft_strlen(env->key) + 1;
-	len_val = ft_strlen(env->value);
-	m_size = len_str + len_val - len_key;
-	result = ft_calloc(m_size + 1, sizeof(char));
-	if (result == NULL)
-		return (NULL);
-	ft_memmove(result, *str, position);
-	ft_memmove(&result[position], env->value, len_val);
-	ft_memmove(&result[position + len_val], &(*str)[position + len_key], \
-			len_str - position - len_key);
-	ft_free_str(str);
-	return (result);
 }
 
 static int	get_cmp_size(char *input, int size)
@@ -74,7 +51,7 @@ static void	expand_env_in_str(char **str)
 			if (ft_strnstr(&(*str)[position], cur->key, \
 					ft_strlen(&(*str)[position])) != NULL) // 수정 필요 !!!!
 			{
-				*str = expand_env(str, cur, position);
+				*str = ft_replace_str(str, cur->key, cur->value, position);
 				break ;
 			}
 			cur = cur->next;
@@ -91,9 +68,7 @@ static int	get_heredoc(char *limiter)
 
 	if (pipe(pipe_heredoc) == -1)
 		exit_with_errno("zsh", "pipe", EXIT_FAILURE);
-	if (limiter != NULL)
-		limiter_size = ft_strlen(limiter);
-	set_sig(HEREDOC, IGNORE);
+	limiter_size = ft_strlen(limiter);
 	input_str = readline("> ");
 	if (input_str != NULL)
 		ft_strapp_back(&input_str, "\n");

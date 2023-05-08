@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:33:23 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/08 14:33:33 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/08 15:46:38 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,11 @@ void	main_init(int ac, char *av[], char *envp[])
 
 int	main(int ac, char *av[], char *envp[])
 {
-	char	*line;
-	t_cmd	*cmd;
+	char			*line;
+	struct termios	term;
+	t_cmd			*cmd;
 
+	tcgetattr(STDIN_FILENO, &term);
 	main_init(ac, av, envp);
 	while (1)
 	{
@@ -51,7 +53,6 @@ int	main(int ac, char *av[], char *envp[])
 			break ;
 		if (*line != '\0' && !is_space(line))
 		{
-			cmd = NULL;
 			add_history(line);
 			if (parse(&cmd, line))
 			{
@@ -64,5 +65,6 @@ int	main(int ac, char *av[], char *envp[])
 		}
 		free(line);
 	}
+	tcsetattr(STDOUT_FILENO, TCSANOW, &term);
 	return (0);
 }

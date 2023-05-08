@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 15:08:22 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/08 14:06:53 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/08 16:00:04 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ static void	child_process(t_cmd *cmd, int pipe_fd[2])
 {
 	int	result;
 
+	set_sig(DEFAULT, DEFAULT);
 	open_infile(cmd);
 	open_outfile(cmd, pipe_fd);
 	close_unused_fd(cmd, pipe_fd);
@@ -61,7 +62,6 @@ static int	wait_child_process(t_cmd *cmd, pid_t last_pid)
 	pid_t	cur_pid;
 	int		result;
 
-	set_sig(IGNORE, IGNORE);
 	while (cmd != NULL)
 	{
 		cur_pid = wait(&state);
@@ -100,6 +100,7 @@ void	execute_multi_process(t_cmd *cmd)
 	t_cmd	*cur;
 	int		pipe_fd[2];
 
+	set_sig(IGNORE, IGNORE);
 	cur = cmd;
 	if (has_heredoc(cur))
 		execute_heredoc(cur);
@@ -108,7 +109,6 @@ void	execute_multi_process(t_cmd *cmd)
 		if (pipe(pipe_fd) == -1)
 			exit_with_errno(NULL, NULL, EXIT_FAILURE);
 		cur->pid = fork();
-		set_sig(DEFAULT, DEFAULT);
 		if (cur->pid < 0)
 			exit_with_errno(NULL, NULL, EXIT_FAILURE);
 		else if (cur->pid == 0)
