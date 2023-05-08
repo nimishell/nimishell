@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:33:23 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/08 15:46:38 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/08 20:29:54 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,5 +66,5 @@ int	main(int ac, char *av[], char *envp[])
 		free(line);
 	}
 	tcsetattr(STDOUT_FILENO, TCSANOW, &term);
-	return (0);
+	return (g_env->status);
 }

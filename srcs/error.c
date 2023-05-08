@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 14:37:37 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/08 14:29:39 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/08 20:30:43 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	ft_perror(char *cmd, char *arg)
 void	exit_with_errno(char *cmd, char *arg, int status)
 {
 	ft_perror(cmd, arg);
+	g_env->status = status;
 	exit(status);
 }
 
@@ -60,6 +61,7 @@ void	ft_error_message(char *cmd, char *arg, char *message)
 void	exit_with_message(char *cmd, char *arg, char *message, int status)
 {
 	ft_error_message(cmd, arg, message);
+	g_env->status = status;
 	exit(status);
 }
 
