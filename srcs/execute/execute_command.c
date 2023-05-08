@@ -6,14 +6,12 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 20:30:06 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/08 20:00:26 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/08 20:07:29 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "error.h"
-
-// extern char	**environ;
 
 static char	**get_path(char **envp)
 {
@@ -27,7 +25,6 @@ static char	**get_path(char **envp)
 		path = ft_strnstr(envp[index], "PATH=", 5);
 		if (path != NULL)
 			break ;
-		// printf("hi %d\n", index);
 		index++;
 	}
 	if (path == NULL)
@@ -103,7 +100,6 @@ void	execute_command(char **command)
 		execute_absolute_path(command, envp);
 	execute_relative_path(command, path, envp);
 	ft_free_strings(&path);
-	ft_free_strings(&command);
 	ft_free_strings(&envp);
 	exit_with_message(command_org, command[1], "command not found", 127);
 }
