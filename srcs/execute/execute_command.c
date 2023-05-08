@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 20:30:06 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/08 20:07:29 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/08 20:10:03 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,10 +90,8 @@ void	execute_command(char **command)
 	char	**path;
 	char	**envp;
 	char	*command_org;
-	int		index;
 
 	envp = make_env_arr();
-	index = 0;
 	path = get_path(envp);
 	command_org = ft_strdup(command[0]);
 	if (path == NULL || ft_strchr(command[0], '/'))

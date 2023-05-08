@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:45:47 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/08 13:28:35 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/08 20:17:33 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ struct s_env
 
 struct s_redir
 {
+	pid_t	pid;
 	int		type;
 	int		fd;
 	char	*file;

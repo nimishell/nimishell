@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 15:08:22 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/08 16:00:04 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/08 20:30:21 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,13 @@ static void	child_process(t_cmd *cmd, int pipe_fd[2])
 		execute_command(cmd->argv);
 }
 
-static int	wait_child_process(t_cmd *cmd, pid_t last_pid)
+int	wait_child_process(int count, pid_t last_pid)
 {
 	int		state;
 	pid_t	cur_pid;
 	int		result;
 
-	while (cmd != NULL)
+	while (count--)
 	{
 		cur_pid = wait(&state);
 		if (cur_pid == -1)
@@ -72,7 +72,6 @@ static int	wait_child_process(t_cmd *cmd, pid_t last_pid)
 		}
 		else if (cur_pid == last_pid)
 			result = state;
-		cmd = cmd->next;
 	}
 	if (WIFEXITED(result))
 		return (WEXITSTATUS(result));
@@ -99,11 +98,13 @@ void	execute_multi_process(t_cmd *cmd)
 {
 	t_cmd	*cur;
 	int		pipe_fd[2];
+	int		cmd_count;
 
 	set_sig(IGNORE, IGNORE);
 	cur = cmd;
 	if (has_heredoc(cur))
 		execute_heredoc(cur);
+	cmd_count = 0;
 	while (cur != NULL)
 	{
 		if (pipe(pipe_fd) == -1)
@@ -113,12 +114,10 @@ void	execute_multi_process(t_cmd *cmd)
 			exit_with_errno(NULL, NULL, EXIT_FAILURE);
 		else if (cur->pid == 0)
 			child_process(cur, pipe_fd);
-		else
-		{
-			if (set_fds_before_new_cmd(&cur, pipe_fd) == 0)
-				break ;
-		}
+		cmd_count++;
+		if (set_fds_before_new_cmd(&cur, pipe_fd) == 0)
+			break ;
 	}
 	close(pipe_fd[RD]);
-	g_env->status = wait_child_process(cmd, cur->pid);
+	g_env->status = wait_child_process(cmd_count, cur->pid);
 }

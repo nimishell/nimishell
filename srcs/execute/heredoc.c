@@ -6,11 +6,13 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 13:25:35 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/08 17:29:59 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/08 20:37:36 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "execute_process.h"
+#include <unistd.h>
 
 int	has_heredoc(t_cmd *cmd)
 {
@@ -25,17 +27,17 @@ int	has_heredoc(t_cmd *cmd)
 	}
 	return (FALSE);
 }
-
-static int	get_cmp_size(char *input, int size)
-{
-	int	inlen;
-
-	inlen = ft_strlen(input) - 1;
-	if (inlen >= size)
-		return (inlen);
-	else
-		return (size);
-}
+//
+// static int	get_cmp_size(char *input, int size)
+// {
+// 	int	inlen;
+//
+// 	inlen = ft_strlen(input) - 1;
+// 	if (inlen >= size)
+// 		return (inlen);
+// 	else
+// 		return (size);
+// }
 
 static void	expand_env_in_str(char **str)
 {
@@ -60,24 +62,22 @@ static void	expand_env_in_str(char **str)
 	}
 }
 
-static int	get_heredoc(char *limiter)
+static void	get_heredoc(char *limiter, int pipe_fd[2])
 {
-	int		pipe_heredoc[2];
 	size_t	limiter_size;
 	char	*input_str;
 
 	set_sig(IGNORE, IGNORE);
-	if (pipe(pipe_heredoc) == -1)
-		exit_with_errno("zsh", "pipe", EXIT_FAILURE);
+	close(pipe_fd[RD]);
 	limiter_size = ft_strlen(limiter);
 	input_str = readline("> ");
 	if (input_str != NULL)
 		ft_strapp_back(&input_str, "\n");
 	while (input_str != NULL && ft_strncmp(input_str, limiter, \
-		get_cmp_size(input_str, limiter_size)) != 0)
+		limiter_size + 1) != 0)
 	{
 		expand_env_in_str(&input_str);
-		ft_putstr_fd(input_str, pipe_heredoc[WR]);
+		ft_putstr_fd(input_str, pipe_fd[WR]);
 		free(input_str);
 		input_str = readline("> ");
 		if (input_str != NULL)
@@ -85,19 +85,35 @@ static int	get_heredoc(char *limiter)
 	}
 	if (input_str != NULL)
 		free(input_str);
-	close(pipe_heredoc[WR]);
-	return (pipe_heredoc[RD]);
+	close(pipe_fd[WR]);
+	exit (0);
 }
+	// return (pipe_fd[RD]);
 
 void	execute_heredoc(t_cmd *cmd)
 {
 	t_redir	*cur;
+	int		pipe_fd[2];
+	int		cmd_count;
 
+	cmd_count = 0;
 	cur = cmd->redir_in;
 	while (cur != NULL)
 	{
 		if (cur->type == T_IO_LL)
-			cur->fd = get_heredoc(cur->file);
+		{
+			if (pipe(pipe_fd) == -1)
+				exit_with_errno("zsh", "pipe", EXIT_FAILURE);
+			cur->pid = fork();
+			if (cur->pid < 0)
+				exit_with_errno(NULL, NULL, EXIT_FAILURE);
+			else if (cur->pid == 0)
+				get_heredoc(cur->file, pipe_fd);
+			cmd_count++;
+			close(pipe_fd[WR]);
+			cur->fd = pipe_fd[RD];
+		}
 		cur = cur->next;
 	}
+	g_env->status = wait_child_process(cmd_count, cur->pid);
 }
