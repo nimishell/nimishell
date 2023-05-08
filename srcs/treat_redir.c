@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 17:34:11 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/08 20:50:46 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/08 21:25:19 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static t_redir	*init_redir_node(char **argv, int index)
 	new_node->type |= (is_redir_in(argv[index]) \
 						| is_redir_out(argv[index]));
 	new_node->fd = -1;
-	new_node->file = ft_strdup(argv[index + 1]);
+	new_node->file = ft_strjoin(argv[index + 1], "\n");
 	return (new_node);
 }
 

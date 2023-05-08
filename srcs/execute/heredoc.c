@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 13:25:35 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/08 20:37:36 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/08 21:23:14 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,8 @@ void	execute_heredoc(t_cmd *cmd)
 			close(pipe_fd[WR]);
 			cur->fd = pipe_fd[RD];
 		}
+		if (cur->next == NULL)
+			break ;
 		cur = cur->next;
 	}
 	g_env->status = wait_child_process(cmd_count, cur->pid);
