@@ -6,7 +6,7 @@
 #    By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/12 16:06:02 by yeongo            #+#    #+#              #
-#    Updated: 2023/05/08 14:57:52 by wbae             ###   ########.fr        #
+#    Updated: 2023/05/10 22:00:19 by wbae             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,14 +48,17 @@ SRC_PARSE_FILES		:=	$(addsuffix .c,				\
 							envp					\
 							parse					\
 							cmd						\
-							split_token				\
-							split_token2			\
-							after_split_chunk		\
-							translate_dollar		\
+							split_by_quote			\
+							syntax_check			\
+							treat_dollar			\
+							chunk_control			\
 							treat_redir				\
 							tokenize_utils			\
 							free					\
 							debug					\
+							treat_heredoc			\
+							split_by_parameter		\
+							join_argv_tokens		\
 							main					\
 						)
 SRC_BUILTIN_FILES	:=	$(addsuffix .c,				\

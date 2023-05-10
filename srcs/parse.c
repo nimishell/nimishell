@@ -1,54 +1,86 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.c                                            :+:      :+:    :+:   */
+/*   new_parse.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/15 21:32:19 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/08 14:08:25 by wbae             ###   ########.fr       */
+/*   Created: 2023/05/10 15:30:05 by wbae              #+#    #+#             */
+/*   Updated: 2023/05/10 21:47:26 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parsing.h"
 
-void	check_heredoc_delimiter(t_token *token)
+static void	check_heredoc_limiter(t_token *token)
 {
 	while (token)
 	{
-		if (token->type == T_IO_LL)
-			token->next->type = T_CHUNK;
+		if (token->type == T_CHUNK)
+			treat_heredoc(token, ft_strdup(token->str));
 		token = token->next;
 	}
 }
 
-t_token	*tokenize(t_token *token, char *rd_line)
+static int	split_by_quote(t_token *token)
 {
-	rd_line = ft_strtrim(rd_line, " ");
-	if (rd_line == NULL)
-		return (NULL);
-	if (ft_split_token(&token, rd_line) == FAIL)
-		return (NULL);
-	free(rd_line);
-	remove_empty_space(&token);
-	return (token);
+	char	**split;
+
+	while (token)
+	{
+		if (token->str[0] == '\0')
+			break ;
+		if (token->type == T_CHUNK && \
+			(ft_strchr(token->str, '\'') || ft_strchr(token->str, '\"')))
+		{
+			split = split_quote(token->str);
+			if (split)
+				make_split_to_token(token, split);
+			else
+			{
+				ft_syntax_error("\'");
+				return (FAIL);
+			}
+		}
+		token = token->next;
+	}
+	return (SUCCESS);
+}
+
+int	tokenize(t_token *token)
+{
+	check_heredoc_limiter(token);
+	if (!split_by_quote(token))
+		return (FAIL);
+	treat_dollar(token);
+	split_by_parameter(token, " ");
+	split_by_parameter(token, "|");
+	split_by_parameter(token, "<<");
+	split_by_parameter(token, ">>");
+	split_by_parameter(token, "<");
+	split_by_parameter(token, ">");
+	return (SUCCESS);
 }
 
 int	parse(t_cmd **cmd, char *rd_line)
 {
 	t_token	*token;
 
-	token = NULL;
-	token = tokenize(token, rd_line);
-	if (!check_syntax(token))
+	token = new_token(rd_line, T_CHUNK);
+	if (!tokenize(token))
 	{
-		g_env->status = 258;
 		ft_free_token(&token);
 		return (FAIL);
 	}
-	check_heredoc_delimiter(token);
-	treat_dollar(token);
+	chunk_to_argv(&token);
+	join_argv_tokens(&token);
+	remove_empty_space(&token);
+	if (!check_syntax(token))
+	{
+		ft_free_token(&token);
+		return (FAIL);
+	}
 	debug_print_tokens(token);
 	if (!token_into_cmd(cmd, token))
 	{

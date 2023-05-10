@@ -6,7 +6,7 @@ void	debug_print_tokens(t_token *token)
 	printf("\n================tokens================\n[ ");
 	while (token)
 	{
-		printf("{%s} (%d)", token->str, token->type);
+		printf("{%s} (%d)<%p>", token->str, token->type, token);
 		token = token->next;
 		if (!token)
 			break ;
@@ -46,10 +46,6 @@ void	debug_print_cmd(t_cmd *cmd)
 				out = out->next;
 			}
 		}
-		// printf("input: %s, input_fd: %d\n", cmd->file->infile, cmd->file->infile_fd);
-		// printf("output: %s, output_fd %d\n\n", cmd->file->outfile, cmd->file->outfile_fd);
-		// printf("redir_in: %d\n", cmd->redir[INPUT]);
-		// printf("redir_out: %d\n\n", cmd->redir[OUTPUT]);
 		cmd = cmd->next;
 	}
 	printf("\n\n======================output=======================\n");

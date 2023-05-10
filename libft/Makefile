@@ -6,7 +6,7 @@
 #    By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/13 15:28:56 by yeongo            #+#    #+#              #
-#    Updated: 2023/05/08 16:31:05 by wbae             ###   ########.fr        #
+#    Updated: 2023/05/10 16:19:55 by wbae             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,6 +58,7 @@ SRC_FILES		:=	$(addsuffix .c,				\
 						ft_striteri				\
 						ft_strjoin				\
 						ft_strjoin_char			\
+						ft_multi_strjoin		\
 						ft_strlcat				\
 						ft_strlcpy				\
 						ft_strlen				\

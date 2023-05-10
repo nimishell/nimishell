@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 01:54:29 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/05 20:48:51 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/10 20:58:30 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ static int	show_export(void)
 			ft_putstr_fd(cur->value, STDOUT_FILENO);
 			ft_putstr_fd("\"\n", STDOUT_FILENO);
 		}
+		else
+			ft_putchar_fd('\n', STDOUT_FILENO);
 		cur = cur->next;
 	}
 	return (0);

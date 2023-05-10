@@ -6,14 +6,14 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 20:33:04 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/03 21:06:07 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/10 20:36:05 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "minishell.h"
 
-char	*copy_key(char *envp)
+static char	*copy_key(char *envp)
 {
 	char	*key;
 	int		i;
@@ -25,7 +25,7 @@ char	*copy_key(char *envp)
 	return (key);
 }
 
-char	*copy_value(char *envp)
+static char	*copy_value(char *envp)
 {
 	char	*val;
 	int		i;
@@ -39,7 +39,7 @@ char	*copy_value(char *envp)
 	return (val);
 }
 
-void	making_env(char *envp)
+static void	making_env(char *envp)
 {
 	t_env	*tmp;
 

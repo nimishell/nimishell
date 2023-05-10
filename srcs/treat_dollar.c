@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   translate_dollar.c                                 :+:      :+:    :+:   */
+/*   treat_dollar.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 19:53:08 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/03 21:08:54 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/10 19:30:39 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void	treat_dollar(t_token *token)
 
 	while (token)
 	{
-		while (token->type == T_ECHUNK && ft_strchr(token->str, '$'))
+		while (token->type == T_CHUNK && ft_strchr(token->str, '$'))
 		{
 			head = g_env;
 			split = split_dollar(token->str);

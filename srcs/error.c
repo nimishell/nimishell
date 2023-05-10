@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 14:37:37 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/08 20:30:43 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/10 21:43:59 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,4 +76,5 @@ void	ft_syntax_error(char *argv)
 		ft_putchar_fd('\'', STDERR_FILENO);
 	}
 	ft_putstr_fd("\n", STDERR_FILENO);
+	g_env->status = 258;
 }

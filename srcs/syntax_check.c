@@ -1,43 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   after_split_chunk.c                                :+:      :+:    :+:   */
+/*   syntax_check.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 16:00:31 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/03 19:18:52 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/10 21:02:19 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parsing.h"
-
-void	remove_empty_space(t_token **lst)
-{
-	t_token	*rm;
-	t_token	*cur;
-
-	cur = *lst;
-	while (cur && cur->next)
-	{
-		if (cur->next->str[0] == '\0' || cur->next->type == T_SPACE)
-		{
-			rm = cur->next;
-			cur->next = cur->next->next;
-			free(rm->str);
-			free(rm);
-		}
-		cur = cur->next;
-	}
-	cur = *lst;
-	if (cur && cur->type == T_SPACE)
-	{
-		*lst = cur->next;
-		free(cur->str);
-		free(cur);
-	}
-}
 
 static int	check_syntax_pipe(t_token *token)
 {
@@ -75,7 +49,7 @@ static int	check_syntax_redir(t_token *token)
 		ft_syntax_error("newline");
 		return (FAIL);
 	}
-	if (token->next->type != T_ECHUNK && token->next->type != T_CHUNK)
+	if (token->next->type != T_ARGV)
 	{
 		ft_syntax_error(ft_substr(token->next->str, 0, 2));
 		return (FAIL);
@@ -98,15 +72,11 @@ int	check_syntax(t_token *token)
 	while (token)
 	{
 		if (token->type == T_REDIR)
-		{
 			if (!check_syntax_redir(token))
 				return (FAIL);
-		}
 		if (token->type >= T_PIPE)
-		{
 			if (!check_syntax_pipe(token))
 				return (FAIL);
-		}
 		token = token->next;
 	}
 	return (SUCCESS);

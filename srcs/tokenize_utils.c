@@ -6,28 +6,69 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 16:10:57 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/02 21:06:03 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/10 20:23:35 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parsing.h"
 
-void	token_add_back(t_token **lst, t_token *new)
+t_token	*new_token(char *str, int type)
+{
+	t_token	*new;
+
+	new = malloc(sizeof(t_token));
+	if (!new)
+		return (NULL);
+	new->str = ft_strdup(str);
+	new->type = type;
+	new->next = NULL;
+	return (new);
+}
+
+t_token	*token_add_back(t_token **lst, t_token *new)
 {
 	t_token	*cur;
 
 	if (new == NULL)
-		return ;
+		return (NULL);
 	if (*lst == NULL)
 	{
 		*lst = new;
-		return ;
+		return (new);
 	}
 	cur = *lst;
 	while (cur->next != NULL)
 		cur = cur->next;
 	cur->next = new;
+	return (new);
+}
+
+t_token	*remove_single_token(t_token **lst, t_token *target)
+{
+	t_token	*prev;
+	t_token	*cur;
+
+	if (*lst == NULL || target == NULL)
+		return (NULL);
+	if (*lst == target)
+	{
+		free(target->str);
+		target = target->next;
+		free(*lst);
+		*lst = target;
+		return (target);
+	}
+	cur = *lst;
+	while (cur != target)
+	{
+		prev = cur;
+		cur = cur->next;
+	}
+	prev->next = cur->next;
+	free(cur->str);
+	free(cur);
+	return (prev->next);
 }
 
 void	cmd_add_back(t_cmd **lst, t_cmd *new)
@@ -62,26 +103,4 @@ void	redir_add_back(t_redir **lst, t_redir *new)
 	while (cur->next != NULL)
 		cur = cur->next;
 	cur->next = new;
-}
-
-void	remove_single_token(t_token **lst, t_token *target)
-{
-	t_token	*prev;
-
-	if (*lst == NULL || target == NULL)
-		return ;
-	if (*lst == target)
-		*lst = target->next;
-	else
-	{
-		prev = *lst;
-		while (prev->next && prev->next != target)
-			prev = prev->next;
-		if (prev->next == target)
-			prev->next = target->next;
-		else
-			return ;
-	}
-	free(target->str);
-	free(target);
 }

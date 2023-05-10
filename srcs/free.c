@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   util.c                                             :+:      :+:    :+:   */
+/*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 16:30:42 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/04 16:48:09 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/10 16:43:15 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	*ms_free(void *p1, void *p2, void *p3, void *p4)
 	return (NULL);
 }
 
-void	*ft_free_char_arr(char **p)
+void	ft_free_char_arr(char **p)
 {
 	int	i;
 
@@ -37,7 +37,6 @@ void	*ft_free_char_arr(char **p)
 		i++;
 	}
 	free(p);
-	return (NULL);
 }
 
 void	ft_free_token(t_token **token)

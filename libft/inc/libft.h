@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/08 10:11:47 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/08 16:30:01 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/10 16:42:10 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,5 +83,6 @@ void	ft_free_strings(char ***strings);
 void	ft_free_void(void ***ptr, int index_max);
 size_t	ft_strcspn(const char *str, const char *charset);
 char	*ft_replace_str(char **str, char *target, char *replace, int position);
+char	*ft_multi_strjoin(char *str1, char *str2, char *str3);
 
 #endif
