@@ -6,12 +6,11 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 19:36:46 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/08 15:31:25 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/12 05:30:13 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "structure.h"
 #include "heredoc.h"
 #include "open_file.h"
 #include "execute_command.h"

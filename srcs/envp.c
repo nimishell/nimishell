@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 20:33:04 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/10 20:36:05 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/12 05:42:27 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,10 @@ static void	making_env(char *envp)
 	tmp->next = malloc(sizeof(t_env));
 	tmp = tmp->next;
 	tmp->key = copy_key(envp);
-	tmp->value = copy_value(envp);
+	if (ft_strncmp(g_env->key, "OLDPWD", 7) == 0)
+		tmp->value = NULL;
+	else
+		tmp->value = copy_value(envp);
 	if (tmp->value == NULL)
 		tmp->is_value = 0;
 	else
@@ -65,8 +68,14 @@ void	copy_env(char *envp[])
 	{
 		g_env = malloc(sizeof(t_env));
 		g_env->key = copy_key(envp[0]);
-		g_env->value = copy_value(envp[0]);
-		g_env->is_value = 1;
+		if (ft_strncmp(g_env->key, "OLDPWD", 7) == 0)
+			g_env->value = NULL;
+		else
+			g_env->value = copy_value(envp[0]);
+		if (g_env->value == NULL)
+			g_env->is_value = 0;
+		else
+			g_env->is_value = 1;
 		g_env->next = NULL;
 	}
 	i = 0;

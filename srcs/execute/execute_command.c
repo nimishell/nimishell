@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 20:30:06 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/08 20:59:57 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/12 06:08:58 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,8 @@ char	**make_env_arr(void)
 	env_size = 0;
 	while (cur)
 	{
-		env_size++;
+		if (cur->is_value == TRUE)
+			env_size++;
 		cur = cur->next;
 	}
 	result = ft_calloc(env_size + 1, sizeof(char *));
@@ -77,10 +78,13 @@ char	**make_env_arr(void)
 	cur = g_env;
 	while (cur)
 	{
-		result[index] = ft_strjoin(cur->key, "=");
-		ft_strapp_back(&result[index], cur->value);
+		if (cur->is_value == TRUE)
+		{
+			result[index] = ft_strjoin(cur->key, "=");
+			ft_strapp_back(&result[index], cur->value);
+			index++;
+		}
 		cur = cur->next;
-		index++;
 	}
 	return (result);
 }

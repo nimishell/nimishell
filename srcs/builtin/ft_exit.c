@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 16:06:26 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/11 18:46:31 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/12 04:13:54 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	ft_exit(char **argv)
 	int	status;
 
 	ft_putendl_fd("exit", STDOUT_FILENO);
-	if (!argv || argv[1] == NULL)
+	if (argv[1] == NULL)
 		exit(0);
 	if (is_digit_array(argv[1]) == FALSE)
 	{
@@ -54,4 +54,3 @@ int	ft_exit(char **argv)
 	status = ft_atoi(argv[1]) % 256;
 	exit(status);
 }
-

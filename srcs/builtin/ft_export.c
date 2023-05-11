@@ -6,15 +6,11 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 01:54:29 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/10 20:58:30 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/12 06:06:15 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "structure.h"
-#include <stdlib.h>
-
-extern t_env	*g_env;
+#include "minishell.h"
 
 static int	show_export(void)
 {
@@ -102,11 +98,20 @@ int	ft_export(char **argv)
 		key_len = 0;
 		while (argv[index_argv][key_len] != '\0' \
 			&& argv[index_argv][key_len] != '=')
+		{
+			if (ft_isalnum(argv[index_argv][key_len]) == FALSE \
+				&& argv[index_argv][key_len] != '_')
+			{
+				ft_error_message(argv[0], argv[index_argv], \
+					"not a valid identifier");
+				return (1);
+			}
 			key_len++;
+		}
 		key = ft_substr(argv[index_argv], 0, key_len);
 		if (argv[index_argv][key_len])
 			value = ft_substr(argv[index_argv] + key_len, 1, \
-					ft_strlen(argv[index_argv] + key_len) - 1);
+						ft_strlen(argv[index_argv] + key_len) - 1);
 		else
 			value = NULL;
 		export_variable(&key, value);

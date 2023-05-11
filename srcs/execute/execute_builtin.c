@@ -6,11 +6,11 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 19:42:07 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/05 20:26:58 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/12 04:14:56 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 #include "builtin.h"
 
 int	execute_builtin(char **command)
@@ -26,12 +26,13 @@ int	execute_builtin(char **command)
 	else if (ft_strncmp(command[0], "unset", 6) == 0)
 		result = ft_unset(command);
 	else if (ft_strncmp(command[0], "pwd", 4) == 0)
-		result = ft_pwd(command);
+		result = ft_pwd();
 	else if (ft_strncmp(command[0], "export", 7) == 0)
 		result = ft_export(command);
 	else if (ft_strncmp(command[0], "exit", 5) == 0)
 		result = ft_exit(command);
 	else
 		result = 1;
+	g_env->status = result;
 	return (result);
 }

@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 13:25:35 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/11 18:47:54 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/12 05:31:30 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ static void	get_heredoc(char *limiter, int pipe_fd[2])
 	close(pipe_fd[WR]);
 	exit (0);
 }
-	// return (pipe_fd[RD]);
 
 void	execute_heredoc(t_cmd *cmd)
 {

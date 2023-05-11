@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 20:35:53 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/08 13:37:37 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/12 05:31:57 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,6 @@ void	print_terminate_code(int terminate_code)
 		ft_putstr_fd("^\\Quit: ", STDERR_FILENO);
 		ft_putnbr_fd(terminate_code, STDERR_FILENO);
 	}
-	// ft_putstr_fd("Terminate: ", STDERR_FILENO);
 	ft_putchar_fd('\n', STDERR_FILENO);
 }
+	// ft_putstr_fd("Terminate: ", STDERR_FILENO);

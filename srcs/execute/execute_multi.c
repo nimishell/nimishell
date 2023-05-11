@@ -6,19 +6,15 @@
 /*   By: wbae <wbae@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 15:08:22 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/11 18:39:34 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/12 05:29:35 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "execute_command.h"
 #include "heredoc.h"
 #include "minishell.h"
 #include "open_file.h"
 #include "terminate.h"
-#include "error.h"
-#include <stdio.h>
-#include <unistd.h>
 
 int	is_builtin(char *command)
 {
