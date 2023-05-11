@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_by_quote.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: wbae <wbae@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 15:56:15 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/10 21:14:30 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/11 16:30:39 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	make_split_to_token(t_token *lst, char **arr)
 	token_add_back(&lst, new_token(arr[1], T_ARGV));
 	lst = token_add_back(&lst, new_token(arr[2], T_CHUNK));
 	ft_free_char_arr(arr);
-
+	lst->next = tmp;
 }
 
 static int	where_dollar_in_quote(char *str, int *dollar_idx, int *next_idx)

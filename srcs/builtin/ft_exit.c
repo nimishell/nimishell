@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: wbae <wbae@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 16:06:26 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/08 16:30:10 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/11 18:46:31 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	ft_exit(char **argv)
 	int	status;
 
 	ft_putendl_fd("exit", STDOUT_FILENO);
-	if (argv[1] == NULL)
+	if (!argv || argv[1] == NULL)
 		exit(0);
 	if (is_digit_array(argv[1]) == FALSE)
 	{

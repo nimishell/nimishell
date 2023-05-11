@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: wbae <wbae@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:33:23 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/10 20:37:18 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/11 18:47:42 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "builtin.h"
 #include "parsing.h"
 #include "execute_process.h"
 
@@ -24,7 +25,7 @@ static int	is_space(char *line)
 	return (1);
 }
 
-void	main_init(int ac, char *av[], char *envp[])
+static void	main_init(int ac, char *av[], char *envp[])
 {
 	t_env		*head;
 	t_termios	term;
@@ -43,23 +44,21 @@ void	main_init(int ac, char *av[], char *envp[])
 			head->value = ft_strdup(ft_itoa(ft_atoi(head->value) + 1));
 		head = head->next;
 	}
-
 }
 
-int	main(int ac, char *av[], char *envp[])
+static void	run_prompt(t_cmd *cmd)
 {
-	char			*line;
-	struct termios	term;
-	t_cmd			*cmd;
+	char	*line;
 
-	tcgetattr(STDIN_FILENO, &term);
-	main_init(ac, av, envp);
 	while (1)
 	{
 		set_sig(CUSTOM, IGNORE);
 		line = readline(MINISHELL);
 		if (!line)
-			break ;
+		{
+			ft_putstr_fd("\033[1A\033[11C", STDOUT_FILENO);
+			ft_exit(NULL);
+		}
 		if (*line != '\0' && !is_space(line))
 		{
 			add_history(line);
@@ -74,6 +73,17 @@ int	main(int ac, char *av[], char *envp[])
 		}
 		free(line);
 	}
+}
+
+int	main(int ac, char *av[], char *envp[])
+{
+	struct termios	term;
+	t_cmd			*cmd;
+
+	cmd = NULL;
+	tcgetattr(STDIN_FILENO, &term);
+	main_init(ac, av, envp);
+	run_prompt(cmd);
 	tcsetattr(STDOUT_FILENO, TCSANOW, &term);
 	return (g_env->status);
 }

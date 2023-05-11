@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: wbae <wbae@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 14:36:18 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/08 15:46:11 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/11 18:47:31 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,6 @@ void	custom_handler(int signal)
 	}
 }
 
-void	quit_handler(int signal)
-{
-	if (signal == SIGINT)
-		ft_putendl_fd("", STDERR_FILENO);
-	exit(EXIT_FAILURE);
-}
-
 void	heredoc_handler(int signal)
 {
 	if (signal == SIGINT)
@@ -38,6 +31,7 @@ void	heredoc_handler(int signal)
 		rl_replace_line("", 1);
 		rl_redisplay();
 		ft_putendl_fd("", STDERR_FILENO);
+		exit(1);
 	}
 }
 

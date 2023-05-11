@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: wbae <wbae@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 13:25:35 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/08 21:38:05 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/11 18:47:54 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,6 @@ int	has_heredoc(t_cmd *cmd)
 	}
 	return (FALSE);
 }
-//
-// static int	get_cmp_size(char *input, int size)
-// {
-// 	int	inlen;
-//
-// 	inlen = ft_strlen(input) - 1;
-// 	if (inlen >= size)
-// 		return (inlen);
-// 	else
-// 		return (size);
-// }
 
 static void	expand_env_in_str(char **str)
 {
@@ -67,7 +56,7 @@ static void	get_heredoc(char *limiter, int pipe_fd[2])
 	size_t	limiter_size;
 	char	*input_str;
 
-	set_sig(IGNORE, IGNORE);
+	set_sig(HEREDOC, IGNORE);
 	close(pipe_fd[RD]);
 	limiter_size = ft_strlen(limiter);
 	input_str = readline("> ");
