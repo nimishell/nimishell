@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 01:54:29 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/12 06:06:15 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/12 20:35:01 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ static void	change_value(t_env *cur, char *new_value)
 {
 	if (cur->value != NULL)
 		free(cur->value);
+	else
+		cur->is_value = 1;
 	cur->value = ft_strdup(new_value);
 }
 
@@ -115,6 +117,7 @@ int	ft_export(char **argv)
 		else
 			value = NULL;
 		export_variable(&key, value);
+		ms_free(key, value, NULL, NULL);
 		index_argv++;
 	}
 	return (0);

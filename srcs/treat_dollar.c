@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 19:53:08 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/10 19:30:39 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/12 19:49:19 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,20 @@ static char	*join_split(char **split)
 	else
 		ret = ft_strjoin(split[0], split[1]);
 	if (split[2][0] != '\0')
-		ret = ft_strjoin(ret, split[2]);
+		ft_strapp_back(&ret, split[2]);
 	return (ret);
 }
 
 static char	*translate_dollar(t_env *head, char **str)
 {
+	char	*tmp;
+
 	if (*str[0] == '?' || *str[0] == '$')
 	{
 		free(*str);
-		*str = ft_strdup(ft_itoa(head->status));
+		tmp = ft_itoa(head->status);
+		*str = ft_strdup(tmp);
+		free(tmp);
 		return (*str);
 	}
 	while (head)
@@ -40,15 +44,12 @@ static char	*translate_dollar(t_env *head, char **str)
 		{
 			free(*str);
 			*str = ft_strdup(head->value);
-			break ;
+			return (*str);
 		}
 		head = head->next;
 	}
-	if (!head)
-	{
-		free(*str);
-		*str = ft_strdup("");
-	}
+	free(*str);
+	*str = ft_strdup("");
 	return (*str);
 }
 

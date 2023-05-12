@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_by_quote.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wbae <wbae@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 15:56:15 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/11 16:30:39 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/12 21:28:37 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int	where_dollar_in_quote(char *str, int *dollar_idx, int *next_idx)
 	if (!str[*dollar_idx])
 		return (0);
 	*next_idx = *dollar_idx + 1;
-	if (str[*next_idx] == '?' || ft_isdigit(str[*next_idx])
+	if (str[*next_idx] == '?' || str[*next_idx] == '$' || ft_isdigit(str[*next_idx])
 		|| (!ft_isalpha(str[*next_idx]) && str[*next_idx] != '_'))
 	{
 		*next_idx += 1;
@@ -51,23 +51,22 @@ static int	where_dollar_in_quote(char *str, int *dollar_idx, int *next_idx)
 static char	*translate_dollar_in_quote(char *str)
 {
 	char	*arr[3];
+	char	*tmp;
 	int		dollar_idx;
 	int		next_idx;
 
 	while (where_dollar_in_quote(str, &dollar_idx, &next_idx))
 	{
 		arr[0] = ft_substr(str, 0, dollar_idx);
-		if (str[dollar_idx + 1] == '?')
-		{
-			next_idx = dollar_idx + 2;
+		if (str[dollar_idx + 1] == '?' || str[dollar_idx + 1] == '$')
 			arr[1] = ft_itoa(g_env->status);
-		}
 		else
 		{
-			arr[1] = ft_substr(str, dollar_idx + 1, next_idx - dollar_idx - 1);
-			arr[1] = get_value(arr[1]);
+			tmp = ft_substr(str, dollar_idx + 1, next_idx - dollar_idx - 1);
+			arr[1] = ft_strdup(get_value(tmp));
 			if (!arr[1])
 				arr[1] = ft_strdup("");
+			free(tmp);
 		}
 		arr[2] = ft_substr(str, next_idx, ft_strlen(str) - next_idx);
 		free(str);

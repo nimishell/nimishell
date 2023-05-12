@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 16:00:31 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/10 21:02:19 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/12 17:38:42 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,7 @@ static int	check_syntax_redir(t_token *token)
 int	check_syntax(t_token *token)
 {
 	if (!token)
-	{
-		ft_syntax_error("\'");
 		return (FAIL);
-	}
 	if (token && token->type == T_PIPE)
 	{
 		ft_syntax_error(ft_substr(token->str, 0, 2));

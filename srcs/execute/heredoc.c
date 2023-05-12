@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wbae <wbae@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 13:25:35 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/12 05:31:30 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/12 14:33:34 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	execute_heredoc(t_cmd *cmd)
 		if (cur->type == T_IO_LL)
 		{
 			if (pipe(pipe_fd) == -1)
-				exit_with_errno("zsh", "pipe", EXIT_FAILURE);
+				exit_with_errno(NULL, "pipe", EXIT_FAILURE);
 			cur->pid = fork();
 			if (cur->pid < 0)
 				exit_with_errno(NULL, NULL, EXIT_FAILURE);

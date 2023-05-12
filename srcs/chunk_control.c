@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 17:25:17 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/10 20:09:41 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/12 19:14:33 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,6 @@ void	remove_empty_space(t_token **lst)
 		}
 		cur = cur->next;
 	}
-	// if (*lst && (*lst)->str[0] == '\0')
-	// {
-	// 	free((*lst)->str);
-	// 	free(*lst);
-	// }
 }
 
 void	chunk_to_argv(t_token **lst)
@@ -53,9 +48,7 @@ void	chunk_to_argv(t_token **lst)
 				cur = cur->next;
 			}
 			else
-			{
 				cur = remove_single_token(head, cur);
-			}
 		}
 		else
 			cur = cur->next;

@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 20:23:57 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/10 20:50:48 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/12 13:50:51 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ static int	where_limiter(char *s)
 			lim_len++;
 		}
 		i += lim_len;
+		if (i >= ft_strlen(s))
+			return (-1);
 	}
 	return (i);
 }
@@ -47,16 +49,12 @@ static int	check_quote_in_limiter(t_token *token, char *s, int i)
 	while (s[i + lim_len] && s[i + lim_len] != s[i])
 		lim_len++;
 	if (!s[i + lim_len])
-	{
-		printf("!!!\n");
 		ft_putstr_fd("minishell: quotes error\n", STDERR_FILENO);
-	}
 	str = ft_substr(s, i + 1, lim_len - 1);
 	if (str[0])
 		token_add_back(&token, new_token(str, T_ARGV));
 	free(str);
 	return (i + lim_len + 1);
-
 }
 
 static int	check_heredoc_arg( t_token *token, char *s, int i)
@@ -89,7 +87,7 @@ void	treat_heredoc(t_token *token, char *s)
 	char	*str;
 
 	i = where_limiter(s);
-	if (!s[i])
+	if (i < 0 || !s[i])
 	{
 		free(s);
 		return ;

@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 21:42:06 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/05 20:20:56 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/12 21:08:59 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	open_infile(t_cmd *cmd)
 		{
 			cur->fd = open(cur->file, O_RDONLY);
 			if (cur->fd == -1)
-				exit_with_errno("zsh", cur->file, EXIT_FAILURE);
+				exit_with_errno(NULL, cur->file, EXIT_FAILURE);
 		}
 		if (cur->next == NULL)
 			break ;
@@ -70,7 +70,7 @@ void	open_outfile(t_cmd *cmd, int pipe_fd[2])
 		else if (cur->type == T_IO_RR)
 			cur->fd = open(cur->file, O_WRONLY | O_APPEND | O_CREAT, 0644);
 		if (cur->fd == -1)
-			exit_with_errno("zsh", cur->file, EXIT_FAILURE);
+			exit_with_errno(NULL, cur->file, EXIT_FAILURE);
 		if (cur->next == NULL)
 			break ;
 		cur = cur->next;

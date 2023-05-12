@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_multi.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wbae <wbae@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 15:08:22 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/12 05:29:35 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/12 21:26:29 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void	child_process(t_cmd *cmd, int pipe_fd[2])
 	open_outfile(cmd, pipe_fd);
 	close_unused_fd(cmd, pipe_fd);
 	if (cmd->argv[0] == NULL)
-		exit (0);
+		exit(0);
 	else if (is_builtin(cmd->argv[0]) == TRUE)
 	{
 		result = execute_builtin(cmd->argv);
@@ -80,6 +80,8 @@ int	wait_child_process(int count, pid_t last_pid)
 int	set_fds_before_new_cmd(t_cmd **cur, int pipe_fd[2])
 {
 	close(pipe_fd[WR]);
+	if ((*cur)->prev != NULL)
+		close((*cur)->fds[INPUT]);
 	if ((*cur)->next == NULL)
 		return (0);
 	*cur = (*cur)->next;
@@ -94,6 +96,7 @@ void	execute_multi_process(t_cmd *cmd)
 	int		cmd_count;
 
 	set_sig(IGNORE, IGNORE);
+	signal(SIGPIPE, SIG_IGN);
 	cur = cmd;
 	if (has_heredoc(cur))
 		execute_heredoc(cur);

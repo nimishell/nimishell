@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wbae <wbae@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:33:23 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/11 18:47:42 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/12 19:47:16 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ static void	main_init(int ac, char *av[], char *envp[])
 {
 	t_env		*head;
 	t_termios	term;
+	char		*tmp;
 
 	(void)av;
 	if (ac != 1)
@@ -41,7 +42,11 @@ static void	main_init(int ac, char *av[], char *envp[])
 	while (head)
 	{
 		if (!ft_strncmp(head->key, "SHLVL", 6))
-			head->value = ft_strdup(ft_itoa(ft_atoi(head->value) + 1));
+		{
+			tmp = head->value;
+			head->value = ft_itoa(ft_atoi(tmp) + 1);
+			free(tmp);
+		}
 		head = head->next;
 	}
 }

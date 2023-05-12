@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wbae <wbae@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:56:15 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/11 18:47:39 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/12 16:15:27 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	heredoc_handler(int signal);
 void	copy_env(char *env[]);
 char	*get_value(char *key);
 
-void	*ms_free(void *p1, void *p2, void *p3, void *p4);
+void	*ms_free(char *p1, char *p2, char *p3, char *p4);
 void	ft_free_char_arr(char **p);
 void	ft_free_token(t_token **token);
 void	ft_free_cmd(t_cmd **cmd);
