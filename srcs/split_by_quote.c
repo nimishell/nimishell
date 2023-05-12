@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 15:56:15 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/12 21:28:37 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/12 21:45:40 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,24 +27,24 @@ void	make_split_to_token(t_token *lst, char **arr)
 	lst->next = tmp;
 }
 
-static int	where_dollar_in_quote(char *str, int *dollar_idx, int *next_idx)
+static int	where_dollar_in_quote(char *str, int *dollar_idx, int *next)
 {
 	*dollar_idx = ft_strcspn(str, "$");
 	if (!str[*dollar_idx])
 		return (0);
-	*next_idx = *dollar_idx + 1;
-	if (str[*next_idx] == '?' || str[*next_idx] == '$' || ft_isdigit(str[*next_idx])
-		|| (!ft_isalpha(str[*next_idx]) && str[*next_idx] != '_'))
+	*next = *dollar_idx + 1;
+	if (str[*next] == '?' || str[*next] == '$' || ft_isdigit(str[*next])
+		|| (!ft_isalpha(str[*next]) && str[*next] != '_'))
 	{
-		*next_idx += 1;
+		*next += 1;
 		return (1);
 	}
-	if (str[*next_idx] == '\0'
-		|| (!ft_isalnum(str[*next_idx]) && str[*next_idx] != '_'))
+	if (str[*next] == '\0'
+		|| (!ft_isalnum(str[*next]) && str[*next] != '_'))
 		return (0);
-	while (str[*next_idx]
-		&& (ft_isalnum(str[*next_idx]) || str[*next_idx] == '_'))
-		*next_idx += 1;
+	while (str[*next]
+		&& (ft_isalnum(str[*next]) || str[*next] == '_'))
+		*next += 1;
 	return (1);
 }
 

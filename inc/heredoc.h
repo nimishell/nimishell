@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   here_doc.h                                         :+:      :+:    :+:   */
+/*   heredoc.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 13:31:58 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/05 13:33:13 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/12 21:31:09 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HERE_DOC_H
-# define HERE_DOC_H
+#ifndef HEREDOC_H
+# define HEREDOC_H
 
 # include "structure.h"
 

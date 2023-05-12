@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 16:10:57 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/10 20:23:35 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/12 21:38:29 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ void	cmd_add_back(t_cmd **lst, t_cmd *new)
 	cur = *lst;
 	while (cur->next != NULL)
 		cur = cur->next;
+	new->prev = cur;
 	cur->next = new;
 }
 
