@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 01:54:29 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/12 20:35:01 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/13 20:42:53 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,9 @@ static int	show_export(void)
 		{
 			ft_putstr_fd("=\"", STDOUT_FILENO);
 			ft_putstr_fd(cur->value, STDOUT_FILENO);
-			ft_putstr_fd("\"\n", STDOUT_FILENO);
+			ft_putstr_fd("\"", STDOUT_FILENO);
 		}
-		else
-			ft_putchar_fd('\n', STDOUT_FILENO);
+		ft_putchar_fd('\n', STDOUT_FILENO);
 		cur = cur->next;
 	}
 	return (0);
@@ -79,7 +78,7 @@ int	export_variable(char **key, char *value)
 	}
 	else
 	{
-		if (add_env_value(*key, value))
+		if (add_env_value(*key, value) == 0)
 			return (0);
 	}
 	return (1);
@@ -87,38 +86,36 @@ int	export_variable(char **key, char *value)
 
 int	ft_export(char **argv)
 {
-	int		index_argv;
+	int		index;
 	char	*key;
 	int		key_len;
 	char	*value;
 
 	if (argv[1] == NULL)
 		return (show_export());
-	index_argv = 1;
-	while (argv[index_argv])
+	index = 1;
+	while (argv[index])
 	{
 		key_len = 0;
-		while (argv[index_argv][key_len] != '\0' \
-			&& argv[index_argv][key_len] != '=')
+		while (argv[index][key_len] != '\0' && argv[index][key_len] != '=')
 		{
-			if (ft_isalnum(argv[index_argv][key_len]) == FALSE \
-				&& argv[index_argv][key_len] != '_')
+			if (ft_isalnum(argv[index][key_len]) == FALSE \
+				&& argv[index][key_len] != '_')
 			{
-				ft_error_message(argv[0], argv[index_argv], \
+				ft_error_message(argv[0], argv[index], \
 					"not a valid identifier");
 				return (1);
 			}
 			key_len++;
 		}
-		key = ft_substr(argv[index_argv], 0, key_len);
-		if (argv[index_argv][key_len])
-			value = ft_substr(argv[index_argv] + key_len, 1, \
-						ft_strlen(argv[index_argv] + key_len) - 1);
-		else
-			value = NULL;
+		key = ft_substr(argv[index], 0, key_len);
+		value = NULL;
+		if (argv[index][key_len])
+			value = ft_substr(argv[index] + key_len, 1, \
+						ft_strlen(argv[index] + key_len) - 1);
 		export_variable(&key, value);
 		ms_free(key, value, NULL, NULL);
-		index_argv++;
+		index++;
 	}
 	return (0);
 }

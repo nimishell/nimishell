@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 15:08:22 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/12 22:28:33 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/13 20:05:45 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "minishell.h"
 #include "open_file.h"
 #include "terminate.h"
+#include <stdio.h>
 
 int	is_builtin(char *command)
 {
@@ -25,8 +26,8 @@ int	is_builtin(char *command)
 	index = 0;
 	while (index < 7)
 	{
-		if (ft_strncmp(command, builtin[index], ft_strlen(builtin[index]) + 1) \
-			== 0)
+		if (ft_strncmp(command, builtin[index], \
+				ft_strlen(builtin[index]) + 1) == 0)
 			return (TRUE);
 		index++;
 	}
@@ -38,6 +39,7 @@ static void	child_process(t_cmd *cmd, int pipe_fd[2])
 	int	result;
 
 	set_sig(DEFAULT, DEFAULT);
+	signal(SIGPIPE, SIG_DFL);
 	open_infile(cmd);
 	open_outfile(cmd, pipe_fd);
 	close_unused_fd(cmd, pipe_fd);
