@@ -6,25 +6,26 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 15:56:15 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/12 21:45:40 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/14 19:57:18 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parsing.h"
+#include "ft_list.h"
 
-void	make_split_to_token(t_token *lst, char **arr)
+void	make_split_to_token(t_token *token, char **arr)
 {
-	t_token	*tmp;
+	t_token	*save_token;
 
-	tmp = lst->next;
-	lst->next = NULL;
-	free(lst->str);
-	lst->str = ft_strdup(arr[0]);
-	token_add_back(&lst, new_token(arr[1], T_ARGV));
-	lst = token_add_back(&lst, new_token(arr[2], T_CHUNK));
-	ft_free_char_arr(arr);
-	lst->next = tmp;
+	save_token = token->next;
+	token->next = NULL;
+	free(token->str);
+	token->str = ft_strdup(arr[0]);
+	token_add_back(&token, new_token(arr[1], T_ARGV));
+	token_add_back(&token, new_token(arr[2], T_CHUNK));
+	token = token_last(token);
+	token->next = save_token;
 }
 
 static int	where_dollar_in_quote(char *str, int *dollar_idx, int *next)
@@ -59,11 +60,11 @@ static char	*translate_dollar_in_quote(char *str)
 	{
 		arr[0] = ft_substr(str, 0, dollar_idx);
 		if (str[dollar_idx + 1] == '?' || str[dollar_idx + 1] == '$')
-			arr[1] = ft_itoa(g_env->status);
+			arr[1] = ft_itoa(g_env.status);
 		else
 		{
 			tmp = ft_substr(str, dollar_idx + 1, next_idx - dollar_idx - 1);
-			arr[1] = ft_strdup(get_value(tmp));
+			arr[1] = ft_strdup(find_value(tmp));
 			if (!arr[1])
 				arr[1] = ft_strdup("");
 			free(tmp);

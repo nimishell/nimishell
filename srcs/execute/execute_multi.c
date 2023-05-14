@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 15:08:22 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/13 20:05:45 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/14 18:53:24 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,11 @@ int	is_builtin(char *command)
 	return (FALSE);
 }
 
-static void	child_process(t_cmd *cmd, int pipe_fd[2])
+static void	child_process(t_cmd_node *cmd, int pipe_fd[2])
 {
 	int	result;
 
 	set_sig(DEFAULT, DEFAULT);
-	signal(SIGPIPE, SIG_DFL);
 	open_infile(cmd);
 	open_outfile(cmd, pipe_fd);
 	close_unused_fd(cmd, pipe_fd);
@@ -79,7 +78,7 @@ int	wait_child_process(int count, pid_t last_pid)
 		return (WSTOPSIG(result));
 }
 
-int	set_fds_before_new_cmd(t_cmd **cur, int pipe_fd[2])
+int	set_fds_before_new_cmd(t_cmd_node **cur, int pipe_fd[2])
 {
 	close(pipe_fd[WR]);
 	if ((*cur)->prev != NULL)
@@ -93,16 +92,13 @@ int	set_fds_before_new_cmd(t_cmd **cur, int pipe_fd[2])
 
 void	execute_multi_process(t_cmd *cmd)
 {
-	t_cmd	*cur;
-	int		pipe_fd[2];
-	int		cmd_count;
+	t_cmd_node	*cur;
+	int			pipe_fd[2];
 
 	set_sig(IGNORE, IGNORE);
-	signal(SIGPIPE, SIG_IGN);
-	cur = cmd;
+	cur = cmd->head;
 	if (has_heredoc(cur))
 		execute_heredoc(cur);
-	cmd_count = 0;
 	while (cur != NULL)
 	{
 		if (pipe(pipe_fd) == -1)
@@ -112,10 +108,9 @@ void	execute_multi_process(t_cmd *cmd)
 			exit_with_errno(NULL, NULL, EXIT_FAILURE);
 		else if (cur->pid == 0)
 			child_process(cur, pipe_fd);
-		cmd_count++;
 		if (set_fds_before_new_cmd(&cur, pipe_fd) == 0)
 			break ;
 	}
 	close(pipe_fd[RD]);
-	g_env->status = wait_child_process(cmd_count, cur->pid);
+	g_env.status = wait_child_process(cmd->size, cur->pid);
 }

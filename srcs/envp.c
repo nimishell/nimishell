@@ -6,88 +6,81 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 20:33:04 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/12 19:57:34 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/14 20:28:07 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "ft_list.h"
 #include "minishell.h"
 
-static char	*copy_key(char *envp)
+char	*split_key(char *envp)
 {
 	char	*key;
-	int		i;
+	int		index;
 
-	i = 0;
-	while (envp[i] && envp[i] != '=')
-		i++;
-	key = ft_substr(envp, 0, i);
+	index = 0;
+	while (envp[index] && envp[index] != '=')
+		index++;
+	key = ft_substr(envp, 0, index);
 	return (key);
 }
 
-static char	*copy_value(char *envp)
+char	*split_value(char *envp)
 {
-	char	*val;
-	int		i;
+	char	*value;
+	int		index;
 
-	i = 0;
-	while (envp[i] && envp[i] != '=')
-		i++;
-	if (envp[i] == '\0')
+	index = 0;
+	while (envp[index] && envp[index] != '=')
+		index++;
+	if (envp[index] == '\0')
 		return (NULL);
-	val = ft_strdup(&envp[i + 1]);
-	return (val);
+	value = ft_strdup(&envp[index + 1]);
+	return (value);
 }
 
-static void	making_env(char *envp)
+int	add_new_env(char *key, char *value)
 {
-	t_env	*tmp;
+	t_env_node	*new;
 
-	tmp = g_env;
-	while (tmp->next)
-		tmp = tmp->next;
-	tmp->next = malloc(sizeof(t_env));
-	tmp = tmp->next;
-	tmp->key = copy_key(envp);
-	if (ft_strncmp(g_env->key, "OLDPWD", 7) == 0)
-		tmp->value = NULL;
-	else
-		tmp->value = copy_value(envp);
-	if (tmp->value == NULL)
-		tmp->is_value = 0;
-	else
-		tmp->is_value = 1;
-	tmp->next = NULL;
+	new = env_new();
+	if (new == NULL)
+		return (0);
+	new->key = ft_strdup(key);
+	new->value = ft_strdup(value);
+	if (new->value != NULL)
+		new->is_value = 1;
+	env_add_back(new);
+	return (1);
 }
 
-void	copy_env(char *envp[])
+void	get_env_lst(char **envp)
 {
-	int	i;
+	int			index;
+	char		*key;
+	char		*value;
 
-	if (!g_env)
+	index = 0;
+	while (envp[index])
 	{
-		g_env = malloc(sizeof(t_env));
-		g_env->key = copy_key(envp[0]);
-		if (ft_strncmp(g_env->key, "OLDPWD", 7) == 0)
-			g_env->value = NULL;
-		else
-			g_env->value = copy_value(envp[0]);
-		if (g_env->value == NULL)
-			g_env->is_value = 0;
-		else
-			g_env->is_value = 1;
-		g_env->next = NULL;
+		key = split_key(envp[index]);
+		value = NULL;
+		if (ft_strncmp(key, "OLDPWD", 7))
+			value = split_value(envp[index]);
+		add_new_env(key, value);
+		ft_free_str(&key);
+		if (value != NULL)
+			ft_free_str(&value);
+		index++;
 	}
-	i = 0;
-	while (envp[++i])
-		making_env(envp[i]);
 }
 
-char	*get_value(char *key)
+char	*find_value(char *key)
 {
-	t_env	*cur;
+	t_env_node	*cur;
 
-	cur = g_env;
+	cur = g_env.head;
 	while (cur != NULL)
 	{
 		if (!ft_strncmp(cur->key, key, ft_strlen(key) + 1))

@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 20:30:06 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/12 06:08:58 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/14 16:46:06 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,24 +58,15 @@ static void	execute_relative_path(char **command, char **path, char **envp)
 
 char	**make_env_arr(void)
 {
-	t_env	*cur;
-	int		env_size;
-	char	**result;
-	int		index;
+	t_env_node	*cur;
+	char		**result;
+	int			index;
 
-	cur = g_env;
-	env_size = 0;
-	while (cur)
-	{
-		if (cur->is_value == TRUE)
-			env_size++;
-		cur = cur->next;
-	}
-	result = ft_calloc(env_size + 1, sizeof(char *));
+	result = ft_calloc(g_env.value_count + 1, sizeof(char *));
 	if (result == NULL)
 		return (NULL);
 	index = 0;
-	cur = g_env;
+	cur = g_env.head;
 	while (cur)
 	{
 		if (cur->is_value == TRUE)

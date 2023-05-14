@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 14:06:00 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/12 04:12:36 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/14 12:58:18 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 int	ft_env(char **argv)
 {
-	t_env	*cur;
+	t_env_node	*cur;
 
 	if (argv[1] != NULL)
 	{
 		ft_error_message("env", NULL, "too many arguments");
 		return (1);
 	}
-	cur = g_env;
+	cur = g_env.head;
 	while (cur)
 	{
 		if (cur->is_value == 1)

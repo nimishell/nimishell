@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 19:53:08 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/12 19:49:19 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/14 19:36:16 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,27 +26,29 @@ static char	*join_split(char **split)
 	return (ret);
 }
 
-static char	*translate_dollar(t_env *head, char **str)
+static char	*translate_dollar(char **str)
 {
-	char	*tmp;
+	t_env_node	*cur;
+	// char		*tmp;
 
 	if (*str[0] == '?' || *str[0] == '$')
 	{
 		free(*str);
-		tmp = ft_itoa(head->status);
-		*str = ft_strdup(tmp);
-		free(tmp);
+		*str = ft_itoa(g_env.status);
+		// *str = ft_strdup(tmp);
+		// free(tmp);
 		return (*str);
 	}
-	while (head)
+	cur = g_env.head;
+	while (cur)
 	{
-		if (!ft_strncmp(*str, head->key, ft_strlen(*str) + 1))
+		if (!ft_strncmp(*str, cur->key, ft_strlen(*str) + 1))
 		{
 			free(*str);
-			*str = ft_strdup(head->value);
+			*str = ft_strdup(cur->value);
 			return (*str);
 		}
-		head = head->next;
+		cur = cur->next;
 	}
 	free(*str);
 	*str = ft_strdup("");
@@ -83,27 +85,26 @@ static char	**split_dollar(char *str)
 void	treat_dollar(t_token *token)
 {
 	char	**split;
-	t_env	*head;
+	int		break_loop;
 
 	while (token)
 	{
+		break_loop = FALSE;
 		while (token->type == T_CHUNK && ft_strchr(token->str, '$'))
 		{
-			head = g_env;
 			split = split_dollar(token->str);
 			if ((*(ft_strchr(token->str, '$') + 1) != '\0'))
-				split[1] = translate_dollar(head, &split[1]);
+				split[1] = translate_dollar(&split[1]);
 			else
 			{
 				split[1] = ft_strdup("$");
-				free(token->str);
-				token->str = join_split(split);
-				ft_free_char_arr(split);
-				break ;
+				break_loop = TRUE;
 			}
 			free(token->str);
 			token->str = join_split(split);
-			ft_free_char_arr(split);
+			ft_free_strings(&split);
+			if (break_loop == TRUE)
+				break ;
 		}
 		token = token->next;
 	}

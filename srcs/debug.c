@@ -15,7 +15,7 @@ void	debug_print_tokens(t_token *token)
 	printf(" ]\n\n");
 }
 
-void	debug_print_cmd(t_cmd *cmd)
+void	debug_print_cmd(t_cmd_node *cmd)
 {
 	t_redir	*in;
 	t_redir	*out;

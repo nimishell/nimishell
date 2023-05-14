@@ -6,13 +6,19 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:33:23 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/12 19:47:16 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/14 20:25:57 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "ft_list.h"
 #include "builtin.h"
 #include "parsing.h"
 #include "execute_process.h"
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+
+extern char	**environ;
 
 static int	is_space(char *line)
 {
@@ -25,9 +31,9 @@ static int	is_space(char *line)
 	return (1);
 }
 
-static void	main_init(int ac, char *av[], char *envp[])
+static void	main_init(int ac, char **av, t_cmd *cmd)
 {
-	t_env		*head;
+	t_env_node	*head;
 	t_termios	term;
 	char		*tmp;
 
@@ -37,8 +43,8 @@ static void	main_init(int ac, char *av[], char *envp[])
 	tcgetattr(STDIN_FILENO, &term);
 	term.c_lflag &= ~(ECHOCTL);
 	tcsetattr(STDOUT_FILENO, TCSANOW, &term);
-	copy_env(envp);
-	head = g_env;
+	get_env_lst(environ);
+	head = g_env.head;
 	while (head)
 	{
 		if (!ft_strncmp(head->key, "SHLVL", 6))
@@ -49,6 +55,8 @@ static void	main_init(int ac, char *av[], char *envp[])
 		}
 		head = head->next;
 	}
+	memset(cmd, 0, sizeof(t_cmd));
+	printf("cmd %p, %p\n", cmd->head, cmd->tail);
 }
 
 static void	run_prompt(t_cmd *cmd)
@@ -67,28 +75,27 @@ static void	run_prompt(t_cmd *cmd)
 		if (*line != '\0' && !is_space(line))
 		{
 			add_history(line);
-			if (parse(&cmd, line))
+			if (parse(cmd, line))
 			{
-				if (is_single_builtin(cmd))
+				if (is_single_builtin(cmd->head))
 					execute_single_process(cmd);
 				else
 					execute_multi_process(cmd);
-				ft_free_cmd(&cmd);
+				cmd_clear(cmd);
 			}
 		}
 		free(line);
 	}
 }
 
-int	main(int ac, char *av[], char *envp[])
+int	main(int ac, char **av)
 {
 	struct termios	term;
-	t_cmd			*cmd;
+	t_cmd			cmd;
 
-	cmd = NULL;
 	tcgetattr(STDIN_FILENO, &term);
-	main_init(ac, av, envp);
-	run_prompt(cmd);
+	main_init(ac, av, &cmd);
+	run_prompt(&cmd);
 	tcsetattr(STDOUT_FILENO, TCSANOW, &term);
-	return (g_env->status);
+	return (g_env.status);
 }

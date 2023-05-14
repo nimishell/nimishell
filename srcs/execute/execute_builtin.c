@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 19:42:07 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/12 04:14:56 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/14 13:02:27 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,6 @@ int	execute_builtin(char **command)
 		result = ft_exit(command);
 	else
 		result = 1;
-	g_env->status = result;
+	g_env.status = result;
 	return (result);
 }

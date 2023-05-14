@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 19:36:46 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/12 05:30:13 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/14 20:19:17 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@
 #include "execute_command.h"
 #include <unistd.h>
 
-int	is_single_builtin(t_cmd *cmd)
+int	is_single_builtin(t_cmd_node *node)
 {
-	return (cmd->prev == NULL && cmd->next == NULL \
-		&& cmd->argv[0] != NULL && is_builtin(cmd->argv[0]) == TRUE);
+	return (node->prev == NULL && node->next == NULL \
+		&& node->argv[0] != NULL && is_builtin(node->argv[0]) == TRUE);
 }
 
 static void	init_backup_fd(int backup_fd[2])
@@ -28,7 +28,7 @@ static void	init_backup_fd(int backup_fd[2])
 	backup_fd[STDOUT_FILENO] = -1;
 }
 
-static void	backup_std_fd(t_cmd *cmd, int backup_fd[2])
+static void	backup_std_fd(t_cmd_node *cmd, int backup_fd[2])
 {
 	if (cmd->fds[INPUT] != STDIN_FILENO)
 		backup_fd[STDIN_FILENO] = dup(STDIN_FILENO);
@@ -46,15 +46,15 @@ static void	recover_std_fd(int backup_fd[2])
 
 void	execute_single_process(t_cmd *cmd)
 {
-	t_cmd	*cur;
-	int		backup_fd[2];
+	t_cmd_node	*cur;
+	int			backup_fd[2];
 
-	cur = cmd;
+	cur = cmd->head;
 	if (has_heredoc(cur))
 		execute_heredoc(cur);
-	open_infile(cmd);
+	open_infile(cur);
 	init_backup_fd(backup_fd);
-	backup_std_fd(cmd, backup_fd);
-	execute_builtin(cmd->argv);
+	backup_std_fd(cur, backup_fd);
+	execute_builtin(cur->argv);
 	recover_std_fd(backup_fd);
 }

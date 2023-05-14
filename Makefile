@@ -6,7 +6,7 @@
 #    By: wbae <wbae@student.42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/12 16:06:02 by yeongo            #+#    #+#              #
-#    Updated: 2023/05/11 18:48:44 by wbae             ###   ########.fr        #
+#    Updated: 2023/05/14 19:17:48 by yeongo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,11 +18,13 @@ HEADER				:=	./inc/
 SRC_PARSE_DIR		:=	./srcs/
 SRC_BUILTIN_DIR		:=	./srcs/builtin/
 SRC_EXECUTE_DIR		:=	./srcs/execute/
+SRC_LIST_DIR		:=	./srcs/list/
 
 OBJ_DIR				:=	./.obj/
 OBJ_PARSE_DIR		:=	./.obj/parse/
 OBJ_BUILTIN_DIR		:=	./.obj/builtin/
 OBJ_EXECUTE_DIR		:=	./.obj/execute/
+OBJ_LIST_DIR		:=	./.obj/list/
 CACHE_DIR			:=	./.cache/
 
 LIBFT_DIR			:=	./libft/
@@ -79,28 +81,40 @@ SRC_EXECUTE_FILES	:=	$(addsuffix .c,				\
 							open_file				\
 							terminate				\
 						)
+SRC_LIST_FILES		:=	$(addsuffix .c,				\
+							clear_list				\
+							type_cmd				\
+							type_env				\
+							type_redir				\
+							type_token				\
+						)
 OBJ_PARSE_FILES		:=	$(SRC_PARSE_FILES:.c=.o)
 OBJ_BUILTIN_FILES	:=	$(SRC_BUILTIN_FILES:.c=.o)
 OBJ_EXECUTE_FILES	:=	$(SRC_EXECUTE_FILES:.c=.o)
+OBJ_LIST_FILES		:=	$(SRC_LIST_FILES:.c=.o)
 JSON_FILES			:=	compile_commands
 
-SRC_PARSE			:=	$(addprefix $(SRC_PARSE_DIR), $(SRC_PARSE_FILES))
-SRC_BUILTIN			:=	$(addprefix $(SRC_BUILTIN_DIR), $(SRC_BUILTIN_FILES))
-SRC_EXECUTE			:=	$(addprefix $(SRC_EXECUTE_DIR), $(SRC_EXECUTE_FILES))
+SRC_PARSE			:=	$(addprefix $(SRC_PARSE_DIR),	$(SRC_PARSE_FILES))
+SRC_BUILTIN			:=	$(addprefix $(SRC_BUILTIN_DIR),	$(SRC_BUILTIN_FILES))
+SRC_EXECUTE			:=	$(addprefix $(SRC_EXECUTE_DIR),	$(SRC_EXECUTE_FILES))
+SRC_LIST			:=	$(addprefix $(SRC_LIST_DIR),	$(SRC_LIST_FILES))
 
 OBJ_PARSE			:=	$(addprefix $(OBJ_PARSE_DIR),	$(OBJ_PARSE_FILES))
 OBJ_BUILTIN			:=	$(addprefix $(OBJ_BUILTIN_DIR),	$(OBJ_BUILTIN_FILES))
 OBJ_EXECUTE			:=	$(addprefix $(OBJ_EXECUTE_DIR),	$(OBJ_EXECUTE_FILES))
+OBJ_LIST			:=	$(addprefix $(OBJ_LIST_DIR),	$(OBJ_LIST_FILES))
 JSON				:=	$(addsuffix .json,				$(JSON_FILES))
 
 # SRC_FOLDER			:=	$(SRC_DIR)
-OBJ_FOLDER			:=	$(OBJ_DIR) \
-						$(OBJ_PARSE_DIR) \
-						$(OBJ_BUILTIN_DIR) \
-						$(OBJ_EXECUTE_DIR)
-OBJS				:=	$(OBJ_PARSE) \
-						$(OBJ_BUILTIN) \
-						$(OBJ_EXECUTE)
+OBJ_FOLDER			:=	$(OBJ_DIR)			\
+						$(OBJ_PARSE_DIR)	\
+						$(OBJ_BUILTIN_DIR)	\
+						$(OBJ_EXECUTE_DIR)	\
+						$(OBJ_LIST_DIR)
+OBJS				:=	$(OBJ_PARSE)		\
+						$(OBJ_BUILTIN)		\
+						$(OBJ_EXECUTE)		\
+						$(OBJ_LIST)
 PRINT				:=	$(PROJECT_NAME)
 
 ifdef		TEST
@@ -135,6 +149,11 @@ $(OBJ_EXECUTE_DIR)	:
 		mkdir -p $(OBJ_EXECUTE_DIR); \
 	fi
 
+$(OBJ_LIST_DIR)	:
+	@if [ ! -d $(OBJ_LIST_DIR) ]; then \
+		mkdir -p $(OBJ_LIST_DIR); \
+	fi
+
 $(NAME)	:	$(OBJS)
 	@make -s -C $(LIBFT_DIR) all
 	@$(CC) $(CFLAGS) $(LDFLAGS) $(DBFLAGS) -o $@ $^
@@ -148,6 +167,9 @@ $(OBJ_BUILTIN_DIR)%.o	:	$(SRC_BUILTIN_DIR)%.c
 	@$(CC) $(CFLAGS) $(DBFLAGS) $(CPPFLAGS) $(MJFLAGS) -c -o $@ $<
 
 $(OBJ_EXECUTE_DIR)%.o	:	$(SRC_EXECUTE_DIR)%.c
+	@$(CC) $(CFLAGS) $(DBFLAGS) $(CPPFLAGS) $(MJFLAGS) -c -o $@ $<
+
+$(OBJ_LIST_DIR)%.o	:	$(SRC_LIST_DIR)%.c
 	@$(CC) $(CFLAGS) $(DBFLAGS) $(CPPFLAGS) $(MJFLAGS) -c -o $@ $<
 
 .PHONY	:	test

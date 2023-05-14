@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 13:25:35 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/12 14:33:34 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/14 20:19:52 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "execute_process.h"
 #include <unistd.h>
 
-int	has_heredoc(t_cmd *cmd)
+int	has_heredoc(t_cmd_node *cmd)
 {
 	t_redir	*cur;
 
@@ -30,13 +30,13 @@ int	has_heredoc(t_cmd *cmd)
 
 static void	expand_env_in_str(char **str)
 {
-	t_env	*cur;
-	int		position;
+	t_env_node	*cur;
+	int			position;
 
 	position = ft_strcspn(*str, "$");
 	while ((*str)[position] != '\0')
 	{
-		cur = g_env;
+		cur = g_env.head;
 		while (cur != NULL)
 		{
 			if (ft_strnstr(&(*str)[position], cur->key, \
@@ -78,7 +78,7 @@ static void	get_heredoc(char *limiter, int pipe_fd[2])
 	exit (0);
 }
 
-void	execute_heredoc(t_cmd *cmd)
+void	execute_heredoc(t_cmd_node *cmd)
 {
 	t_redir	*cur;
 	int		pipe_fd[2];
@@ -98,7 +98,7 @@ void	execute_heredoc(t_cmd *cmd)
 			close(pipe_fd[WR]);
 			cur->fd = pipe_fd[RD];
 		}
-		g_env->status = wait_child_process(1, cur->pid);
+		g_env.status = wait_child_process(1, cur->pid);
 		if (cur->next == NULL)
 			break ;
 		cur = cur->next;

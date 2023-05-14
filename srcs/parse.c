@@ -6,12 +6,13 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 15:30:05 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/12 19:00:43 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/14 19:57:22 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parsing.h"
+#include "ft_list.h"
 
 static void	check_heredoc_limiter(t_token *token)
 {
@@ -25,7 +26,7 @@ static void	check_heredoc_limiter(t_token *token)
 
 static int	free_token_exit(t_token **token)
 {
-	ft_free_token(token);
+	token_clear(token);
 	return (FAIL);
 }
 
@@ -42,7 +43,10 @@ static int	split_by_quote(t_token *token)
 		{
 			split = split_quote(token->str);
 			if (split)
+			{
 				make_split_to_token(token, split);
+				ft_free_strings(&split);
+			}
 			else
 			{
 				ft_syntax_error("\'");
@@ -69,11 +73,11 @@ int	tokenize(t_token *token)
 	return (SUCCESS);
 }
 
-int	parse(t_cmd **cmd, char *rd_line)
+int	parse(t_cmd *cmd, char *rd_line)
 {
 	t_token	*token;
 
-	token = new_token(rd_line, T_CHUNK);
+	token = token_new(rd_line, T_CHUNK);
 	if (!tokenize(token))
 		return (free_token_exit(&token));
 	chunk_to_argv(&token);
@@ -84,8 +88,8 @@ int	parse(t_cmd **cmd, char *rd_line)
 	debug_print_tokens(token);
 	if (!token_into_cmd(cmd, token))
 		return (free_token_exit(&token));
-	treat_redir(*cmd);
-	debug_print_cmd(*cmd);
-	ft_free_token(&token);
+	treat_redir(cmd->head);
+	// debug_print_cmd(*cmd);
+	token_clear(&token);
 	return (SUCCESS);
 }

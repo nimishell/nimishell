@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:45:47 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/10 20:52:59 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/14 16:45:23 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,14 @@
 typedef struct termios		t_termios;
 typedef struct s_token		t_token;
 typedef struct s_cmd		t_cmd;
+typedef struct s_cmd_node	t_cmd_node;
 typedef struct s_env		t_env;
+typedef struct s_env_node	t_env_node;
 typedef struct s_process	t_process;
 typedef struct s_file		t_file;
 typedef struct s_redir		t_redir;
+
+t_env						g_env;
 
 struct s_token
 {
@@ -35,22 +39,37 @@ struct s_token
 
 struct s_cmd
 {
-	char	**argv;
-	int		fds[2];
-	pid_t	pid;
-	t_redir	*redir_in;
-	t_redir	*redir_out;
-	t_cmd	*next;
-	t_cmd	*prev;
+	int			size;
+	t_cmd_node	*head;
+	t_cmd_node	*tail;
+};
+
+struct s_cmd_node
+{
+	char		**argv;
+	int			fds[2];
+	pid_t		pid;
+	t_redir		*redir_in;
+	t_redir		*redir_out;
+	t_cmd_node	*next;
+	t_cmd_node	*prev;
 };
 
 struct s_env
 {
-	char	*key;
-	char	*value;
-	int		is_value;
-	int		status;
-	t_env	*next;
+	int			key_count;
+	int			value_count;
+	int			status;
+	t_env_node	*head;
+	t_env_node	*tail;
+};
+
+struct s_env_node
+{
+	char		*key;
+	char		*value;
+	int			is_value;
+	t_env_node	*next;
 };
 
 struct s_redir

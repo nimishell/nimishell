@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:56:15 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/12 16:15:27 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/14 19:31:11 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,19 +28,19 @@
 # include "structure.h"
 # include "debug.h" //DO NOT SUBMIT!!!
 
-t_env	*g_env;
-
 void	set_sig(int sig_int, int sig_quit);
 void	custom_handler(int signal);
 void	heredoc_handler(int signal);
 
-void	copy_env(char *env[]);
-char	*get_value(char *key);
+char	*split_key(char *envp);
+char	*split_value(char *envp);
+int		add_new_env(char *key, char *value);
+void	get_env_lst(char *env[]);
+char	*find_value(char *key);
 
 void	*ms_free(char *p1, char *p2, char *p3, char *p4);
-void	ft_free_char_arr(char **p);
-void	ft_free_token(t_token **token);
-void	ft_free_cmd(t_cmd **cmd);
-void	ft_free_redir(t_redir **redir);
+// void	ft_free_char_arr(char **p);
+// void	ft_free_token(t_token **token);
+// void	ft_free_cmd(t_cmd_node **cmd);
 
 #endif

@@ -6,19 +6,20 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 19:23:50 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/08 20:50:32 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/14 17:58:03 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "ft_list.h"
 #include "minishell.h"
 #include "parsing.h"
 
-t_cmd	*new_cmd(void)
+t_cmd_node	*new_cmd(void)
 {
-	t_cmd	*ret;
+	t_cmd_node	*ret;
 
-	ret = ft_calloc(1, sizeof(t_cmd));
+	ret = ft_calloc(1, sizeof(t_cmd_node));
 	if (!ret)
 		return (NULL);
 	ret->fds[INPUT] = STDIN_FILENO;
@@ -34,7 +35,7 @@ static char	**is_cd_follow_no_dir(t_token *token)
 	if (result == NULL)
 		return (NULL);
 	result[0] = ft_strdup(token->str);
-	result[1] = ft_strdup(get_value("HOME"));
+	result[1] = ft_strdup(find_value("HOME"));
 	return (result);
 }
 
@@ -75,14 +76,14 @@ static char	**make_array(t_token *token, int size)
 	return (result);
 }
 
-int	token_into_cmd(t_cmd **cmd, t_token *token)
+int	token_into_cmd(t_cmd *cmd, t_token *token)
 {
-	t_cmd	*tmp;
-	int		size;
+	t_cmd_node	*tmp;
+	int			size;
 
 	while (token)
 	{
-		tmp = new_cmd();
+		tmp = cmd_new();
 		if (!tmp)
 			return (FAIL);
 		size = get_cmd_size(token) + 1;

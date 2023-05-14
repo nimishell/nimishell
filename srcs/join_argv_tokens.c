@@ -6,12 +6,13 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 19:01:44 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/12 19:12:14 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/14 19:24:37 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parsing.h"
+#include "ft_list.h"
 
 void	join_argv_tokens(t_token **lst)
 {
@@ -28,9 +29,8 @@ void	join_argv_tokens(t_token **lst)
 			ret = ft_strjoin(cur->str, cur->next->str);
 			free(cur->str);
 			cur->str = ret;
-			remove_single_token(head, cur->next);
+			token_remove_if(head, cur->next);
 		}
-		else
-			cur = cur->next;
+		cur = cur->next;
 	}
 }

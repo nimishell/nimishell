@@ -6,12 +6,14 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 17:04:55 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/10 17:31:56 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/14 19:57:00 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parsing.h"
+#include "ft_list.h"
+#include "structure.h"
 
 static void	where_param(char *str, char *param, int *start, int *end)
 {
@@ -44,21 +46,23 @@ static char	**split_str(char *str, char *param)
 
 static void	add_arr_in_token(t_token *token, char **arr, char *param)
 {
-	t_token	*tmp;
+	t_token	*save_token;
+	t_token	*new;
 
-	tmp = token->next;
+	save_token = token->next;
 	token->next = NULL;
 	free(token->str);
 	token->str = ft_strdup(arr[0]);
 	if (param[0] == ' ')
-		token_add_back(&token, new_token(arr[1], T_SPACE));
+		new = token_new(arr[1], T_SPACE);
 	else if (param[0] == '|')
-		token_add_back(&token, new_token(arr[1], T_PIPE));
+		new = token_new(arr[1], T_PIPE);
 	else
-		token_add_back(&token, new_token(arr[1], T_REDIR));
-	token = token_add_back(&token, new_token(arr[2], T_CHUNK));
-	ft_free_char_arr(arr);
-	token->next = tmp;
+		new = token_new(arr[1], T_REDIR);
+	token_add_back(&token, new);
+	token_add_back(&token, new_token(arr[2], T_CHUNK));
+	token = token_last(token);
+	token->next = save_token;
 }
 
 void	split_by_parameter(t_token *token, char *param)
@@ -71,7 +75,10 @@ void	split_by_parameter(t_token *token, char *param)
 		{
 			arr = split_str(token->str, param);
 			if (arr)
+			{
 				add_arr_in_token(token, arr, param);
+				ft_free_strings(&arr);
+			}
 		}
 		token = token->next;
 	}

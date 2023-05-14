@@ -6,27 +6,22 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 17:34:11 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/12 14:20:00 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/14 18:46:43 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "parsing.h"
 #include "libft.h"
-#include "structure.h"
+#include "ft_list.h"
 
-static int	is_redir_in(char *argv)
+static int	is_redir(char *argv)
 {
 	if (!ft_strncmp(argv, "<", 2))
 		return (T_IO_L);
 	else if (!ft_strncmp(argv, "<<", 3))
 		return (T_IO_LL);
-	return (0);
-}
-
-static int	is_redir_out(char *argv)
-{
-	if (!ft_strncmp(argv, ">", 2))
+	else if (!ft_strncmp(argv, ">", 2))
 		return (T_IO_R);
 	else if (!ft_strncmp(argv, ">>", 3))
 		return (T_IO_RR);
@@ -35,20 +30,19 @@ static int	is_redir_out(char *argv)
 
 static t_redir	*init_redir_node(char **argv, int index)
 {
-	t_redir	*new_node;
+	t_redir	*new;
 
-	new_node = ft_calloc(1, sizeof(t_redir));
-	new_node->type |= (is_redir_in(argv[index]) \
-						| is_redir_out(argv[index]));
-	new_node->fd = -1;
-	if (new_node->type == T_IO_LL)
-		new_node->file = ft_strjoin(argv[index + 1], "\n");
+	new = redir_new();
+	new->type = is_redir(argv[index]);
+	new->fd = -1;
+	if (new->type == T_IO_LL)
+		new->file = ft_strjoin(argv[index + 1], "\n");
 	else
-		new_node->file = ft_strdup(argv[index + 1]);
-	return (new_node);
+		new->file = ft_strdup(argv[index + 1]);
+	return (new);
 }
 
-static void	shift_array(t_cmd *cmd, int tmp_idx)
+static void	shift_array(t_cmd_node *cmd, int tmp_idx)
 {
 	ft_free_str(&cmd->argv[tmp_idx++]);
 	ft_free_str(&cmd->argv[tmp_idx++]);
@@ -61,31 +55,30 @@ static void	shift_array(t_cmd *cmd, int tmp_idx)
 	cmd->argv[tmp_idx] = NULL;
 }
 
-void	treat_redir(t_cmd *cmd)
+void	treat_redir(t_cmd_node *node)
 {
 	int		idx;
+	int		redir;
 	t_redir	*new;
 
-	while (cmd)
+	while (node)
 	{
 		idx = 0;
-		while (cmd->argv[idx])
+		while (node->argv[idx])
 		{
-			if (is_redir_in(cmd->argv[idx]))
+			redir = is_redir(node->argv[idx]);
+			if (redir)
 			{
-				new = init_redir_node(cmd->argv, idx);
-				redir_add_back(&cmd->redir_in, new);
-				shift_array(cmd, idx);
-			}
-			else if (is_redir_out(cmd->argv[idx]))
-			{
-				new = init_redir_node(cmd->argv, idx);
-				redir_add_back(&cmd->redir_out, new);
-				shift_array(cmd, idx);
+				new = init_redir_node(node->argv, idx);
+				if (redir == T_IO_L || redir == T_IO_LL)
+					redir_add_back(&node->redir_in, new);
+				else
+					redir_add_back(&node->redir_out, new);
+				shift_array(node, idx);
 			}
 			else
 				idx++;
 		}
-		cmd = cmd->next;
+		node = node->next;
 	}
 }
