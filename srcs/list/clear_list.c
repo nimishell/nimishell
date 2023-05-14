@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clear_list.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 15:03:45 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/14 20:29:39 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/14 21:14:49 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	cmd_clear(t_cmd *cmd)
 	while (remove != NULL)
 	{
 		cmd->head = remove->next;
-		ft_free_cmd(remove);
+		ft_free_cmd(cmd, remove);
 		remove = cmd->head;
 	}
 	cmd->tail = NULL;

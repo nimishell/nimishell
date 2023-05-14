@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:45:47 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/14 16:45:23 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/14 20:59:17 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ typedef struct s_cmd		t_cmd;
 typedef struct s_cmd_node	t_cmd_node;
 typedef struct s_env		t_env;
 typedef struct s_env_node	t_env_node;
-typedef struct s_process	t_process;
-typedef struct s_file		t_file;
 typedef struct s_redir		t_redir;
 
 t_env						g_env;

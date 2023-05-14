@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 16:00:31 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/12 17:38:42 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/14 20:37:37 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	check_syntax_pipe(t_token *token)
 		{
 			if (ft_strlen(token->str) != 1 || !token->next)
 			{
-				ft_syntax_error(ft_substr(token->str, 0, 2));
+				ft_syntax_error(ft_strdup("|"));
 				return (FAIL);
 			}
 		}
@@ -32,21 +32,17 @@ static int	check_syntax_pipe(t_token *token)
 
 static int	check_syntax_redir(t_token *token)
 {
-	if (token->str[0] == '>')
-	{
+	if (ft_strcspn(token->str, ">>"))
+		token->type = T_IO_RR;
+	else if (ft_strcspn(token->str, "<<"))
+		token->type = T_IO_LL;
+	else if (ft_strcspn(token->str, ">"))
 		token->type = T_IO_R;
-		if (token->str[1] == '>')
-			token->type = T_IO_RR;
-	}
-	else if (token->str[0] == '<')
-	{
+	else if (ft_strcspn(token->str, "<"))
 		token->type = T_IO_L;
-		if (token->str[1] == '<')
-			token->type = T_IO_LL;
-	}
 	if (!token->next)
 	{
-		ft_syntax_error("newline");
+		ft_syntax_error(ft_strdup("newline"));
 		return (FAIL);
 	}
 	if (token->next->type != T_ARGV)

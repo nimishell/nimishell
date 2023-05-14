@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:33:23 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/14 20:25:57 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/14 21:25:22 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ static void	main_init(int ac, char **av, t_cmd *cmd)
 		head = head->next;
 	}
 	memset(cmd, 0, sizeof(t_cmd));
-	printf("cmd %p, %p\n", cmd->head, cmd->tail);
 }
 
 static void	run_prompt(t_cmd *cmd)

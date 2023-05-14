@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 14:02:45 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/14 17:41:46 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/14 21:49:36 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int	ft_cd(char **argv)
 	char	*pwd_key;
 
 	getcwd(old_dir, MAXPATHLEN);
+	printf("%s\n", old_dir);
 	if (argv[1] == NULL || !ft_strncmp(argv[1], "~", 2))
 		dir = ft_strdup(find_value("HOME"));
 	else

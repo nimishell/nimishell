@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 01:54:29 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/14 17:47:57 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/14 21:50:23 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	change_value(t_env_node *node, char *new_value)
 	g_env.value_count++;
 }
 
-int	export_variable(char **key, char **value)
+int	export_variable(char **key, char *value)
 {
 	t_env_node	*cur;
 
@@ -62,13 +62,10 @@ int	export_variable(char **key, char **value)
 		cur = cur->next;
 	}
 	if (cur != NULL)
-		change_value(cur, *value);
+		change_value(cur, value);
 	else
-		if (add_new_env(*key, *value) == 0)
+		if (add_new_env(*key, value) == 0)
 			return (0);
-	ft_free_str(key);
-	if (*value != NULL)
-		ft_free_str(value);
 	return (1);
 }
 
@@ -84,6 +81,7 @@ int	check_valid_identifier(char *argv)
 			ft_error_message("export", argv, "not a valid identifier");
 			return (0);
 		}
+		index++;
 	}
 	return (1);
 }
@@ -103,7 +101,10 @@ int	ft_export(char **argv)
 			return (1);
 		key = split_key(argv[index]);
 		value = split_value(argv[index]);
-		export_variable(&key, &value);
+		export_variable(&key, value);
+		ft_free_str(&key);
+		if (value != NULL)
+			ft_free_str(&value);
 		index++;
 	}
 	return (0);

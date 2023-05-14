@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 15:08:22 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/14 18:53:24 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/14 21:54:57 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,10 @@ static void	child_process(t_cmd_node *cmd, int pipe_fd[2])
 	open_outfile(cmd, pipe_fd);
 	close_unused_fd(cmd, pipe_fd);
 	if (cmd->argv[0] == NULL)
+	{
+		close(cmd->fds[INPUT]);
 		exit(0);
+	}
 	else if (is_builtin(cmd->argv[0]) == TRUE)
 	{
 		result = execute_builtin(cmd->argv);

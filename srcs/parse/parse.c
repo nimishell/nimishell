@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 15:30:05 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/14 19:57:22 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/14 21:08:50 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static int	split_by_quote(t_token *token)
 			}
 			else
 			{
-				ft_syntax_error("\'");
+				ft_syntax_error(ft_strdup("\'"));
 				return (FAIL);
 			}
 		}

@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 19:23:50 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/14 17:58:03 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/14 21:36:29 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_cmd_node	*new_cmd(void)
 	return (ret);
 }
 
-static char	**is_cd_follow_no_dir(t_token *token)
+static char	**is_cd_follow_default(t_token *token)
 {
 	char	**result;
 
@@ -88,8 +88,8 @@ int	token_into_cmd(t_cmd *cmd, t_token *token)
 			return (FAIL);
 		size = get_cmd_size(token) + 1;
 		if (ft_strncmp(token->str, "cd", 3) == 0 \
-			&& token->next == NULL)
-			tmp->argv = is_cd_follow_no_dir(token);
+			&& (token->next == NULL || ft_strncmp(token->next->str, "~", 2) == 0))
+			tmp->argv = is_cd_follow_default(token);
 		else
 			tmp->argv = make_array(token, size);
 		if (!tmp->argv)

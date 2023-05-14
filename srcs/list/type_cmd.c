@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   type_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 21:39:58 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/14 20:21:02 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/14 21:13:47 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	cmd_add_back(t_cmd *cmd, t_cmd_node *new)
 	cmd->size++;
 }
 
-void	ft_free_cmd(t_cmd_node *node)
+void	ft_free_cmd(t_cmd *cmd, t_cmd_node *node)
 {
 	ft_free_strings(&node->argv);
 	if (node->redir_in != NULL)
@@ -47,7 +47,7 @@ void	ft_free_cmd(t_cmd_node *node)
 	if (node->redir_out != NULL)
 		redir_clear(&node->redir_out);
 	free(node);
-	g_env.key_count--;
+	cmd->size--;
 }
 
 void	cmd_remove_back(t_cmd *cmd)

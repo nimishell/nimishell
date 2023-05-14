@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 19:53:08 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/14 19:36:16 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/14 21:07:51 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,11 @@ static char	*join_split(char **split)
 static char	*translate_dollar(char **str)
 {
 	t_env_node	*cur;
-	// char		*tmp;
 
 	if (*str[0] == '?' || *str[0] == '$')
 	{
 		free(*str);
 		*str = ft_itoa(g_env.status);
-		// *str = ft_strdup(tmp);
-		// free(tmp);
 		return (*str);
 	}
 	cur = g_env.head;

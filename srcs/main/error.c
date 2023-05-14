@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 14:37:37 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/14 16:38:54 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/14 21:03:37 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ void	ft_syntax_error(char *argv)
 		ft_putchar_fd('`', STDERR_FILENO);
 		ft_putstr_fd(argv, STDERR_FILENO);
 		ft_putchar_fd('\'', STDERR_FILENO);
+		free(argv);
 	}
 	ft_putstr_fd("\n", STDERR_FILENO);
 	g_env.status = 258;

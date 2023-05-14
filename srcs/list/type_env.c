@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   type_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 22:21:29 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/14 20:10:05 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/14 21:29:01 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "ft_list.h"
+#include <stdio.h>
 
 t_env_node	*env_new(void)
 {
@@ -67,7 +68,7 @@ void	env_remove_if(t_env_node *target)
 	t_env_node	*remove;
 
 	cur = g_env.head;
-	if (target == NULL || cur != NULL)
+	if (target == NULL || cur == NULL)
 		return ;
 	if (cur == target)
 	{
