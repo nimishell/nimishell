@@ -6,7 +6,7 @@
 #    By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/12 16:06:02 by yeongo            #+#    #+#              #
-#    Updated: 2023/05/15 14:44:39 by wbae             ###   ########.fr        #
+#    Updated: 2023/05/15 21:38:34 by wbae             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,6 @@ MJFLAGS				 =	-MJ $@.part.json
 RM					:=	rm -rf
 
 SRC_MAIN_FILES		:=	$(addsuffix .c,				\
-							debug					\
 							envp					\
 							error					\
 							free					\

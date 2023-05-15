@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 15:30:05 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/15 16:40:09 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/15 21:53:31 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,7 @@ static int	split_by_quote(t_token *token)
 
 	while (token)
 	{
-		if (token->str[0] == '\0')
-			break ;
-		if (token->type == T_CHUNK && \
+		while (token->type == T_CHUNK && \
 			(ft_strchr(token->str, '\'') || ft_strchr(token->str, '\"')))
 		{
 			split = split_quote(token->str);
