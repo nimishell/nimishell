@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 17:34:11 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/14 18:46:43 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/15 15:36:51 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,7 @@ static t_redir	*init_redir_node(char **argv, int index)
 	new = redir_new();
 	new->type = is_redir(argv[index]);
 	new->fd = -1;
-	if (new->type == T_IO_LL)
-		new->file = ft_strjoin(argv[index + 1], "\n");
-	else
-		new->file = ft_strdup(argv[index + 1]);
+	new->file = ft_strdup(argv[index + 1]);
 	return (new);
 }
 

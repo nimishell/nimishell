@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 17:04:55 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/14 19:57:00 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/15 14:05:32 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ static void	add_arr_in_token(t_token *token, char **arr, char *param)
 {
 	t_token	*save_token;
 	t_token	*new;
+	t_token	*next;
 
 	save_token = token->next;
 	token->next = NULL;
@@ -59,8 +60,9 @@ static void	add_arr_in_token(t_token *token, char **arr, char *param)
 		new = token_new(arr[1], T_PIPE);
 	else
 		new = token_new(arr[1], T_REDIR);
+	next = token_new(arr[2], T_CHUNK);
 	token_add_back(&token, new);
-	token_add_back(&token, new_token(arr[2], T_CHUNK));
+	token_add_back(&token, next);
 	token = token_last(token);
 	token->next = save_token;
 }

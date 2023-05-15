@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 15:30:05 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/14 21:08:50 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/15 15:48:31 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,21 @@
 #include "parsing.h"
 #include "ft_list.h"
 
-static void	check_heredoc_limiter(t_token *token)
+static int	check_heredoc_limiter(t_token *token)
 {
 	while (token)
 	{
 		if (token->type == T_CHUNK)
-			treat_heredoc(token, ft_strdup(token->str));
+		{
+			if (!treat_heredoc(token, ft_strdup(token->str)))
+			{
+				ft_syntax_error(ft_strdup("\'"));
+				return (FAIL);
+			}
+		}
 		token = token->next;
 	}
-}
-
-static int	free_token_exit(t_token **token)
-{
-	token_clear(token);
-	return (FAIL);
+	return (SUCCESS);
 }
 
 static int	split_by_quote(t_token *token)
@@ -58,10 +59,15 @@ static int	split_by_quote(t_token *token)
 	return (SUCCESS);
 }
 
+static int	free_token_exit(t_token **token)
+{
+	token_clear(token);
+	return (FAIL);
+}
+
 int	tokenize(t_token *token)
 {
-	check_heredoc_limiter(token);
-	if (!split_by_quote(token))
+	if (!check_heredoc_limiter(token) || !split_by_quote(token))
 		return (FAIL);
 	treat_dollar(token);
 	split_by_parameter(token, " ");
@@ -86,10 +92,10 @@ int	parse(t_cmd *cmd, char *rd_line)
 	if (!check_syntax(token))
 		return (free_token_exit(&token));
 	debug_print_tokens(token);
-	if (!token_into_cmd(cmd, token))
+	if (!token_to_cmd(cmd, token))
 		return (free_token_exit(&token));
 	treat_redir(cmd->head);
-	// debug_print_cmd(*cmd);
+	debug_print_cmd(cmd);
 	token_clear(&token);
 	return (SUCCESS);
 }

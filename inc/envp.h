@@ -1,25 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   terminate.c                                        :+:      :+:    :+:   */
+/*   envp.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/22 20:35:53 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/15 14:51:27 by wbae             ###   ########.fr       */
+/*   Created: 2023/05/15 14:49:14 by wbae              #+#    #+#             */
+/*   Updated: 2023/05/15 14:49:37 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef ENVP_H
+# define ENVP_H
 
-void	print_terminate_code(int terminate_code)
-{
-	if (terminate_code == SIGINT)
-		ft_putstr_fd("^C", STDERR_FILENO);
-	else if (terminate_code == SIGQUIT)
-	{
-		ft_putstr_fd("^\\Quit: ", STDERR_FILENO);
-		ft_putnbr_fd(terminate_code, STDERR_FILENO);
-	}
-	ft_putchar_fd('\n', STDERR_FILENO);
-}
+char	*split_key(char *envp);
+char	*split_value(char *envp);
+int		add_new_env(char *key, char *value);
+void	get_env_lst(char **env);
+char	*find_value(char *key);
+
+#endif

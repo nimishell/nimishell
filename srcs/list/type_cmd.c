@@ -6,13 +6,12 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 21:39:58 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/14 21:13:47 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/15 15:09:32 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "ft_list.h"
-#include <stdio.h>
 
 t_cmd_node	*cmd_new(void)
 {

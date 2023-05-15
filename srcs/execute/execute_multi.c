@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 15:08:22 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/14 21:54:57 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/15 15:07:20 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 #include "minishell.h"
 #include "open_file.h"
 #include "terminate.h"
-#include <stdio.h>
 
 int	is_builtin(char *command)
 {

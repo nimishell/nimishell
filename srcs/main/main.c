@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:33:23 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/14 21:25:22 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/15 15:12:15 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 #include "builtin.h"
 #include "parsing.h"
 #include "execute_process.h"
-#include <stdio.h>
-#include <string.h>
-#include <unistd.h>
 
 extern char	**environ;
 

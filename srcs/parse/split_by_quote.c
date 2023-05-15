@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 15:56:15 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/14 19:57:18 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/15 14:05:19 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ void	make_split_to_token(t_token *token, char **arr)
 	token->next = NULL;
 	free(token->str);
 	token->str = ft_strdup(arr[0]);
-	token_add_back(&token, new_token(arr[1], T_ARGV));
-	token_add_back(&token, new_token(arr[2], T_CHUNK));
+	token_add_back(&token, token_new(arr[1], T_ARGV));
+	token_add_back(&token, token_new(arr[2], T_CHUNK));
 	token = token_last(token);
 	token->next = save_token;
 }

@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 20:23:57 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/14 19:13:19 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/15 15:29:53 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,10 @@ static int	check_quote_in_limiter(t_token *token, char *s, int i)
 	while (s[i + lim_len] && s[i + lim_len] != s[i])
 		lim_len++;
 	if (!s[i + lim_len])
-		ft_putstr_fd("minishell: quotes error\n", STDERR_FILENO);
+		return (0);
 	str = ft_substr(s, i + 1, lim_len - 1);
 	if (str[0])
-		token_add_back(&token, new_token(str, T_ARGV));
+		token_add_back(&token, token_new(str, T_ARGV));
 	free(str);
 	return (i + lim_len + 1);
 }
@@ -74,7 +74,7 @@ static int	check_heredoc_arg( t_token *token, char *s, int i)
 				&& s[i + lim_len] != '\'' && s[i + lim_len] != '\"')
 				lim_len++;
 			str = ft_substr(s, i, lim_len);
-			token_add_back(&token, new_token(str, T_ARGV));
+			token_add_back(&token, token_new(str, T_ARGV));
 			i += lim_len;
 			free(str);
 		}
@@ -82,7 +82,7 @@ static int	check_heredoc_arg( t_token *token, char *s, int i)
 	return (i);
 }
 
-void	treat_heredoc(t_token *token, char *s)
+int	treat_heredoc(t_token *token, char *s)
 {
 	int		i;
 	char	*str;
@@ -91,7 +91,7 @@ void	treat_heredoc(t_token *token, char *s)
 	if (i < 0 || !s[i])
 	{
 		free(s);
-		return ;
+		return (SUCCESS);
 	}
 	i += 2;
 	while (s[i] == ' ')
@@ -99,8 +99,14 @@ void	treat_heredoc(t_token *token, char *s)
 	free(token->str);
 	token->str = ft_substr(s, 0, i);
 	i = check_heredoc_arg(token, s, i);
+	if (!i)
+	{
+		ft_free_str(&s);
+		return (FAIL);
+	}
 	str = ft_substr(s, i, ft_strlen(s) - i);
-	token_add_back(&token, new_token(str, T_CHUNK));
+	token_add_back(&token, token_new(str, T_CHUNK));
 	ft_free_str(&str);
 	ft_free_str(&s);
+	return (SUCCESS);
 }

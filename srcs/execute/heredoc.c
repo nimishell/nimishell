@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 13:25:35 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/14 20:39:55 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/15 15:39:25 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,22 +60,18 @@ static void	get_heredoc(char *limiter, int pipe_fd[2])
 	close(pipe_fd[RD]);
 	limiter_size = ft_strlen(limiter);
 	input_str = readline("> ");
-	if (input_str != NULL)
-		ft_strapp_back(&input_str, "\n");
 	while (input_str != NULL && ft_strncmp(input_str, limiter, \
 		limiter_size + 1) != 0)
 	{
 		expand_env_in_str(&input_str);
-		ft_putstr_fd(input_str, pipe_fd[WR]);
+		ft_putendl_fd(input_str, pipe_fd[WR]);
 		free(input_str);
 		input_str = readline("> ");
-		if (input_str != NULL)
-			ft_strapp_back(&input_str, "\n");
 	}
 	if (input_str != NULL)
 		free(input_str);
 	close(pipe_fd[WR]);
-	exit (0);
+	exit(0);
 }
 
 void	execute_heredoc(t_cmd_node *cmd)

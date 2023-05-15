@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 19:23:50 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/14 21:36:29 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/15 14:43:28 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,6 @@
 #include "ft_list.h"
 #include "minishell.h"
 #include "parsing.h"
-
-t_cmd_node	*new_cmd(void)
-{
-	t_cmd_node	*ret;
-
-	ret = ft_calloc(1, sizeof(t_cmd_node));
-	if (!ret)
-		return (NULL);
-	ret->fds[INPUT] = STDIN_FILENO;
-	ret->fds[OUTPUT] = STDOUT_FILENO;
-	return (ret);
-}
 
 static char	**is_cd_follow_default(t_token *token)
 {
@@ -76,7 +64,7 @@ static char	**make_array(t_token *token, int size)
 	return (result);
 }
 
-int	token_into_cmd(t_cmd *cmd, t_token *token)
+int	token_to_cmd(t_cmd *cmd, t_token *token)
 {
 	t_cmd_node	*tmp;
 	int			size;
@@ -88,7 +76,7 @@ int	token_into_cmd(t_cmd *cmd, t_token *token)
 			return (FAIL);
 		size = get_cmd_size(token) + 1;
 		if (ft_strncmp(token->str, "cd", 3) == 0 \
-			&& (token->next == NULL || ft_strncmp(token->next->str, "~", 2) == 0))
+			&& (token->next == NULL || !ft_strncmp(token->next->str, "~", 2)))
 			tmp->argv = is_cd_follow_default(token);
 		else
 			tmp->argv = make_array(token, size);

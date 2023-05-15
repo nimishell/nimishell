@@ -6,7 +6,7 @@
 #    By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/12 16:06:02 by yeongo            #+#    #+#              #
-#    Updated: 2023/05/14 22:11:28 by wbae             ###   ########.fr        #
+#    Updated: 2023/05/15 14:44:39 by wbae             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,13 +56,12 @@ SRC_MAIN_FILES		:=	$(addsuffix .c,				\
 						)
 SRC_PARSE_FILES		:=	$(addsuffix .c,				\
 							chunk_control			\
-							cmd						\
 							join_argv_tokens		\
+							make_cmd				\
 							parse					\
 							split_by_parameter		\
 							split_by_quote			\
 							syntax_check			\
-							tokenize_utils			\
 							treat_dollar			\
 							treat_heredoc			\
 							treat_redir				\

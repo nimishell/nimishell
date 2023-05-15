@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 19:53:08 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/14 21:07:51 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/15 16:02:09 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ static char	*translate_dollar(char **str)
 	{
 		if (!ft_strncmp(*str, cur->key, ft_strlen(*str) + 1))
 		{
+			if (cur->is_value == 0)
+				break ;
 			free(*str);
 			*str = ft_strdup(cur->value);
 			return (*str);

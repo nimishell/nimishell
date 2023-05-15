@@ -15,24 +15,26 @@ void	debug_print_tokens(t_token *token)
 	printf(" ]\n\n");
 }
 
-void	debug_print_cmd(t_cmd_node *cmd)
+void	debug_print_cmd(t_cmd *cmd)
 {
-	t_redir	*in;
-	t_redir	*out;
+	t_cmd_node	*cur;
+	t_redir		*in;
+	t_redir		*out;
 	int cnt = 0;
 	int idx;
 
-	while (cmd)
+	cur = cmd->head;
+	while (cur)
 	{
 		printf("--------cmd[%d]---------\n", cnt++);
 		idx = 0;
-		while (cmd->argv[idx])
+		while (cur->argv[idx])
 		{
-			printf("%s\n", cmd->argv[idx]);
+			printf("%s\n", cur->argv[idx]);
 			idx++;
 		}
-		in = cmd->redir_in;
-		out = cmd->redir_out;
+		in = cur->redir_in;
+		out = cur->redir_out;
 		while (in || out)
 		{
 			if (in)
@@ -46,7 +48,7 @@ void	debug_print_cmd(t_cmd_node *cmd)
 				out = out->next;
 			}
 		}
-		cmd = cmd->next;
+		cur = cur->next;
 	}
 	printf("\n\n======================output=======================\n");
 }
