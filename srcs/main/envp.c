@@ -6,13 +6,12 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 20:33:04 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/14 20:28:07 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/15 16:35:08 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "ft_list.h"
-#include "minishell.h"
 
 char	*split_key(char *envp)
 {

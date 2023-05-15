@@ -6,12 +6,13 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 14:35:41 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/15 15:05:23 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/15 16:51:32 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "structure.h"
+#include "ft_free.h"
 
 t_token	*token_new(char *str, int type)
 {
@@ -50,13 +51,6 @@ void	token_add_back(t_token **token, t_token *new)
 	}
 	tail = token_last(*token);
 	tail->next = new;
-}
-
-void	ft_free_token(t_token *remove)
-{
-	if (remove->str != NULL)
-		ft_free_str(&remove->str);
-	free(remove);
 }
 
 void	token_remove_if(t_token **token, t_token *target)

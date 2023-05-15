@@ -6,13 +6,14 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 01:54:29 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/14 21:50:23 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/15 16:30:35 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "ft_list.h"
-#include "minishell.h"
+#include "envp.h"
+#include "error.h"
 
 static int	show_export(void)
 {

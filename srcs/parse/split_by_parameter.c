@@ -6,14 +6,12 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 17:04:55 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/15 14:05:32 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/15 16:40:30 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include "parsing.h"
+#include "libft.h"
 #include "ft_list.h"
-#include "structure.h"
 
 static void	where_param(char *str, char *param, int *start, int *end)
 {

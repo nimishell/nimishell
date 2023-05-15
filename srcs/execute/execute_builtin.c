@@ -6,11 +6,12 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 19:42:07 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/14 13:02:27 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/15 16:31:13 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
+#include "structure.h"
 #include "builtin.h"
 
 int	execute_builtin(char **command)

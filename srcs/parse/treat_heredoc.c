@@ -6,12 +6,11 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 20:23:57 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/15 15:29:53 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/15 16:42:13 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include "parsing.h"
+#include "libft.h"
 #include "ft_list.h"
 
 static int	is_valid_metacha(char c)

@@ -6,13 +6,14 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 15:30:05 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/15 15:48:31 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/15 16:40:09 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include "parsing.h"
+#include "libft.h"
 #include "ft_list.h"
+#include "parsing.h"
+#include "error.h"
 
 static int	check_heredoc_limiter(t_token *token)
 {
@@ -91,11 +92,9 @@ int	parse(t_cmd *cmd, char *rd_line)
 	remove_empty_space(&token);
 	if (!check_syntax(token))
 		return (free_token_exit(&token));
-	debug_print_tokens(token);
 	if (!token_to_cmd(cmd, token))
 		return (free_token_exit(&token));
 	treat_redir(cmd->head);
-	debug_print_cmd(cmd);
 	token_clear(&token);
 	return (SUCCESS);
 }

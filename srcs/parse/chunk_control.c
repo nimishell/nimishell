@@ -6,13 +6,11 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 17:25:17 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/14 19:26:48 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/15 16:38:42 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_list.h"
-#include "minishell.h"
-#include "parsing.h"
 
 void	remove_empty_space(t_token **lst)
 {

@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 21:39:58 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/15 15:09:32 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/15 16:51:20 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,17 +36,6 @@ void	cmd_add_back(t_cmd *cmd, t_cmd_node *new)
 		cmd->tail->next = new;
 	cmd->tail = new;
 	cmd->size++;
-}
-
-void	ft_free_cmd(t_cmd *cmd, t_cmd_node *node)
-{
-	ft_free_strings(&node->argv);
-	if (node->redir_in != NULL)
-		redir_clear(&node->redir_in);
-	if (node->redir_out != NULL)
-		redir_clear(&node->redir_out);
-	free(node);
-	cmd->size--;
 }
 
 void	cmd_remove_back(t_cmd *cmd)

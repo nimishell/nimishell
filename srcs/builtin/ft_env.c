@@ -6,11 +6,13 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 14:06:00 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/14 12:58:18 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/15 16:29:47 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
+#include "structure.h"
+#include "error.h"
 
 int	ft_env(char **argv)
 {

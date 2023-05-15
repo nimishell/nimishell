@@ -6,11 +6,13 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 15:03:45 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/15 15:05:27 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/15 16:52:08 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_list.h"
+#include "ft_free.h"
+#include <stddef.h>
 
 void	cmd_clear(t_cmd *cmd)
 {

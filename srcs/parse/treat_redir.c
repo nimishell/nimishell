@@ -6,12 +6,10 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 17:34:11 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/15 15:36:51 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/15 16:42:30 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include "parsing.h"
 #include "libft.h"
 #include "ft_list.h"
 

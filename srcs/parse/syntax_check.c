@@ -6,12 +6,13 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 16:00:31 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/14 20:37:37 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/15 16:41:39 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include "parsing.h"
+#include "libft.h"
+#include "structure.h"
+#include "error.h"
 
 static int	check_syntax_pipe(t_token *token)
 {

@@ -6,14 +6,23 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:33:23 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/15 15:12:15 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/15 16:37:31 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "ft_list.h"
+#include "ft_signal.h"
+#include "envp.h"
 #include "builtin.h"
 #include "parsing.h"
 #include "execute_process.h"
+#include "error.h"
+#include <unistd.h>
+#include <stdio.h>
+#include <readline/readline.h>
+#include <readline/history.h>
+#include <termios.h>
 
 extern char	**environ;
 

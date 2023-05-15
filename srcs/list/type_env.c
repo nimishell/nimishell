@@ -6,12 +6,13 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 22:21:29 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/15 15:09:38 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/15 16:51:55 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "ft_list.h"
+#include "structure.h"
+#include "ft_free.h"
 
 t_env_node	*env_new(void)
 {
@@ -35,18 +36,6 @@ void	env_add_back(t_env_node *new)
 	g_env.key_count++;
 	if (new->value != NULL)
 		g_env.value_count++;
-}
-
-void	ft_free_env(t_env_node *node)
-{
-	free(node->key);
-	if (node->value != NULL)
-	{
-		free(node->value);
-		g_env.value_count--;
-	}
-	free(node);
-	g_env.key_count--;
 }
 
 t_env_node	*env_last(void)

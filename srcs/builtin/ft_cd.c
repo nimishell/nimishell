@@ -6,14 +6,15 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 14:02:45 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/15 15:54:15 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/15 16:53:55 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "libft.h"
-#include "error.h"
+#include "envp.h"
 #include "builtin.h"
+#include "ft_free.h"
+#include "error.h"
 #include <sys/param.h>
 
 int	ft_cd(char **argv)
@@ -40,6 +41,6 @@ int	ft_cd(char **argv)
 	pwd_key = ft_strdup("PWD");
 	export_variable(&old_pwd_key, old_dir);
 	export_variable(&pwd_key, new_dir);
-	ms_free(old_pwd_key, pwd_key, dir, NULL);
+	ft_free_ptrs(old_pwd_key, pwd_key, dir);
 	return (0);
 }

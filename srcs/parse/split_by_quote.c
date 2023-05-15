@@ -6,13 +6,14 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 15:56:15 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/15 14:05:19 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/15 16:54:12 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include "parsing.h"
+#include "libft.h"
 #include "ft_list.h"
+#include "envp.h"
+#include "ft_free.h"
 
 void	make_split_to_token(t_token *token, char **arr)
 {
@@ -72,7 +73,7 @@ static char	*translate_dollar_in_quote(char *str)
 		arr[2] = ft_substr(str, next_idx, ft_strlen(str) - next_idx);
 		free(str);
 		str = ft_multi_strjoin(arr[0], arr[1], arr[2]);
-		ms_free(arr[0], arr[1], arr[2], NULL);
+		ft_free_ptrs(arr[0], arr[1], arr[2]);
 	}
 	return (str);
 }

@@ -6,12 +6,13 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 14:37:37 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/14 21:03:37 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/15 16:35:47 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include <unistd.h>
+#include "libft.h"
+#include "structure.h"
+#include <string.h>
 #include <sys/errno.h>
 
 void	ft_perror(char *cmd, char *arg)

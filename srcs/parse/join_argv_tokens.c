@@ -6,12 +6,11 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 19:01:44 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/14 19:24:37 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/15 16:38:56 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include "parsing.h"
+#include "libft.h"
 #include "ft_list.h"
 
 void	join_argv_tokens(t_token **lst)

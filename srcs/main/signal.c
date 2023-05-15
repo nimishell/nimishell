@@ -6,11 +6,15 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 14:36:18 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/15 14:14:40 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/15 16:38:30 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
+#include "structure.h"
+#include <stdio.h>
+#include <readline/readline.h>
+#include <signal.h>
 
 void	custom_handler(int signal)
 {

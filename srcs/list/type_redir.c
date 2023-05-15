@@ -6,14 +6,12 @@
 /*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/13 22:41:20 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/14 15:45:08 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/15 16:51:20 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "minishell.h"
 #include "structure.h"
-#include <unistd.h>
 
 t_redir	*redir_new(void)
 {
@@ -50,12 +48,4 @@ void	redir_add_back(t_redir **redir, t_redir *new)
 	}
 	tail = redir_last(*redir);
 	tail->next = new;
-}
-
-void	ft_free_redir(t_redir *remove)
-{
-	if (remove->fd != -1)
-		close(remove->fd);
-	ft_free_str(&remove->file);
-	free(remove);
 }
