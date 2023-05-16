@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 21:42:06 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/13 21:30:40 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/16 22:58:28 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,13 @@ void	open_infile(t_cmd_node *cmd)
 	remove_redir(&cmd->redir_in);
 }
 
-void	open_outfile(t_cmd_node *cmd, int pipe_fd[2])
+void	open_outfile(t_cmd_node *node, int pipe_fd[2])
 {
 	t_redir	*cur;
 
-	if (cmd->next != NULL)
-		cmd->fds[OUTPUT] = pipe_fd[WR];
-	cur = cmd->redir_out;
+	if (pipe_fd != NULL && node->next != NULL)
+		node->fds[OUTPUT] = pipe_fd[WR];
+	cur = node->redir_out;
 	if (cur == NULL)
 		return ;
 	while (cur != NULL)
@@ -75,8 +75,8 @@ void	open_outfile(t_cmd_node *cmd, int pipe_fd[2])
 			break ;
 		cur = cur->next;
 	}
-	cmd->fds[OUTPUT] = cur->fd;
-	remove_redir(&cmd->redir_out);
+	node->fds[OUTPUT] = cur->fd;
+	remove_redir(&node->redir_out);
 }
 
 void	close_unused_fd(t_cmd_node *cmd, int pipe_fd[2])
