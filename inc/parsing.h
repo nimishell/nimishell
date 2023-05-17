@@ -18,10 +18,12 @@
 int			parse(t_cmd *cmd, char *rd_line);
 
 int			tokenize(t_token *token);
-int			treat_heredoc(t_token *token, char *s);
-char		**split_quote(char *str);
+int			treat_heredoc(t_token *token);
+int			split_by_quote(t_token *token);
 void		make_split_to_token(t_token *lst, char **arr);
-void		treat_dollar(t_token *token);
+void		translate_dollar(char **str);
+void		treat_dollar_in_chunk(t_token *token);
+
 void		split_by_parameter(t_token *token, char *param);
 
 void		chunk_to_argv(t_token **lst);

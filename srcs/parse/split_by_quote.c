@@ -13,7 +13,9 @@
 #include "libft.h"
 #include "ft_list.h"
 #include "envp.h"
+#include "error.h"
 #include "ft_free.h"
+#include "parsing.h"
 
 void	make_split_to_token(t_token *token, char **arr)
 {
@@ -29,52 +31,11 @@ void	make_split_to_token(t_token *token, char **arr)
 	token->next = save_token;
 }
 
-static int	where_dollar_in_quote(char *str, int *dollar_idx, int *next)
-{
-	*dollar_idx = ft_strcspn(str, "$");
-	if (!str[*dollar_idx])
-		return (0);
-	*next = *dollar_idx + 1;
-	if (str[*next] == '?' || str[*next] == '$' || ft_isdigit(str[*next])
-		|| (!ft_isalpha(str[*next]) && str[*next] != '_'))
-	{
-		*next += 1;
-		return (1);
-	}
-	if (str[*next] == '\0'
-		|| (!ft_isalnum(str[*next]) && str[*next] != '_'))
-		return (0);
-	while (str[*next]
-		&& (ft_isalnum(str[*next]) || str[*next] == '_'))
-		*next += 1;
-	return (1);
-}
-
 static char	*translate_dollar_in_quote(char *str)
 {
-	char	*arr[3];
-	char	*tmp;
-	int		dollar_idx;
-	int		next_idx;
-
-	while (where_dollar_in_quote(str, &dollar_idx, &next_idx))
-	{
-		arr[0] = ft_substr(str, 0, dollar_idx);
-		if (str[dollar_idx + 1] == '?' || str[dollar_idx + 1] == '$')
-			arr[1] = ft_itoa(g_env.status);
-		else
-		{
-			tmp = ft_substr(str, dollar_idx + 1, next_idx - dollar_idx - 1);
-			arr[1] = ft_strdup(find_value(tmp));
-			if (!arr[1])
-				arr[1] = ft_strdup("");
-			free(tmp);
-		}
-		arr[2] = ft_substr(str, next_idx, ft_strlen(str) - next_idx);
-		free(str);
-		str = ft_multi_strjoin(arr[0], arr[1], arr[2]);
-		ft_free_ptrs(arr[0], arr[1], arr[2]);
-	}
+	if (!ft_strchr(str, '$'))
+		return (str);
+	translate_dollar(&str);
 	return (str);
 }
 
@@ -93,7 +54,7 @@ static int	where_quote(char *str, int *start, int *end)
 	return (SUCCESS);
 }
 
-char	**split_quote(char *str)
+static char	**split_quote(char *str)
 {
 	char	**ret;
 	int		start;
@@ -114,4 +75,30 @@ char	**split_quote(char *str)
 	ret[2] = ft_substr(str, end + 1, ft_strlen(str) - end - 1);
 	ret[3] = 0;
 	return (ret);
+}
+
+int	split_by_quote(t_token *token)
+{
+	char	**split;
+
+	while (token)
+	{
+		while (token->type == T_CHUNK && \
+			(ft_strchr(token->str, '\'') || ft_strchr(token->str, '\"')))
+		{
+			split = split_quote(token->str);
+			if (split)
+			{
+				make_split_to_token(token, split);
+				ft_free_strings(&split);
+			}
+			else
+			{
+				ft_syntax_error(ft_strdup("\'"));
+				return (FAIL);
+			}
+		}
+		token = token->next;
+	}
+	return (SUCCESS);
 }

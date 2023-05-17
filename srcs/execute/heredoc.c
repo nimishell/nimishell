@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 13:25:35 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/15 16:34:24 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/17 15:45:20 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,11 @@ static void	expand_env_in_str(char **str)
 				*str = ft_replace_str(str, cur->key, cur->value, position);
 				break ;
 			}
+			else
+			{
+				*str = ft_strdup("");
+				break ;
+			}
 			cur = cur->next;
 		}
 		position = ft_strcspn(*str, "$");
@@ -64,8 +69,8 @@ static void	get_heredoc(char *limiter, int pipe_fd[2])
 	close(pipe_fd[RD]);
 	limiter_size = ft_strlen(limiter);
 	input_str = readline("> ");
-	while (input_str != NULL && ft_strncmp(input_str, limiter, \
-		limiter_size + 1) != 0)
+	while ((input_str != NULL || input_str[0] == '\0') \
+		&& ft_strncmp(input_str, limiter, limiter_size + 1) != 0)
 	{
 		expand_env_in_str(&input_str);
 		ft_putendl_fd(input_str, pipe_fd[WR]);

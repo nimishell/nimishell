@@ -15,49 +15,6 @@
 #include "parsing.h"
 #include "error.h"
 
-static int	check_heredoc_limiter(t_token *token)
-{
-	while (token)
-	{
-		if (token->type == T_CHUNK)
-		{
-			if (!treat_heredoc(token, ft_strdup(token->str)))
-			{
-				ft_syntax_error(ft_strdup("\'"));
-				return (FAIL);
-			}
-		}
-		token = token->next;
-	}
-	return (SUCCESS);
-}
-
-static int	split_by_quote(t_token *token)
-{
-	char	**split;
-
-	while (token)
-	{
-		while (token->type == T_CHUNK && \
-			(ft_strchr(token->str, '\'') || ft_strchr(token->str, '\"')))
-		{
-			split = split_quote(token->str);
-			if (split)
-			{
-				make_split_to_token(token, split);
-				ft_free_strings(&split);
-			}
-			else
-			{
-				ft_syntax_error(ft_strdup("\'"));
-				return (FAIL);
-			}
-		}
-		token = token->next;
-	}
-	return (SUCCESS);
-}
-
 static int	free_token_exit(t_token **token)
 {
 	token_clear(token);
@@ -66,9 +23,9 @@ static int	free_token_exit(t_token **token)
 
 int	tokenize(t_token *token)
 {
-	if (!check_heredoc_limiter(token) || !split_by_quote(token))
+	if (!treat_heredoc(token) || !split_by_quote(token))
 		return (FAIL);
-	treat_dollar(token);
+	treat_dollar_in_chunk(token);
 	split_by_parameter(token, " ");
 	split_by_parameter(token, "|");
 	split_by_parameter(token, "<<");

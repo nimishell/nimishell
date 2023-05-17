@@ -6,12 +6,13 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 20:23:57 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/15 16:42:13 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/17 15:51:53 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "ft_list.h"
+#include "error.h"
 
 static int	is_valid_metacha(char c)
 {
@@ -57,7 +58,7 @@ static int	check_quote_in_limiter(t_token *token, char *s, int i)
 	return (i + lim_len + 1);
 }
 
-static int	check_heredoc_arg( t_token *token, char *s, int i)
+static int	check_heredoc_arg(t_token *token, char *s, int i)
 {
 	int		lim_len;
 	char	*str;
@@ -81,7 +82,7 @@ static int	check_heredoc_arg( t_token *token, char *s, int i)
 	return (i);
 }
 
-int	treat_heredoc(t_token *token, char *s)
+static int	check_heredoc_limiter(t_token *token, char *s)
 {
 	int		i;
 	char	*str;
@@ -109,3 +110,21 @@ int	treat_heredoc(t_token *token, char *s)
 	ft_free_str(&s);
 	return (SUCCESS);
 }
+
+int	treat_heredoc(t_token *token)
+{
+	while (token)
+	{
+		if (token->type == T_CHUNK)
+		{
+			if (!check_heredoc_limiter(token, ft_strdup(token->str)))
+			{
+				ft_syntax_error(ft_strdup("\'"));
+				return (FAIL);
+			}
+		}
+		token = token->next;
+	}
+	return (SUCCESS);
+}
+

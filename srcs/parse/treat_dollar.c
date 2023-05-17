@@ -26,7 +26,7 @@ static char	*join_split(char **split)
 	return (ret);
 }
 
-static char	*translate_dollar(char **str)
+static char	*get_env_value(char **str)
 {
 	t_env_node	*cur;
 
@@ -81,30 +81,36 @@ static char	**split_dollar(char *str)
 	return (split);
 }
 
-void	treat_dollar(t_token *token)
+void	translate_dollar(char **str)
 {
 	char	**split;
 	int		break_loop;
 
+	while (ft_strchr(*str, '$'))
+	{
+		split = split_dollar(*str);
+		if (split[1][0] != '\0')
+			split[1] = get_env_value(&split[1]);
+		else
+		{
+			free(split[1]);
+			split[1] = ft_strdup("$");
+			break_loop = TRUE;
+		}
+		free(*str);
+		*str = join_split(split);
+		ft_free_strings(&split);
+		if (break_loop == TRUE)
+			break ;
+	}
+}
+
+void	treat_dollar_in_chunk(t_token *token)
+{
 	while (token)
 	{
-		break_loop = FALSE;
-		while (token->type == T_CHUNK && ft_strchr(token->str, '$'))
-		{
-			split = split_dollar(token->str);
-			if ((*(ft_strchr(token->str, '$') + 1) != '\0'))
-				split[1] = translate_dollar(&split[1]);
-			else
-			{
-				split[1] = ft_strdup("$");
-				break_loop = TRUE;
-			}
-			free(token->str);
-			token->str = join_split(split);
-			ft_free_strings(&split);
-			if (break_loop == TRUE)
-				break ;
-		}
+		if (token->type == T_CHUNK)
+			translate_dollar(&token->str);
 		token = token->next;
 	}
 }
