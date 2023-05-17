@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 19:58:07 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/15 15:21:56 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/17 16:12:55 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,11 @@
 
 int			parse(t_cmd *cmd, char *rd_line);
 
-int			tokenize(t_token *token);
 int			treat_heredoc(t_token *token);
 int			split_by_quote(t_token *token);
 void		make_split_to_token(t_token *lst, char **arr);
-void		translate_dollar(char **str);
 void		treat_dollar_in_chunk(t_token *token);
+void		translate_dollar(char **str);
 
 void		split_by_parameter(t_token *token, char *param);
 

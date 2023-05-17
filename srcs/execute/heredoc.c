@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 13:25:35 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/17 15:45:20 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/17 16:33:13 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,10 @@ static void	expand_env_in_str(char **str)
 				*str = ft_replace_str(str, cur->key, cur->value, position);
 				break ;
 			}
-			else
-			{
-				*str = ft_strdup("");
-				break ;
-			}
 			cur = cur->next;
 		}
+		if (!cur)
+			*str = ft_strdup("");
 		position = ft_strcspn(*str, "$");
 	}
 }
