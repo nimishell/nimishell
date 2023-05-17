@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_multi.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 15:08:22 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/15 16:32:34 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/17 21:47:08 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,23 +17,6 @@
 #include "ft_signal.h"
 #include "terminate.h"
 #include "error.h"
-
-int	is_builtin(char *command)
-{
-	const char	*builtin[7] = {
-		"echo", "cd", "pwd", "export", "unset", "env", "exit"};
-	int			index;
-
-	index = 0;
-	while (index < 7)
-	{
-		if (ft_strncmp(command, builtin[index], \
-				ft_strlen(builtin[index]) + 1) == 0)
-			return (TRUE);
-		index++;
-	}
-	return (FALSE);
-}
 
 static void	child_process(t_cmd_node *cmd, int pipe_fd[2])
 {
@@ -82,15 +65,14 @@ int	wait_child_process(int count, pid_t last_pid)
 		return (WSTOPSIG(result));
 }
 
-int	set_fds_before_new_cmd(t_cmd_node **cur, int pipe_fd[2])
+int	set_fds_before_new_cmd(t_cmd_node *cur, int pipe_fd[2])
 {
 	close(pipe_fd[WR]);
-	if ((*cur)->prev != NULL)
-		close((*cur)->fds[INPUT]);
-	if ((*cur)->next == NULL)
+	if (cur->prev != NULL)
+		close(cur->fds[INPUT]);
+	if (cur->next == NULL)
 		return (0);
-	*cur = (*cur)->next;
-	(*cur)->fds[INPUT] = pipe_fd[RD];
+	cur->next->fds[INPUT] = pipe_fd[RD];
 	return (1);
 }
 
@@ -101,8 +83,6 @@ void	execute_multi_process(t_cmd *cmd)
 
 	set_sig(IGNORE, IGNORE);
 	cur = cmd->head;
-	if (has_heredoc(cur))
-		execute_heredoc(cur);
 	while (cur != NULL)
 	{
 		if (pipe(pipe_fd) == -1)
@@ -112,8 +92,9 @@ void	execute_multi_process(t_cmd *cmd)
 			exit_with_errno(NULL, NULL, EXIT_FAILURE);
 		else if (cur->pid == 0)
 			child_process(cur, pipe_fd);
-		if (set_fds_before_new_cmd(&cur, pipe_fd) == 0)
+		if (set_fds_before_new_cmd(cur, pipe_fd) == 0)
 			break ;
+		cur = cur->next;
 	}
 	close(pipe_fd[RD]);
 	g_env.status = wait_child_process(cmd->size, cur->pid);

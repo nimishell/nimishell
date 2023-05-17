@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_single.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 19:36:46 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/16 23:06:41 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/17 21:32:26 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,6 @@ void	execute_single_process(t_cmd *cmd)
 	int			backup_fd[2];
 
 	cur = cmd->head;
-	if (has_heredoc(cur))
-		execute_heredoc(cur);
 	open_infile(cur);
 	open_outfile(cur, NULL);
 	backup_std_fd(cur, backup_fd);

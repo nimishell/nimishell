@@ -11,3 +11,4 @@
 tmp_files
 minishell
 debug.*
+test.c

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: yeongo <yeongo@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 15:30:05 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/17 16:32:52 by wbae             ###   ########.fr       */
+/*   Updated: 2023/05/17 21:37:49 by yeongo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include "ft_list.h"
 #include "parsing.h"
 #include "error.h"
+#include "structure.h"
+#include "heredoc.h"
 
 static int	free_token_terminate(t_token **token)
 {
@@ -35,6 +37,19 @@ static int	tokenize(t_token *token)
 	return (SUCCESS);
 }
 
+static void	process_heredoc(t_cmd *cmd)
+{
+	t_cmd_node	*cur;
+
+	cur = cmd->head;
+	while (cur != NULL)
+	{
+		if (has_heredoc(cur))
+			execute_heredoc(cur);
+		cur = cur->next;
+	}
+}
+
 int	parse(t_cmd *cmd, char *rd_line)
 {
 	t_token	*token;
@@ -51,5 +66,6 @@ int	parse(t_cmd *cmd, char *rd_line)
 		return (free_token_terminate(&token));
 	treat_redir(cmd->head);
 	token_clear(&token);
+	process_heredoc(cmd);
 	return (SUCCESS);
 }
