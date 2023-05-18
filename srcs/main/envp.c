@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 20:33:04 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/15 16:35:08 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/18 20:26:22 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,13 @@ char	*split_key(char *envp)
 	int		index;
 
 	index = 0;
-	while (envp[index] && envp[index] != '=')
+	if (ft_isdigit(envp[index]))
+		return (NULL);
+	while (envp[index] && envp[index] != '=' \
+		&& (ft_isalnum(envp[index]) || envp[index] == '_'))
 		index++;
+	if (!index)
+		return (NULL);
 	key = ft_substr(envp, 0, index);
 	return (key);
 }

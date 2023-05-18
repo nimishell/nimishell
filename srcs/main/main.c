@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 15:33:23 by wbae              #+#    #+#             */
-/*   Updated: 2023/05/15 16:37:31 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/18 19:48:42 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,19 +37,11 @@ static int	is_space(char *line)
 	return (1);
 }
 
-static void	main_init(int ac, char **av, t_cmd *cmd)
+static void	make_shlvl(void)
 {
 	t_env_node	*head;
-	t_termios	term;
 	char		*tmp;
 
-	(void)av;
-	if (ac != 1)
-		exit_with_message(NULL, NULL, "Argument input error", STDERR_FILENO);
-	tcgetattr(STDIN_FILENO, &term);
-	term.c_lflag &= ~(ECHOCTL);
-	tcsetattr(STDOUT_FILENO, TCSANOW, &term);
-	get_env_lst(environ);
 	head = g_env.head;
 	while (head)
 	{
@@ -58,9 +50,25 @@ static void	main_init(int ac, char **av, t_cmd *cmd)
 			tmp = head->value;
 			head->value = ft_itoa(ft_atoi(tmp) + 1);
 			free(tmp);
+			return ;
 		}
 		head = head->next;
 	}
+	add_new_env("SHLVL", "1");
+}
+
+static void	main_init(int ac, char **av, t_cmd *cmd)
+{
+	t_termios	term;
+
+	(void)av;
+	if (ac != 1)
+		exit_with_message(NULL, NULL, "Argument input error", STDERR_FILENO);
+	tcgetattr(STDIN_FILENO, &term);
+	term.c_lflag &= ~(ECHOCTL);
+	tcsetattr(STDOUT_FILENO, TCSANOW, &term);
+	get_env_lst(environ);
+	make_shlvl();
 	memset(cmd, 0, sizeof(t_cmd));
 }
 

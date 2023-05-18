@@ -6,7 +6,7 @@
 /*   By: wbae <wbae@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 01:54:29 by yeongo            #+#    #+#             */
-/*   Updated: 2023/05/15 16:30:35 by yeongo           ###   ########.fr       */
+/*   Updated: 2023/05/18 20:26:22 by wbae             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,23 +70,6 @@ int	export_variable(char **key, char *value)
 	return (1);
 }
 
-int	check_valid_identifier(char *argv)
-{
-	int	index;
-
-	index = 0;
-	while (argv[index] != '\0' && argv[index] != '=')
-	{
-		if (ft_isalnum(argv[index]) == FALSE && argv[index] != '_')
-		{
-			ft_error_message("export", argv, "not a valid identifier");
-			return (0);
-		}
-		index++;
-	}
-	return (1);
-}
-
 int	ft_export(char **argv)
 {
 	int		index;
@@ -98,9 +81,12 @@ int	ft_export(char **argv)
 	index = 1;
 	while (argv[index])
 	{
-		if (!check_valid_identifier(argv[index]))
-			return (1);
 		key = split_key(argv[index]);
+		if (!key)
+		{
+			ft_error_message("export", argv[index], "not a valid identifier");
+			return (1);
+		}
 		value = split_value(argv[index]);
 		export_variable(&key, value);
 		ft_free_str(&key);
