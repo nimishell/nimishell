@@ -1,8 +1,0 @@
-CompileFlags:
-  Add:
-    - "-Wall"
-    - "-Wextra"
-    - "-Werror"
-    - "-I./inc/"
-    - "-I./libft/inc/"
-    - "-I~/.brew/opt/readline/include"
